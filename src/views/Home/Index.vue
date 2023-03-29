@@ -3,6 +3,7 @@
   <div>
     <IndexAnimation></IndexAnimation>
     <Header background="transparent"></Header>
+    <Footer fixed></Footer>
     <div class="common">
       <div class="home">
         {{ info.introduction }}
@@ -14,6 +15,7 @@
 <script>
 import IndexAnimation from '@/components/IndexAnimation.vue'
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 
 let i = 0;
 let timer = null;
@@ -21,7 +23,8 @@ export default {
   name: 'index',
   components: {
     IndexAnimation,
-    Header
+    Header,
+    Footer
   },
   data() {
     return {
