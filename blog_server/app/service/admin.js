@@ -1,13 +1,26 @@
 'use strict';
 
+
 const Service = require('egg').Service;
 
 class AdminService extends Service {
-  async adminLogin(body) {
+  async adminLogin(params) {
     const { ctx } = this;
-    // const res = await ctx.model.Admin.find({});
-    const res = await ctx.model.Admin.create(body);
-    console.log('res---', res);
+    const resUser = await ctx.model.Admin.findOne({
+      username: params.userName,
+    });
+    if (!resUser) {
+      return {
+        msg: '用户名或密码错误',
+      };
+    }
+    const isMatch = await ctx.helper.comparePassword(params.password, resUser.password);
+    if (!isMatch) {
+      return {
+        msg: '用户名或密码错误',
+      };
+    }
+    console.log(isMatch);
   }
 }
 

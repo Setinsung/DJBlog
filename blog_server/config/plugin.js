@@ -2,11 +2,10 @@
 
 /** @type Egg.EggPlugin */
 module.exports = {
-  nunjucks: {
-    enable: true,
-    package: 'egg-view-nunjucks',
-  },
-  // 配置egg-validate校验规则
+  // had enabled by egg
+  // static: {
+  //   enable: true,
+  // }
   validate: {
     enable: true,
     package: 'egg-validate',
