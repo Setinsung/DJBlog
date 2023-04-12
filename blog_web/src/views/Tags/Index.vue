@@ -7,9 +7,9 @@
     <Footer fixed></Footer>
     <div class="content">
       <div class="tags-wap tagcloud">
-        <a v-for="item in tags" :key="item.name">
+        <router-link v-for="item in tags" :key="item.name" :to="{name: 'tagsDetails', query:{id:item.name}}">
           <mu-chip v-if="item.articleNum > 0" class="tag" :color="item.color">{{ item.name }}{{ item.articleNum }}</mu-chip>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
