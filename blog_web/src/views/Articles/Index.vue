@@ -3,56 +3,51 @@
     <Header :light-index="1"></Header>
     <div class="content">
       <div :class="[{ 'wap-left': !isPC }, 'left']">
-        <mu-card class="card">
+        <mu-card class="card" v-for="item in info.list" :key="item._id">
           <div v-if="isPC" class="cover">
-            <img class="cover-img" src="http://nevergiveupt.top/canvas/html2canvas.png" />
+            <img class="cover-img" v-lazy="item.cover">
           </div>
           <div class="card-box">
-            <div class="title">使用jspdf+canvas2html将网页保存为pdf文件</div>
+            <div class="title">{{ item.title }}</div>
             <mu-card-actions class="sub-title">
-              <mu-button class="cursor-default" flat color="info">查看(10)</mu-button>
-              <mu-button class="cursor-default" flat color="error">评论(0)</mu-button>
-              <mu-button class="cursor-default" flat color="primary">点赞(20)</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">2021-02-04 09:57</mu-button>
+              <mu-button class="cursor-default" flat color="info">查看（{{ item.views }}）</mu-button>
+              <mu-button class="cursor-default" flat color="error">评论（{{ item.comment }}）</mu-button>
+              <mu-button class="cursor-default" flat color="primary">点赞（{{ item.like }}）</mu-button>
+              <mu-button class="cursor-default" flat color="#9e9e9e">{{ item.createTime }}</mu-button>
             </mu-card-actions>
-            <mu-card-text class="text">简介</mu-card-text>
+            <mu-card-text class="text">{{ item.introduction }}</mu-card-text>
             <mu-card-actions>
-              <mu-button flat class="chip cursor-default" color="primary">
+              <mu-button class="cursor-default chip" flat color="primary">
                 <mu-icon left value="dns"></mu-icon>
-                分类
+                {{ item.categories }}
               </mu-button>
-              <mu-button flat class="chip cursor-default">
+              <mu-button v-for="sub in item.tags" :key="sub" class="cursor-default chip" flat>
                 <mu-icon left value="loyalty"></mu-icon>
-                标签1
-              </mu-button>
-              <mu-button flat class="chip cursor-default">
-                <mu-icon left value="loyalty"></mu-icon>
-                标签2
+                {{ sub }}
               </mu-button>
             </mu-card-actions>
           </div>
         </mu-card>
       </div>
     </div>
-
     <div v-if="info.totalCount > pageSize" class="pagination">
-      <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize" :pageCount="5"></mu-pagination>
+      <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize"
+        :pageCount="5"></mu-pagination>
     </div>
-
     <Footer></Footer>
   </div>
 </template>
+
 <script>
-import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default {
-  name: "articles",
+  name: 'articles',
   components: {
-    Footer,
     Header,
+    Footer
   },
-
   data() {
     return {
       page: 1,
@@ -83,7 +78,7 @@ export default {
             title: "使用jspdf+canvas2html将网页保存为pdf文件",
             updateTime: 1612416421,
             views: 9,
-            _id: "601b546ce268db458626529c",
+            _id: "1",
           },
           {
             categories: "生活",
@@ -106,15 +101,13 @@ export default {
             title: "使用jspdf+canvas2html将网页保存为pdf文件",
             updateTime: 1612416421,
             views: 9,
-            _id: "601b546ce268db458626529c",
+            _id: "2",
           },
         ],
       },
     };
   },
-  mounted() { },
-  methods: {},
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -147,14 +140,21 @@ export default {
           animation: pulse 1s;
         }
 
+        .card-box {
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
+
         .title {
           padding: 0.42667rem 0.42667rem 0 0.42667rem;
           font-size: 0.4rem;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical; // 指定为垂直方向的
+          -webkit-line-clamp: 1; // 指定显示的行数
           cursor: pointer;
         }
 
@@ -169,7 +169,7 @@ export default {
           text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 1;
         }
 
         .chip {
@@ -182,18 +182,11 @@ export default {
           padding: 0.42667rem;
 
           .cover-img {
-            object-fit: cover;
+            object-fit: cover; // 这个属性是让图片的宽高比例不变，但是图片会被拉伸，所以要配合width和height使用
             width: 100%;
             height: 4.26667rem;
             vertical-align: middle;
           }
-        }
-
-        .card-box {
-          flex: 2;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
         }
       }
     }
@@ -204,16 +197,10 @@ export default {
       justify-content: center;
     }
   }
-
-  .box {
-    justify-content: center !important;
-    padding-bottom: 0.53333rem;
+  .pagination {
+    margin: 0.53333rem 0;
+    display: flex;
+    justify-content: center;
   }
-}
-
-.pagination {
-  margin: 0.53333rem 0;
-  display: flex;
-  justify-content: center;
 }
 </style>
