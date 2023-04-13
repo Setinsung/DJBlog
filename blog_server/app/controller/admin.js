@@ -27,7 +27,7 @@ class AdminController extends Controller {
     const data = ctx.request.body;
     ctx.validate(this.createRule, data);
     const res = await service.admin.adminLogin(data);
-    ctx.body = res;
+    ctx.helper.success({ ctx, res });
   }
 }
 
