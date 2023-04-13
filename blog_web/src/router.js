@@ -62,6 +62,14 @@ const routes = [
         /* webpackChunkName: "categories" */ "./views/About/Index.vue"
       ),
   },
+  {
+    path: "/articles",
+    name: "articles",
+    component: () =>
+      import(
+        /* webpackChunkName: "categories" */ "./views/Articles/Index.vue"
+      ),
+  },
 ];
 
 const router = new VueRouter({

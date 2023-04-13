@@ -2,43 +2,41 @@
   <div class="common">
     <Header :light-index="5" background="transparent"></Header>
     <Footer fixed></Footer>
-    <mu-carousel>
+    <mu-carousel hide-indicators hide-controls style="position: fixed; height: 100%; margin-top: 0">
       <mu-carousel-item v-for="item in info.imgs" :key="item._id">
-        <img :src="item.imgUrl" hide-indicators hide-controls class="carousel">
+        <img :src="item.imgUrl" />
       </mu-carousel-item>
     </mu-carousel>
-
-    <div class="content">
-      <mu-card class="card">
+    <div class="content" :style="{ paddingTop: isPC ? '64px' : '56px' }">
+      <mu-card class="card" :style="{ marginTop: isPC ? '100px' : '0' }">
         <mu-card-header v-if="isPC">
-          <mu-paper class="avatar-box" circle :z-depth="5">
-            <img class="avatar" v-lazy="avatar">
+          <mu-paper v-if="isPC" class="avatar-box" circle :z-depth="5">
+            <img class="avatar" v-lazy="avatar" />
           </mu-paper>
         </mu-card-header>
         <mu-card-text>
-          {{ info.desc }}
+          <div v-html="info.desc"></div>
         </mu-card-text>
         <div class="tags">
-          <mu-chip class="tag" v-for="(item, index) in info.tags" :key="item.name" :color="item.color" delete
-            @delete="remove(index)">
-            {{ item.name }}
-          </mu-chip>
-          <mu-button @click="reset" color="primary" v-if="info.tags && info.tags.length === 0">reset</mu-button>
+          <mu-chip class="tag" v-for="(item, index) in info.tags" :key="item.name" :color="item.color"
+            @delete="remove(index)" delete>{{ item.name }}</mu-chip>
+          <mu-button color="primary" v-if="info.tags && info.tags.length === 0" @click="reset">reset</mu-button>
         </div>
       </mu-card>
     </div>
   </div>
 </template>
-
 <script>
-import { randomColor } from '@/utils'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+import { randomColor } from "@/utils";
+
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 export default {
-  name: 'about',
+  name: "about",
   components: {
     Header,
-    Footer
+    Footer,
   },
   data() {
     return {
@@ -58,7 +56,7 @@ export default {
           },
         ],
         desc:
-          "有4年前端开发经验，熟悉Vue、React、Angular前端框架。熟悉小程序开发（Taro、Remax、MpVue、Wepy、 云开发）。熟悉NodeJs、Koa，Egg等后端知识。具有良好的沟通能力、工作协调能力、不断学习新技术、熟练前端技术、热衷于前端开发。",
+          "有0年前端开发经验，不熟悉Vue、React、Angular前端框架。不熟悉NodeJs、Koa，Egg等后端知识。不具有良好的沟通能力、工作协调能力、不断学习新技术、不熟练前端技术、不热衷于前端开发。",
         tags: [
           {
             name: "Vue",
@@ -76,11 +74,11 @@ export default {
       },
     };
   },
-  mounted() {
-  },
+  mounted() { },
+
   methods: {
     remove(index) {
-      this.info.tags.splice(index, 1)
+      this.info.tags.splice(index, 1);
     },
     reset() {
       this.info.tags = [
@@ -96,58 +94,67 @@ export default {
           name: "Node.js",
           color: randomColor(),
         },
-      ]
-    }
-  }
-}
+      ];
+    },
+  },
+};
 </script>
-
 <style lang="less" scoped>
 .content {
+  padding-top: 64px;
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
-  padding-top: 64px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-}
-
-.carousel {
-  position: fixed;
-  height: 100%;
-  margin-top: 0;
-
-}
-
-.card {
-  max-width: 10rem;
-  width: 10rem;
-  margin: 0 auto;
+  flex-direction: column;
 
   /deep/ .mu-card-header {
     display: flex;
     justify-content: flex-end;
     height: 1.33333rem;
   }
+
+  .avatar-box {
+    width: 2.66667rem;
+    height: 2.66667rem;
+    position: absolute;
+    top: -1.33333rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
 }
 
-.avatar-box {
-  width: 2.6667rem;
-  height: 2.6667rem;
-  position: absolute;
-  top: -1.33333rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
+.tags {
+  padding: 0.42667rem;
 
-  .avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+  .tag {
+    margin-bottom: 0.42667rem;
+    margin-right: 0.42667rem;
   }
+}
+
+.mu-carousel {
+  height: 5.33333rem;
+  margin-top: 0.53333rem;
+}
+
+.mu-carousel-item>img {
+  height: 100%;
+}
+
+.card {
+  max-width: 10rem;
+  width: 10rem;
+  margin: 0 auto;
 }
 </style>
