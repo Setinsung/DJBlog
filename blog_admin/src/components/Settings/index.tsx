@@ -3,21 +3,16 @@ import { Drawer, Alert, Message } from '@arco-design/web-react';
 import { IconSettings } from '@arco-design/web-react/icon';
 import copy from 'copy-to-clipboard';
 import { useSelector } from 'react-redux';
-import { GlobalState } from '../../store';
+import { ReducerState } from '../../redux';
 import Block from './block';
 import ColorPanel from './color';
-import IconButton from '../NavBar/IconButton';
-import useLocale from '@/utils/useLocale';
+import useLocale from '../../utils/useLocale';
+import styles from './style/index.module.less';
 
-interface SettingProps {
-  trigger?: React.ReactElement;
-}
-
-function Setting(props: SettingProps) {
-  const { trigger } = props;
+function Setting() {
   const [visible, setVisible] = useState(false);
   const locale = useLocale();
-  const settings = useSelector((state: GlobalState) => state.settings);
+  const settings = useSelector((state: ReducerState) => state.global.settings);
 
   function onCopySettings() {
     copy(JSON.stringify(settings, null, 2));
@@ -25,14 +20,10 @@ function Setting(props: SettingProps) {
   }
 
   return (
-    <>
-      {trigger ? (
-        React.cloneElement(trigger as React.ReactElement, {
-          onClick: () => setVisible(true),
-        })
-      ) : (
-        <IconButton icon={<IconSettings />} onClick={() => setVisible(true)} />
-      )}
+    <div>
+      <div className={styles.btn} onClick={() => setVisible(true)}>
+        <IconSettings />
+      </div>
       <Drawer
         width={300}
         title={
@@ -65,7 +56,7 @@ function Setting(props: SettingProps) {
         />
         <Alert content={locale['settings.alertContent']} />
       </Drawer>
-    </>
+    </div>
   );
 }
 

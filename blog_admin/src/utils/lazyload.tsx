@@ -1,7 +1,7 @@
 import React from 'react';
 import loadable from '@loadable/component';
 import { Spin } from '@arco-design/web-react';
-import styles from '../style/layout.module.less';
+import styles from '../layout/style/layout.module.less';
 
 // https://github.com/gregberge/loadable-components/pull/226
 function load(fn, options) {
@@ -12,11 +12,7 @@ function load(fn, options) {
   return Component;
 }
 
-function LoadingComponent(props: {
-  error: boolean;
-  timedOut: boolean;
-  pastDelay: boolean;
-}) {
+function LoadingComponent(props) {
   if (props.error) {
     console.error(props.error);
     return null;

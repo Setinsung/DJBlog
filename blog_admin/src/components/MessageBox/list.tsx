@@ -1,28 +1,16 @@
-import React from 'react';
-import {
-  List,
-  Avatar,
-  Typography,
-  Button,
-  Space,
-  Result,
-  Tag,
-} from '@arco-design/web-react';
+import React, { ReactNode } from 'react';
+import { List, Avatar, Typography, Button, Space } from '@arco-design/web-react';
+
 import useLocale from '../../utils/useLocale';
-import styles from './style/index.module.less';
 
 export interface MessageItemData {
   id: string;
   title: string;
-  subTitle?: string;
-  avatar?: string;
+  subTitle: string;
+  avatar: string;
   content: string;
-  time?: string;
+  time: string;
   status: number;
-  tag?: {
-    text?: string;
-    color?: string;
-  };
 }
 
 export type MessageListType = MessageItemData[];
@@ -30,16 +18,14 @@ export type MessageListType = MessageItemData[];
 interface MessageListProps {
   data: MessageItemData[];
   unReadData: MessageItemData[];
+  avatar?: string | ReactNode;
   onItemClick?: (item: MessageItemData, index: number) => void;
-  onAllBtnClick?: (
-    unReadData: MessageItemData[],
-    data: MessageItemData[]
-  ) => void;
+  onAllBtnClick?: (unReadData: MessageItemData[], data: MessageItemData[]) => void;
 }
 
 function MessageList(props: MessageListProps) {
-  const t = useLocale();
-  const { data, unReadData } = props;
+  const locale = useLocale();
+  const { data, unReadData, avatar: defaultAvatar } = props;
 
   function onItemClick(item: MessageItemData, index: number) {
     if (item.status) return;
@@ -52,20 +38,15 @@ function MessageList(props: MessageListProps) {
 
   return (
     <List
-      noDataElement={<Result status="404" subTitle={t['message.empty.tips']} />}
+      bordered={false}
       footer={
-        <div className={styles.footer}>
-          <div className={styles['footer-item']}>
-            <Button type="text" size="small" onClick={onAllBtnClick}>
-              {t['message.allRead']}
+        unReadData.length ? (
+          <div style={{ textAlign: 'center' }}>
+            <Button type="text" onClick={onAllBtnClick}>
+              {locale['messageBox.allRead']}
             </Button>
           </div>
-          <div className={styles['footer-item']}>
-            <Button type="text" size="small">
-              {t['message.seeMore']}
-            </Button>
-          </div>
-        </div>
+        ) : null
       }
     >
       {data.map((item, index) => (
@@ -86,33 +67,24 @@ function MessageList(props: MessageListProps) {
           >
             <List.Item.Meta
               avatar={
-                item.avatar && (
-                  <Avatar shape="circle" size={36}>
+                item.avatar ? (
+                  <Avatar shape="circle">
                     <img src={item.avatar} />
                   </Avatar>
+                ) : (
+                  defaultAvatar
                 )
               }
               title={
-                <div className={styles['message-title']}>
-                  <Space size={4}>
-                    <span>{item.title}</span>
-                    <Typography.Text type="secondary">
-                      {item.subTitle}
-                    </Typography.Text>
-                  </Space>
-                  {item.tag && item.tag.text ? (
-                    <Tag color={item.tag.color}>{item.tag.text}</Tag>
-                  ) : null}
-                </div>
+                <Space size={4}>
+                  <span>{item.title}</span>
+                  <Typography.Text type="secondary">{item.subTitle}</Typography.Text>
+                </Space>
               }
               description={
                 <div>
-                  <Typography.Paragraph style={{ marginBottom: 0 }} ellipsis>
-                    {item.content}
-                  </Typography.Paragraph>
-                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                    {item.time}
-                  </Typography.Text>
+                  <div>{item.content}</div>
+                  <Typography.Text type="secondary">{item.time}</Typography.Text>
                 </div>
               }
             />

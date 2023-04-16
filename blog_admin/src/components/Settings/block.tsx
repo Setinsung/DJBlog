@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Switch, Divider, InputNumber } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { GlobalState } from '../../store';
+import { ReducerState } from '../../redux';
 import useLocale from '../../utils/useLocale';
 import styles from './style/block.module.less';
 
@@ -14,7 +14,7 @@ export interface BlockProps {
 export default function Block(props: BlockProps) {
   const { title, options, children } = props;
   const locale = useLocale();
-  const settings = useSelector((state: GlobalState) => state.settings);
+  const settings = useSelector((state: ReducerState) => state.global.settings);
   const dispatch = useDispatch();
 
   return (
@@ -25,7 +25,7 @@ export default function Block(props: BlockProps) {
           const type = option.type || 'switch';
 
           return (
-            <div className={styles['switch-wrapper']} key={option.value}>
+            <div className={styles.switchWrapper} key={option.value}>
               <span>{locale[option.name]}</span>
               {type === 'switch' && (
                 <Switch
@@ -36,10 +36,7 @@ export default function Block(props: BlockProps) {
                       ...settings,
                       [option.value]: checked,
                     };
-                    dispatch({
-                      type: 'update-settings',
-                      payload: { settings: newSetting },
-                    });
+                    dispatch({ type: 'update-settings', payload: { settings: newSetting } });
                     // set color week
                     if (checked && option.value === 'colorWeek') {
                       document.body.style.filter = 'invert(80%)';
@@ -60,10 +57,7 @@ export default function Block(props: BlockProps) {
                       ...settings,
                       [option.value]: value,
                     };
-                    dispatch({
-                      type: 'update-settings',
-                      payload: { settings: newSetting },
-                    });
+                    dispatch({ type: 'update-settings', payload: { settings: newSetting } });
                   }}
                 />
               )}

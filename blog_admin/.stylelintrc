@@ -1,17 +1,13 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
-  "customSyntax": "postcss-less",
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules"
+  ],
   "rules": {
-    "selector-class-pattern": null,
     "no-descending-specificity": null,
     "no-duplicate-selectors": null,
-    "color-function-notation": null,
     "font-family-no-missing-generic-family-keyword": null,
-    "selector-pseudo-class-no-unknown": [
-      true,
-      {
-        "ignorePseudoClasses": ["global"]
-      }
-    ]
+    "block-opening-brace-space-before": "always",
+    "declaration-block-trailing-semicolon": null
   }
 }
