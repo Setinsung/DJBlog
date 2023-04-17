@@ -22,6 +22,7 @@ const SubMenu = Menu.SubMenu;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
+// 用于将路由配置转换为可渲染的路由组件，返回扁平化的路由
 function getFlattenRoutes() {
   const res = [];
   function travel(_routes) {

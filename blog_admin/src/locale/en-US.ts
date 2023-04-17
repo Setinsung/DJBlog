@@ -6,6 +6,7 @@ import localeWelcome from '../pages/welcome/locale/en-US';
 export default {
   'menu.list': 'List',
   'navbar.docs': 'Docs',
+  'menu.categories': 'Categories',
   ...localeSettings,
   ...localeMessageBox,
   ...localeSearchTable,

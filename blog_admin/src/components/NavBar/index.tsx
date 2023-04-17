@@ -16,7 +16,7 @@ import useLocale from '../../utils/useLocale';
 import Logo from '../../assets/logo.svg';
 import history from '../../history';
 
-import MessageBox from '../MessageBox';
+// import MessageBox from '../MessageBox';
 
 import styles from './style/index.module.less';
 
@@ -43,17 +43,17 @@ function Navbar() {
         <Space size={8}>
           <Logo />
           <Typography.Title style={{ margin: 0, fontSize: 18 }} heading={5}>
-            Arco Design Pro
+            博客后台管理系统
           </Typography.Title>
         </Space>
       </div>
       <ul className={styles.right}>
-        <li>
+        {/* <li>
           <MessageBox />
         </li>
         <li>
           <a>{locale['navbar.docs']}</a>
-        </li>
+        </li> */}
         <li>
           <Select
             options={[
@@ -102,9 +102,14 @@ function Navbar() {
             <Dropdown
               trigger="click"
               droplist={
-                <Menu onClickMenuItem={onMenuItemClick}>
-                  <Menu.Item key="logout">登出</Menu.Item>
-                </Menu>
+                <>
+                  <Menu onClickMenuItem={onMenuItemClick}>
+                    <Menu.Item key="publish">发布文章</Menu.Item>
+                  </Menu>
+                  <Menu onClickMenuItem={onMenuItemClick}>
+                    <Menu.Item key="logout">退出登录</Menu.Item>
+                  </Menu>
+                </>
               }
             >
               <Typography.Text className={styles.username}>{userInfo.name}</Typography.Text>

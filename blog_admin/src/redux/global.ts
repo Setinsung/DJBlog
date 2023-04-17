@@ -29,6 +29,10 @@ export interface GlobalState {
 const initialState: GlobalState = {
   theme: defaultTheme,
   settings: defaultSettings,
+  userInfo: {
+    name: 'whid',
+    avatar: 'https://www.baidu.com/img/flexible/logo/pc/index.png',
+  },
 };
 
 export default function(state = initialState, action) {
