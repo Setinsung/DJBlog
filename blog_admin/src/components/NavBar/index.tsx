@@ -28,7 +28,7 @@ function Navbar() {
 
   function logout() {
     localStorage.setItem('userStatus', 'logout');
-    history.push('/user/login');
+    history.push('/admin/login');
   }
 
   function onMenuItemClick(key) {

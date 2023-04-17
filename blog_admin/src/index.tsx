@@ -61,7 +61,7 @@ function Index() {
     if (checkLogin()) {
       fetchUserInfo();
     } else {
-      history.push('/user/login');
+      history.push('/admin/login');
     }
   }, []);
 
@@ -75,7 +75,7 @@ function Index() {
         <Provider store={store}>
           <GlobalContext.Provider value={contextValue}>
             <Switch>
-              <Route path="/user/login" component={Login} />
+              <Route path="/admin/login" component={Login} />
               <Route path="/" component={PageLayout} />
             </Switch>
             <Setting />
