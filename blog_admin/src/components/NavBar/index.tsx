@@ -27,7 +27,8 @@ function Navbar() {
   const dispatch = useDispatch();
 
   function logout() {
-    localStorage.setItem('userStatus', 'logout');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
     history.push('/admin/login');
   }
 
@@ -102,14 +103,14 @@ function Navbar() {
             <Dropdown
               trigger="click"
               droplist={
-                <>
+                <div>
                   <Menu onClickMenuItem={onMenuItemClick}>
                     <Menu.Item key="publish">发布文章</Menu.Item>
                   </Menu>
                   <Menu onClickMenuItem={onMenuItemClick}>
                     <Menu.Item key="logout">退出登录</Menu.Item>
                   </Menu>
-                </>
+                </div>
               }
             >
               <Typography.Text className={styles.username}>{userInfo.name}</Typography.Text>
