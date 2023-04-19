@@ -23,12 +23,12 @@ import styles from './style/index.module.less';
 function Navbar() {
   const locale = useLocale();
   const theme = useSelector((state: ReducerState) => state.global.theme);
-  const userInfo = useSelector((state: ReducerState) => state.global.userInfo);
+  const userInfo = useSelector((state: ReducerState) => state.login.userInfo);
   const dispatch = useDispatch();
 
   function logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('userName');
+    localStorage.removeItem('userInfo');
     history.push('/admin/login');
   }
 
