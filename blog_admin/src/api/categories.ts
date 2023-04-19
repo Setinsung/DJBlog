@@ -13,3 +13,11 @@ export async function create(data) {
     data,
   });
 }
+
+export async function update(data) {
+  return request({
+    url: '/categories',
+    method: 'PUT',
+    data,
+  });
+}

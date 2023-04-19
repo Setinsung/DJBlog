@@ -9,6 +9,10 @@ export const request = (config) => {
   // 请求拦截，对请求参数处理
   http.interceptors.request.use(
     (config) => {
+      if (config.method === 'put' || config.method === 'delete') {
+        // config.url = `${config.url}/${config.data._id || config.data.id}`;
+        config.url += config.data._id || config.data.id;
+      }
       return config;
     }
     // (error) => {}

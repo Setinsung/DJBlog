@@ -21,7 +21,8 @@ import {
 import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
-import { getList, create } from '../../api/categories';
+import { getList, create, update } from '../../api/categories';
+import { EditableCell, EditableRow } from './edit';
 
 const FormItem = Form.Item;
 
@@ -44,6 +45,7 @@ function CategoriesTable() {
     {
       title: '分类名称',
       dataIndex: 'name',
+      editable: true,
     },
     {
       title: '文章数量',
@@ -143,7 +145,17 @@ function CategoriesTable() {
     } else {
       Message.error('添加失败，请重试');
     }
-    console.log(res);
+    // console.log(res);
+  };
+
+  const onHandleSave = async (row) => {
+    const res: any = await update(row);
+    if (res.code === 0) {
+      fetchData();
+      Message.success(res.msg);
+    } else {
+      Message.error('修改失败，请重试');
+    }
   };
 
   return (
@@ -173,9 +185,27 @@ function CategoriesTable() {
           loading={loading}
           onChange={onChangeTable}
           pagination={pagination}
-          columns={columns}
           data={data}
+          components={{
+            body: {
+              row: EditableRow,
+              cell: EditableCell,
+            },
+          }}
+          columns={columns.map((column) =>
+            column.editable
+              ? {
+                  ...column,
+                  onCell: () => ({
+                    onHandleSave,
+                  }),
+                }
+              : column
+          )}
+          // 因为是less，这里要用styles获取css类名，注意EditableRow和EditableCell也要修改
+          className={styles['table-demo-editable-cell']}
         />
+
         <Modal
           title={<div style={{ textAlign: 'left' }}>添加分类</div>}
           visible={visible}

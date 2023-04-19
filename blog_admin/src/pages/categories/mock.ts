@@ -9,10 +9,10 @@ const data = Mock.mock({
     {
       '_id|8': /[A-Z][a-z][-][0-9]/,
       'name|4-8': /[A-Z]/,
-      'articleNum|1-4': /[1-9]/,
+      // 'articleNum|1-2': /[0-9]/,
+      'articleNum|1': /[0]/,
       createTime: Random.datetime(),
       updateTime: Random.datetime(),
-      deadline: Random.datetime(),
     },
   ],
 });
@@ -21,9 +21,18 @@ setupMock({
   setup() {
     Mock.mock(new RegExp('/api/v1/categories'), (params) => {
       switch (params.type) {
+        case 'PUT':
+          const body = JSON.parse(params.body);
+          const index = data.list.findIndex((item) => item._id === body._id);
+          data.list[index] = { ...data.list[index], ...body };
+          return {
+            msg: '分类修改成功',
+            data: null,
+            code: 0,
+          };
         case 'POST':
           const { name } = JSON.parse(params.body);
-          console.log(name);
+          // console.log(name);
           const returnData = Mock.mock({
             '_id|8': /[A-Z][a-z][-][0-9]/,
             name,
