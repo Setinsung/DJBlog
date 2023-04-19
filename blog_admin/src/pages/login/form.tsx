@@ -3,6 +3,7 @@ import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useRef, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
 import styles from './style/index.module.less';
 import history from '../../history';
 import useLocale from '../../utils/useLocale';
@@ -15,10 +16,17 @@ export default function LoginForm() {
   // const [form] = Form.useForm();
   // 这里使用useLocale()获取当前语言，此时local是一个对象，包含了当前语言的所有翻译
   const local = useLocale();
+  const dispatch = useDispatch();
 
+  // 登录成功后，将token存储到localStorage中，同时将用户信息存储到redux中，最后跳转到首页
   function afterLoginSuccess(params) {
     // 记录登录状态
     localStorage.setItem('token', params.token);
+    // 记录用户信息到redux中
+    dispatch({
+      type: 'LOGIN',
+      payload: params,
+    });
     // 跳转首页
     window.location.href = history.createHref({
       pathname: '/',
