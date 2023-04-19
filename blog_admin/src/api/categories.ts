@@ -21,3 +21,11 @@ export async function update(data) {
     data,
   });
 }
+
+export async function remove(data) {
+  return request({
+    url: '/categories',
+    method: 'DELETE',
+    data,
+  });
+}

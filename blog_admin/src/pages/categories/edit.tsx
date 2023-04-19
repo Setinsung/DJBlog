@@ -40,6 +40,8 @@ export const EditableCell = (props) => {
     form.validate([column.dataIndex], (errors, values) => {
       if (!errors || !errors[column.dataIndex]) {
         setEditing(!editing);
+        // 当前行数据的name和表单数据的name相同时，不调用父组件传递的onHandleSave方法
+        if (rowData.name === values.name) return;
         // 当保存时，调用父组件传递的onHandleSave方法，将rowData：当前行数据，values：表单数据传递给父组件
         onHandleSave && onHandleSave({ ...rowData, ...values });
       }
@@ -79,7 +81,7 @@ export const EditableCell = (props) => {
           wrapperCol={{ span: 24 }}
           initialValue={rowData[column.dataIndex]}
           field={column.dataIndex}
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: '请输入分类名称' }]}
         >
           <Input ref={refInput} onPressEnter={cellValueChangeHandler} />
         </Form.Item>
@@ -91,8 +93,8 @@ export const EditableCell = (props) => {
       if (rowData.articleNum > 0) {
         return Message.error('该分类下有文章，不可修改');
       }
+      setEditing(!editing);
     }
-    setEditing(!editing);
   };
   return (
     <div

@@ -8,6 +8,7 @@ import {
   Modal,
   Form,
   Message,
+  Popconfirm,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -21,7 +22,7 @@ import {
 import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
-import { getList, create, update } from '../../api/categories';
+import { getList, create, update, remove } from '../../api/categories';
 import { EditableCell, EditableRow } from './edit';
 
 const FormItem = Form.Item;
@@ -40,7 +41,16 @@ function CategoriesTable() {
   // 这里这个form就存储了表单的数据
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-
+  const onDelete = async (row) => {
+    // console.log(row);
+    const res: any = await remove(row);
+    if (res.code === 0) {
+      fetchData();
+      Message.success(res.msg);
+    } else {
+      Message.error('删除失败，请重试');
+    }
+  };
   const columns = [
     {
       title: '分类名称',
@@ -63,14 +73,25 @@ function CategoriesTable() {
     {
       title: locale['searchTable.columns.operations'],
       dataIndex: 'operations',
-      render: () => (
+      render: (_, record) => (
         <div className={styles.operations}>
-          <Button type="text" size="small">
+          {/* <Button type="text" size="small">
             {locale['searchTable.columns.operations.update']}
-          </Button>
-          <Button type="text" status="danger" size="small">
-            {locale['searchTable.columns.operations.delete']}
-          </Button>
+          </Button> */}
+          <Popconfirm
+            focusLock
+            title="确定要删除吗？"
+            onOk={() => onDelete(record)}
+            /* onCancel={() => {
+              Message.error({
+                content: 'cancel',
+              });
+            }} */
+          >
+            <Button type="text" status="danger" size="small">
+              {locale['searchTable.columns.operations.delete']}
+            </Button>
+          </Popconfirm>
         </div>
       ),
     },

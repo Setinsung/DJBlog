@@ -21,10 +21,19 @@ setupMock({
   setup() {
     Mock.mock(new RegExp('/api/v1/categories'), (params) => {
       switch (params.type) {
+        case 'DELETE':
+          const { _id } = JSON.parse(params.body);
+          const deleteIndex = data.list.findIndex((item) => item._id === _id);
+          data.list.splice(deleteIndex, 1);
+          return {
+            msg: '分类删除成功',
+            data: null,
+            code: 0,
+          };
         case 'PUT':
           const body = JSON.parse(params.body);
-          const index = data.list.findIndex((item) => item._id === body._id);
-          data.list[index] = { ...data.list[index], ...body };
+          const putIndex = data.list.findIndex((item) => item._id === body._id);
+          data.list[putIndex] = { ...data.list[putIndex], ...body };
           return {
             msg: '分类修改成功',
             data: null,
@@ -51,7 +60,6 @@ setupMock({
           const { page = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
           const p = page as number;
           const ps = pageSize as number;
-
           return {
             list: data.list.slice((p - 1) * ps, p * ps),
             totalCount: 55,
