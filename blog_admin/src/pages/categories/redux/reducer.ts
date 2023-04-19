@@ -1,5 +1,12 @@
 import { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
-import { UPDATE_LIST, UPDATE_LOADING, UPDATE_PAGINATION, UPDATE_FORM_PARAMS } from './actionTypes';
+import {
+  UPDATE_LIST,
+  UPDATE_LOADING,
+  UPDATE_PAGINATION,
+  UPDATE_FORM_PARAMS,
+  TOGGLE_VISIBLE,
+  TOGGLE_CONFIRM_LOADING,
+} from './actionTypes';
 
 const initialState = {
   data: [],
@@ -12,6 +19,8 @@ const initialState = {
   },
   loading: true,
   formParams: {},
+  visible: false,
+  confirmLoading: false,
 };
 
 interface FormParams {
@@ -23,6 +32,8 @@ export interface CategoriesState {
   pagination?: PaginationProps;
   formParams?: FormParams;
   loading?: boolean;
+  visible?: false;
+  confirmLoading?: false;
 }
 
 export default function(state = initialState, action) {
@@ -54,6 +65,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         formParams: params,
+      };
+    }
+    case TOGGLE_VISIBLE: {
+      const { visible } = action.payload;
+      return {
+        ...state,
+        visible,
+      };
+    }
+    case TOGGLE_CONFIRM_LOADING: {
+      const { confirmLoading } = action.payload;
+      return {
+        ...state,
+        confirmLoading,
       };
     }
     default:

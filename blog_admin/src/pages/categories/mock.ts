@@ -20,14 +20,34 @@ const data = Mock.mock({
 setupMock({
   setup() {
     Mock.mock(new RegExp('/api/v1/categories'), (params) => {
-      const { page = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
-      const p = page as number;
-      const ps = pageSize as number;
+      switch (params.type) {
+        case 'POST':
+          const { name } = JSON.parse(params.body);
+          console.log(name);
+          const returnData = Mock.mock({
+            '_id|8': /[A-Z][a-z][-][0-9]/,
+            name,
+            articleNum: 0,
+            createTime: Random.datetime(),
+            updateTime: Random.datetime(),
+          });
+          data.list.unshift(returnData);
+          return {
+            msg: '分类添加成功',
+            code: 0,
+            data: returnData,
+          };
+        case 'GET':
+        default:
+          const { page = 1, pageSize = 10 } = qs.parseUrl(params.url).query;
+          const p = page as number;
+          const ps = pageSize as number;
 
-      return {
-        list: data.list.slice((p - 1) * ps, p * ps),
-        total: 55,
-      };
+          return {
+            list: data.list.slice((p - 1) * ps, p * ps),
+            totalCount: 55,
+          };
+      }
     });
   },
 });

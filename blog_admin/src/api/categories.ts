@@ -6,3 +6,10 @@ export async function getList(params) {
     params,
   });
 }
+export async function create(data) {
+  return request({
+    url: '/categories',
+    method: 'POST',
+    data,
+  });
+}
