@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconList, IconGift, IconStorage } from '@arco-design/web-react/icon';
+import { IconList, IconGift, IconStorage, IconTags } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
 
@@ -27,5 +27,11 @@ export const routes = [
     key: 'categories',
     icon: <IconStorage />,
     componentPath: 'categories',
+  },
+  {
+    name: 'menu.tags',
+    key: 'tags',
+    icon: <IconTags />,
+    componentPath: 'tags',
   },
 ];
