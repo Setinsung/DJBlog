@@ -38,7 +38,7 @@ const formItemLayout = {
   },
 };
 
-function CategoriesTable() {
+function TagsTable() {
   const locale = useLocale();
   // 这里这个form就存储了表单的数据
   const [form] = Form.useForm();
@@ -131,9 +131,9 @@ function CategoriesTable() {
     },
   ];
 
-  const CategoriesState = useSelector((state: ReducerState) => state.categories);
+  const TagsState = useSelector((state: ReducerState) => state.tags);
 
-  const { data, pagination, loading, formParams, visible, confirmLoading } = CategoriesState;
+  const { data, pagination, loading, formParams, visible, confirmLoading } = TagsState;
 
   useEffect(() => {
     fetchData();
@@ -292,4 +292,4 @@ function CategoriesTable() {
   );
 }
 
-export default CategoriesTable;
+export default TagsTable;
