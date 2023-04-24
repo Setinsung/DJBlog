@@ -22,6 +22,12 @@ const BlogTags = (props) => {
   }, [tags]);
 
   function addTag() {
+    // 每次添加前，先判断是否有重复的tag
+    const isRepeat = tags.some((tag) => tag.name === inputValue);
+    if (isRepeat) {
+      Message.info('标签不能重复');
+      return;
+    }
     if (inputValue) {
       const newId = tags.length ? tags[tags.length - 1].id + 1 : 1;
       tags.push({ id: newId, name: inputValue });
@@ -35,9 +41,13 @@ const BlogTags = (props) => {
   }
 
   function removeTag(id) {
-    const newTags = tags.filter((tag) => tag.id !== id);
-    setTags(newTags);
-    props.onChange && props.onChange(newTags);
+    const tagIndex = tags.findIndex((tag) => tag.id === id);
+    tags.splice(tagIndex, 1);
+    colorlist.splice(tagIndex, 1);
+    setTags([...tags]);
+    // 每次删除tag的同时，先根据id找到tag在colorlist中的位置，再删除colorlist中的颜色
+    setColorlist([...colorlist]);
+    props.onChange && props.onChange([...tags]);
   }
 
   const handleAdd = () => {
