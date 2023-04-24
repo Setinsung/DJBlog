@@ -1,5 +1,11 @@
 import React from 'react';
-import { IconList, IconGift, IconStorage, IconTags } from '@arco-design/web-react/icon';
+import {
+  IconList,
+  IconGift,
+  IconStorage,
+  IconTags,
+  IconQuestionCircle,
+} from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
 
@@ -33,5 +39,11 @@ export const routes = [
     key: 'tags',
     icon: <IconTags />,
     componentPath: 'tags',
+  },
+  {
+    name: 'menu.about',
+    key: 'about',
+    icon: <IconQuestionCircle />,
+    componentPath: 'about',
   },
 ];

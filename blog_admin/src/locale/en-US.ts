@@ -9,6 +9,7 @@ export default {
   'navbar.docs': 'Docs',
   'menu.categories': 'Categories',
   'menu.tags': 'Tags',
+  'menu.about': 'About',
   ...localeSettings,
   ...localeMessageBox,
   ...localeSearchTable,
