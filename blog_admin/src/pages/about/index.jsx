@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Breadcrumb, Card, Form, Grid, Button, Input, Link, Switch } from '@arco-design/web-react';
+import { Breadcrumb, Card, Form, Grid, Input, Link, Switch } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import BlogTags from './blog-tags';
+import Save from '../../components/Save';
 
 const FormItem = Form.Item;
 const Row = Grid.Row;
@@ -23,8 +24,8 @@ const About = () => {
       desc: '',
     });
   }, []);
-
-  const submit = async () => {
+  const onRefresh = () => {};
+  const onSave = async () => {
     // await form.validate();
     /* try {
       await form.validate();
@@ -44,49 +45,52 @@ const About = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Breadcrumb style={{ marginBottom: 20 }}>
-        <Breadcrumb.Item>关于管理</Breadcrumb.Item>
-      </Breadcrumb>
-      <Card hoverable>
-        <Form form={form} layout="vertical">
-          <Row>
-            <Col span={12}>
-              <FormItem
-                label="标签云:(1-20个)"
-                field="tags"
-                rules={[{ required: true, message: '请添加标签' }]}
-              >
-                <BlogTags max={20} />
-              </FormItem>
+    <>
+      <div className={styles.container}>
+        <Breadcrumb style={{ marginBottom: 20 }}>
+          <Breadcrumb.Item>关于管理</Breadcrumb.Item>
+        </Breadcrumb>
+        <Card hoverable>
+          <Form form={form} layout="vertical">
+            <Row>
+              <Col span={12}>
+                <FormItem
+                  label="标签云:(1-20个)"
+                  field="tags"
+                  rules={[{ required: true, message: '请添加标签' }]}
+                >
+                  <BlogTags max={20} />
+                </FormItem>
 
-              <FormItem
-                label="详细介绍"
-                field="desc"
-                rules={[
-                  { required: true, message: '请输入详细介绍' },
-                  { maxLength: 800, message: '最多输入800个字符' },
-                ]}
-              >
-                <TextArea rows={5} onChange={updateDesc} />
-              </FormItem>
-              <div className={styles['desc-tip']}>
-                还可以输入
-                <Link status="error">{RemainLength}</Link>
-                个字符
-              </div>
+                <FormItem
+                  label="详细介绍"
+                  field="desc"
+                  rules={[
+                    { required: true, message: '请输入详细介绍' },
+                    { maxLength: 800, message: '最多输入800个字符' },
+                  ]}
+                >
+                  <TextArea rows={5} onChange={updateDesc} />
+                </FormItem>
+                <div className={styles['desc-tip']}>
+                  还可以输入
+                  <Link status="error">{RemainLength}</Link>
+                  个字符
+                </div>
 
-              <FormItem label="个人简历" field="showResume" triggerPropName="checked">
-                <Switch />
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <Button onClick={submit}>获取标签</Button>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-    </div>
+                <FormItem label="个人简历" field="showResume" triggerPropName="checked">
+                  <Switch />
+                </FormItem>
+              </Col>
+              {/* <Col span={12}>
+                <Button onClick={submit}>获取标签</Button>
+              </Col> */}
+            </Row>
+          </Form>
+        </Card>
+      </div>
+      <Save time="2023-04-25 23:22:21" onRefresh={onRefresh} onSave={onSave} />
+    </>
   );
 };
 

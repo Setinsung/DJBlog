@@ -237,7 +237,7 @@ function TagsTable() {
           <div>
             {/* <DatePicker.RangePicker style={{ marginRight: 8 }} onChange={onDateChange} /> */}
             <Input.Search
-              style={{ width: 300 }}
+              style={{ position: 'fixed', zIndex: 999, width: 300, right: 0 }}
               searchButton
               placeholder="请输入标签名称"
               onSearch={onSearch}
