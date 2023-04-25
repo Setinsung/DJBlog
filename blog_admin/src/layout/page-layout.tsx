@@ -2,7 +2,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 import { Layout, Menu } from '@arco-design/web-react';
 import { IconMenuFold, IconMenuUnfold } from '@arco-design/web-react/icon';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import qs from 'query-string';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
@@ -86,11 +86,12 @@ function PageLayout() {
   const pathname = history.location.pathname;
   const currentComponent = qs.parseUrl(pathname).url.slice(1);
   const defaultSelectedKeys = [currentComponent || defaultRoute];
+  const dispatch = useDispatch();
 
   const locale = useLocale();
-  const settings = useSelector((state: ReducerState) => state.global.settings);
+  const { collapsed, settings } = useSelector((state: ReducerState) => state.global);
+  // const [collapsed, setCollapsed] = useState<boolean>(false);
 
-  const [collapsed, setCollapsed] = useState<boolean>(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>(defaultSelectedKeys);
   const loadingBarRef = useRef(null);
 
@@ -116,7 +117,11 @@ function PageLayout() {
   }
 
   function toggleCollapse() {
-    setCollapsed((collapsed) => !collapsed);
+    dispatch({
+      type: 'toggle-collapsed',
+      payload: !collapsed,
+    });
+    // setCollapsed((collapsed) => !collapsed);
   }
 
   const paddingLeft = showMenu ? { paddingLeft: menuWidth } : {};
@@ -137,7 +142,7 @@ function PageLayout() {
             className={styles.layoutSider}
             width={menuWidth}
             collapsed={collapsed}
-            onCollapse={setCollapsed}
+            onCollapse={toggleCollapse}
             trigger={null}
             collapsible
             breakpoint="xl"

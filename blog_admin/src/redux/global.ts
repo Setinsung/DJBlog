@@ -16,6 +16,7 @@ changeTheme();
 export interface GlobalState {
   theme?: string;
   settings?: typeof defaultSettings;
+  collapsed?: boolean;
   userInfo?: {
     name?: string;
     avatar?: string;
@@ -29,6 +30,7 @@ export interface GlobalState {
 const initialState: GlobalState = {
   theme: defaultTheme,
   settings: defaultSettings,
+  collapsed: false,
   userInfo: {
     name: 'whid',
     avatar: 'https://www.baidu.com/img/flexible/logo/pc/index.png',
@@ -54,6 +56,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         settings,
+      };
+    }
+    case 'toggle-collapsed': {
+      return {
+        ...state,
+        collapsed: action.payload,
       };
     }
     default:
