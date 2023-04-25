@@ -6,14 +6,14 @@ import BlogTags from './blog-tags';
 const FormItem = Form.Item;
 const Row = Grid.Row;
 const Col = Grid.Col;
-const formItemLayout = {
+/* const formItemLayout = {
   labelCol: {
     span: 6,
   },
   wrapperCol: {
     span: 18,
   },
-};
+}; */
 const About = () => {
   const [form] = Form.useForm();
   // 设置初始值
@@ -45,7 +45,7 @@ const About = () => {
         <Breadcrumb.Item>关于管理</Breadcrumb.Item>
       </Breadcrumb>
       <Card hoverable>
-        <Form form={form} {...formItemLayout}>
+        <Form form={form} layout="vertical">
           <Row>
             <Col span={12}>
               <FormItem

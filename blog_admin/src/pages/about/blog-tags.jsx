@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Input, Message } from '@arco-design/web-react';
 import { IconPlus } from '@arco-design/web-react/icon';
+import { TweenOneGroup } from 'rc-tween-one';
 import { randomColor } from '../../utils/color';
 import styles from './style/index.module.less';
 
 const BlogTags = (props) => {
-  const [tags, setTags] = useState(props.value || []);
+  const [tags, setTags] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
   // 用于存储随机颜色，使添加和删除不改变颜色
@@ -13,7 +14,7 @@ const BlogTags = (props) => {
 
   useEffect(() => {
     setTags(props.value);
-  }, [props.value]);
+  }, [props.value === undefined]);
 
   useEffect(() => {
     if (!tags || tags.length === 0 || colorlist.length) return;
@@ -51,55 +52,73 @@ const BlogTags = (props) => {
   }
 
   const handleAdd = () => {
-    if (tags && tags.length !== 0) {
-      if (tags.length < props.max) {
-        setShowInput(true);
-      } else {
-        Message.info(`标签个数不能超过${props.max}个`);
-      }
-    } else {
+    if (!tags || tags.length === 0) {
       setShowInput(true);
+      return;
     }
+    if (tags.length >= props.max) {
+      Message.info(`标签个数不能超过${props.max}个`);
+      return;
+    }
+    setShowInput(true);
   };
+
+  const tagChild = tags?.map((tag, index) => {
+    const tagElem = (
+      <Tag
+        // key={tag.id}
+        color={colorlist[index]}
+        closable
+        onClose={() => removeTag(tag.id)}
+        className={styles['tag-item']}
+      >
+        {tag.name}
+      </Tag>
+    );
+    return (
+      <div className={styles['tag-list']} key={tag.id}>
+        {tagElem}
+      </div>
+    );
+  });
 
   return (
     <div>
-      {tags?.map((tag, index) => {
-        return (
+      <TweenOneGroup
+        enter={{
+          scale: 0.7,
+          opacity: 0,
+          type: 'from',
+          duration: 200,
+        }}
+        leave={{ opacity: 0, width: 0.5, scale: 0.5, duration: 400 }}
+      >
+        {tagChild}
+
+        {showInput ? (
+          <Input
+            autoFocus
+            size="mini"
+            value={inputValue}
+            style={{ width: 84 }}
+            onPressEnter={addTag}
+            onBlur={addTag}
+            onChange={setInputValue}
+          />
+        ) : (
           <Tag
-            key={tag.id}
-            color={colorlist[index]}
-            closable
-            onClose={() => removeTag(tag.id)}
-            className={styles.tagslist}
+            icon={<IconPlus />}
+            style={{
+              backgroundColor: 'var(--color-fill-2)',
+              border: '1px dashed var(--color-fill-3)',
+              cursor: 'pointer',
+            }}
+            onClick={handleAdd}
           >
-            {tag.name}
+            添加
           </Tag>
-        );
-      })}
-      {showInput ? (
-        <Input
-          autoFocus
-          size="mini"
-          value={inputValue}
-          style={{ width: 84 }}
-          onPressEnter={addTag}
-          onBlur={addTag}
-          onChange={setInputValue}
-        />
-      ) : (
-        <Tag
-          icon={<IconPlus />}
-          style={{
-            backgroundColor: 'var(--color-fill-2)',
-            border: '1px dashed var(--color-fill-3)',
-            cursor: 'pointer',
-          }}
-          onClick={handleAdd}
-        >
-          添加
-        </Tag>
-      )}
+        )}
+      </TweenOneGroup>
     </div>
   );
 };
