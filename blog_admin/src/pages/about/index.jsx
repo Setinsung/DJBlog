@@ -1,44 +1,48 @@
 import React, { useEffect } from 'react';
-import { Breadcrumb, Card, Form, Grid, Button, Message } from '@arco-design/web-react';
+import { Breadcrumb, Card, Form, Grid, Button, Input, Link, Switch } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import BlogTags from './blog-tags';
 
 const FormItem = Form.Item;
 const Row = Grid.Row;
 const Col = Grid.Col;
-/* const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 18,
-  },
-}; */
+const { TextArea } = Input;
 const About = () => {
   const [form] = Form.useForm();
+  const [RemainLength, setRemainLength] = React.useState(800);
   // 设置初始值
   useEffect(() => {
     form.setFieldsValue({
       tags: [
         { id: 1, name: 'vue' },
         { id: 2, name: 'react' },
+        { id: 3, name: 'nodejs' },
+        { id: 4, name: 'eggjs' },
       ],
+      showResume: false,
+      desc: '',
     });
   }, []);
 
   const submit = async () => {
     // await form.validate();
-    try {
+    /* try {
       await form.validate();
     } catch (e) {
       if (e) {
         Message.error('标签为空');
         return;
       }
-    }
+    } */
+    await form.validate();
     const values = form.getFields();
     console.log(values);
   };
+
+  const updateDesc = (value) => {
+    setRemainLength(800 - value.length);
+  };
+
   return (
     <div className={styles.container}>
       <Breadcrumb style={{ marginBottom: 20 }}>
@@ -54,6 +58,26 @@ const About = () => {
                 rules={[{ required: true, message: '请添加标签' }]}
               >
                 <BlogTags max={20} />
+              </FormItem>
+
+              <FormItem
+                label="详细介绍"
+                field="desc"
+                rules={[
+                  { required: true, message: '请输入详细介绍' },
+                  { maxLength: 800, message: '最多输入800个字符' },
+                ]}
+              >
+                <TextArea rows={5} onChange={updateDesc} />
+              </FormItem>
+              <div className={styles['desc-tip']}>
+                还可以输入
+                <Link status="error">{RemainLength}</Link>
+                个字符
+              </div>
+
+              <FormItem label="个人简历" field="showResume" triggerPropName="checked">
+                <Switch />
               </FormItem>
             </Col>
             <Col span={12}>
