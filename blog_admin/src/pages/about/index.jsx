@@ -3,6 +3,7 @@ import { Breadcrumb, Card, Form, Grid, Input, Link, Switch } from '@arco-design/
 import styles from './style/index.module.less';
 import BlogTags from './blog-tags';
 import Save from '../../components/Save';
+import UploadImages from '../../components/UploadImages/index.';
 
 const FormItem = Form.Item;
 const Row = Grid.Row;
@@ -22,6 +23,14 @@ const About = () => {
       ],
       showResume: false,
       desc: '',
+      imgs: [
+        {
+          uid: '1',
+          imgUrl: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
+          link: '',
+          icon: '',
+        },
+      ],
     });
   }, []);
   const onRefresh = () => {};
@@ -53,7 +62,7 @@ const About = () => {
         <Card hoverable>
           <Form form={form} layout="vertical">
             <Row>
-              <Col span={12}>
+              <Col span={10}>
                 <FormItem
                   label="标签云:(1-20个)"
                   field="tags"
@@ -82,9 +91,15 @@ const About = () => {
                   <Switch />
                 </FormItem>
               </Col>
-              {/* <Col span={12}>
-                <Button onClick={submit}>获取标签</Button>
-              </Col> */}
+              <Col span={12} offset={2}>
+                <FormItem
+                  label="介绍图片:(1-3张)"
+                  field="imgs"
+                  rules={[{ required: true, message: '请添加介绍图片' }]}
+                >
+                  <UploadImages max={3} />
+                </FormItem>
+              </Col>
             </Row>
           </Form>
         </Card>
