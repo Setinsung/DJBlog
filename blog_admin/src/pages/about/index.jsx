@@ -23,14 +23,14 @@ const About = () => {
       ],
       showResume: false,
       desc: '',
-      imgs: [
+      /* imgs: [
         {
           uid: '1',
           imgUrl: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
           link: '',
           icon: '',
         },
-      ],
+      ], */
     });
   }, []);
   const onRefresh = () => {};

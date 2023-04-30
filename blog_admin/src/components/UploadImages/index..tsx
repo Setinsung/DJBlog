@@ -23,7 +23,7 @@ const UploadImages = (props) => {
   const initImgs: Array<Image> = [
     {
       uid: '1',
-      imgUrl: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
+      imgUrl: '',
       link: '',
       icon: '',
     },

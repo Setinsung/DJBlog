@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Progress, Upload, Input, Modal, Form } from '@arco-design/web-react';
+import { Button, Upload, Input, Modal, Form, Spin, Message } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconPlus } from '@arco-design/web-react/icon';
-import { UploadItem } from '@arco-design/web-react/es/Upload';
 import styles from './style/uploadThing.module.less';
+import { imagesType } from '../../utils/constants';
+// import { upload } from '../../api/common';
 
 const FormItem = Form.Item;
 
@@ -18,19 +19,14 @@ const UploadThing = (props) => {
     showAction,
     showAdd = true,
     showReduce = false,
-    uid,
     imgUrl,
     link,
     icon,
   } = props;
-  const [file, setFile] = useState<UploadItem>({
-    uid,
-    url: imgUrl,
-  });
-  const cs = `arco-upload-list-item${file && file.status === 'error' ? ' is-error' : ''} ${
-    styles['upload-box']
-  }`;
+  const [imageUrl, setImageUrl] = useState<string>(imgUrl || '');
+  // styles['upload-box']
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const onCancel = () => {
@@ -49,10 +45,7 @@ const UploadThing = (props) => {
   };
 
   useEffect(() => {
-    setFile({
-      uid,
-      url: imgUrl,
-    });
+    setImageUrl(imgUrl);
     form.setFieldsValue({ imgUrl });
   }, [imgUrl]);
 
@@ -70,46 +63,69 @@ const UploadThing = (props) => {
       value,
     });
   };
+  // 定义上传前的钩子
+  const beforeUpload = async (file) => {
+    const isImage = imagesType.includes(file.type);
+    if (!isImage) {
+      return Message.warning('只能上传jpg, png, jpeg, gif格式的图片');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      return Message.warning('图片大小不能超过2MB!');
+    }
+    setLoading(true);
+    setImageUrl('');
+    const formData = new FormData();
+    formData.append('file', file);
+    // const res = await upload(formData);
+    const res = [
+      {
+        hash: 'FmQ4J4',
+        key: 'tree.png',
+        url: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
+      },
+    ];
+    if (res) {
+      setImageUrl(res[0].url);
+      onChange({
+        index,
+        field: 'imgUrl',
+        value: res[0].url,
+      });
+      setLoading(false);
+    }
+    return false;
+  };
+
+  const uploadButton = (
+    <div className="arco-upload-trigger-picture">
+      <div className="arco-upload-trigger-picture-text">{loading ? <Spin /> : <IconPlus />}</div>
+    </div>
+  );
 
   return (
     <div className={styles['upload-item']}>
       {showImg && (
         <div className={styles['upload-wrapper']}>
           <Upload
-            action="/"
-            fileList={file ? [file] : []}
             showUploadList={false}
-            onChange={(_, currentFile) => {
-              setFile({
-                ...currentFile,
-                url: URL.createObjectURL(currentFile.originFile),
-              });
-            }}
-            onProgress={(currentFile) => {
-              setFile(currentFile);
-            }}
+            name="file"
+            listType="picture-card"
+            beforeUpload={beforeUpload}
           >
-            <div className={cs}>
-              {file && file.url ? (
-                <div className="arco-upload-list-item-picture custom-upload-avatar">
-                  <img src={file.url} />
-                  <div className="arco-upload-list-item-picture-mask">
-                    <IconEdit />
-                  </div>
-                  {file.status === 'uploading' && file.percent < 100 && (
-                    <Progress
-                      percent={file.percent}
-                      type="circle"
-                      size="mini"
-                      style={{
-                        position: 'absolute',
-                        left: '50%',
-                        top: '50%',
-                        transform: 'translateX(-50%) translateY(-50%)',
-                      }}
-                    />
-                  )}
+            {imageUrl ? (
+              <div className="arco-upload-list-item-picture custom-upload-avatar">
+                <img src={imageUrl} />
+                <div className="arco-upload-list-item-picture-mask">
+                  <IconEdit />
                 </div>
+              </div>
+            ) : (
+              uploadButton
+            )}
+            {/* <div className={cs}>
+              {file && file.url ? (
+                
               ) : (
                 <div className="arco-upload-trigger-picture">
                   <div className="arco-upload-trigger-picture-text">
@@ -117,7 +133,7 @@ const UploadThing = (props) => {
                   </div>
                 </div>
               )}
-            </div>
+            </div> */}
           </Upload>
           <Button
             type="primary"
