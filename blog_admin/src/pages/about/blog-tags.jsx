@@ -13,7 +13,7 @@ const BlogTags = (props) => {
   const [colorlist, setColorlist] = useState([]);
 
   useEffect(() => {
-    setTags(props.value);
+    setTags(props.value || []);
   }, [props.value === undefined]);
 
   useEffect(() => {

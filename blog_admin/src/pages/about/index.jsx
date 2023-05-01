@@ -1,56 +1,63 @@
-import React, { useEffect } from 'react';
-import { Breadcrumb, Card, Form, Grid, Input, Link, Switch } from '@arco-design/web-react';
+import React, { useEffect, useState } from 'react';
+import { Breadcrumb, Card, Form, Grid, Input, Link, Switch, Message } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import BlogTags from './blog-tags';
 import Save from '../../components/Save';
 import UploadImages from '../../components/UploadImages/index.';
+import { queryAbout, addAbout, updateAbout } from '../../api/about';
 
 const FormItem = Form.Item;
 const Row = Grid.Row;
 const Col = Grid.Col;
 const { TextArea } = Input;
+
 const About = () => {
   const [form] = Form.useForm();
   const [RemainLength, setRemainLength] = React.useState(800);
-  // 设置初始值
-  useEffect(() => {
-    form.setFieldsValue({
-      tags: [
-        { id: 1, name: 'vue' },
-        { id: 2, name: 'react' },
-        { id: 3, name: 'nodejs' },
-        { id: 4, name: 'eggjs' },
-      ],
-      showResume: false,
-      desc: '',
-      /* imgs: [
-        {
-          uid: '1',
-          imgUrl: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
-          link: '',
-          icon: '',
-        },
-      ], */
-    });
-  }, []);
-  const onRefresh = () => {};
-  const onSave = async () => {
-    // await form.validate();
-    /* try {
-      await form.validate();
-    } catch (e) {
-      if (e) {
-        Message.error('标签为空');
-        return;
-      }
-    } */
-    await form.validate();
-    const values = form.getFields();
-    console.log(values);
-  };
+  const [showTip, setShowTip] = useState(false);
+  const [time, setTime] = useState();
 
   const updateDesc = (value) => {
     setRemainLength(800 - value.length);
+  };
+
+  const loadData = async (isResresh) => {
+    const res = await queryAbout();
+    if (isResresh) {
+      Message.success('刷新成功');
+    }
+    const data = res.data;
+    if (!data) return;
+    form.setFieldsValue(data);
+    updateDesc(data.desc);
+    setTime(data.updateTime);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const onRefresh = () => {
+    loadData(true);
+  };
+  const onSave = async () => {
+    await form.validate();
+    const values = form.getFields();
+    values.imgs = values.imgs?.map((item) => {
+      return {
+        _id: item._id,
+        imgUrl: item.imgUrl,
+        link: item.link,
+      };
+    });
+    // console.log(values);
+    const func = values.id ? updateAbout : addAbout;
+    const res = await func(values);
+    if (res.data) {
+      Message.success(res.msg);
+      loadData();
+    } else {
+      Message.error('保存失败，请重试');
+    }
   };
 
   return (
@@ -79,13 +86,20 @@ const About = () => {
                     { maxLength: 800, message: '最多输入800个字符' },
                   ]}
                 >
-                  <TextArea rows={5} onChange={updateDesc} />
+                  <TextArea
+                    onFocus={() => setShowTip(true)}
+                    onBlur={() => setShowTip(false)}
+                    rows={5}
+                    onChange={updateDesc}
+                  />
                 </FormItem>
-                <div className={styles['desc-tip']}>
-                  还可以输入
-                  <Link status="error">{RemainLength}</Link>
-                  个字符
-                </div>
+                {showTip && (
+                  <div className={styles['desc-tip']}>
+                    还可以输入
+                    <Link status="error">{RemainLength}</Link>
+                    个字符
+                  </div>
+                )}
 
                 <FormItem label="个人简历" field="showResume" triggerPropName="checked">
                   <Switch />
@@ -104,7 +118,7 @@ const About = () => {
           </Form>
         </Card>
       </div>
-      <Save time="2023-04-25 23:22:21" onRefresh={onRefresh} onSave={onSave} />
+      <Save time={time} onRefresh={onRefresh} onSave={onSave} />
     </>
   );
 };
