@@ -1,5 +1,6 @@
 export default {
   'menu.welcome': 'Welcome',
+  'menu.user': 'User',
   'welcome.title.welcome': 'Welcome',
   'welcome.invite':
     'Arco Cli commands can be used to install materials from the material market, and we sincerely invite you to experience it.',

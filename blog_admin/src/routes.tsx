@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  IconList,
   IconGift,
   IconStorage,
   IconTags,
   IconQuestionCircle,
+  IconUser,
 } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
@@ -16,7 +16,7 @@ export const routes = [
     icon: <IconGift />,
     componentPath: 'welcome',
   },
-  {
+  /* {
     name: 'menu.list',
     key: 'list',
     icon: <IconList />,
@@ -27,7 +27,7 @@ export const routes = [
         componentPath: 'search-table',
       },
     ],
-  },
+  }, */
   {
     name: 'menu.categories',
     key: 'categories',
@@ -45,5 +45,11 @@ export const routes = [
     key: 'about',
     icon: <IconQuestionCircle />,
     componentPath: 'about',
+  },
+  {
+    name: 'menu.user',
+    key: 'user',
+    icon: <IconUser />,
+    componentPath: 'user',
   },
 ];

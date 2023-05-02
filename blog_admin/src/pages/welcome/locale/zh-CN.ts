@@ -1,5 +1,6 @@
 export default {
   'menu.welcome': '欢迎页',
+  'menu.user': '用户管理',
   'welcome.title.welcome': '欢迎',
   'welcome.invite': '通过 Arco Cli 命令可以安装物料市场的物料，诚邀您体验。',
   'welcome.usage': '使用方式',
