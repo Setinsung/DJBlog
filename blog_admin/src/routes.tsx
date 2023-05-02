@@ -5,6 +5,7 @@ import {
   IconTags,
   IconQuestionCircle,
   IconUser,
+  IconMessage,
 } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
@@ -51,5 +52,11 @@ export const routes = [
     key: 'user',
     icon: <IconUser />,
     componentPath: 'user',
+  },
+  {
+    name: 'menu.comment',
+    key: 'comment',
+    icon: <IconMessage />,
+    componentPath: 'comment',
   },
 ];

@@ -5,6 +5,7 @@ import categories, { CategoriesState } from '../pages/categories/redux/reducer';
 import tags, { TagsState } from '../pages/tags/redux/reducer';
 import login, { UserLoginState } from '../pages/login/redux/reducer';
 import user, { UserState } from '../pages/user/redux/reducer';
+import comment, { CommentState } from '../pages/comment/redux/reducer';
 
 export interface ReducerState {
   global: GlobalState;
@@ -13,6 +14,7 @@ export interface ReducerState {
   categories: CategoriesState;
   tags: TagsState;
   user: UserState;
+  comment: CommentState;
 }
 
 export default combineReducers({
@@ -22,4 +24,5 @@ export default combineReducers({
   categories,
   tags,
   user,
+  comment,
 });
