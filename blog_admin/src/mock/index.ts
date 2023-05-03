@@ -8,6 +8,7 @@ import '../pages/tags/mock';
 import '../pages/about/mock';
 import '../pages/user/mock';
 import '../pages/comment/mock';
+import '../pages/site/home/mock';
 
 Mock.setup({
   timeout: '200-600',

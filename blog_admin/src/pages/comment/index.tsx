@@ -40,7 +40,7 @@ function CategoriesTable() {
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
-  const [confirmLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [id, setId] = useState('');
 
   const onDelete = async (row) => {
@@ -56,15 +56,17 @@ function CategoriesTable() {
     setVisible(false);
     form.resetFields();
     setId('');
+    setConfirmLoading(false);
   };
   const onOk = async () => {
     await form.validate();
+    setConfirmLoading(true);
     const values = form.getFields();
-    // console.log(values);
     const postData = {
       id,
       ...values,
     };
+
     // console.log('postData', postData);
     const res: any = await updateCommentStatus(postData);
     // console.log(res);
