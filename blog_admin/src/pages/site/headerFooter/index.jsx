@@ -24,9 +24,9 @@ const HeaderFooter = () => {
   const [time, setTime] = useState();
   const [type, setType] = useState(0);
 
-  const loadData = async (isResresh) => {
+  const loadData = async (isRefresh) => {
     const res = await queryHeaderFooter();
-    if (isResresh) {
+    if (isRefresh) {
       Message.success('刷新成功');
     }
     const data = res.data;

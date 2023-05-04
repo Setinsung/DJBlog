@@ -21,9 +21,9 @@ const About = () => {
     setRemainLength(800 - value.length);
   };
 
-  const loadData = async (isResresh) => {
+  const loadData = async (isRefresh) => {
     const res = await queryAbout();
-    if (isResresh) {
+    if (isRefresh) {
       Message.success('刷新成功');
     }
     const data = res.data;

@@ -34,3 +34,15 @@ export const auditStatusOptions = [
     label: '未审核',
   },
 ];
+
+export const showPositions = [
+  '首页',
+  '文章',
+  '文章详情',
+  '归档',
+  '分类',
+  '分类详情',
+  '标签',
+  '标签详情',
+  '关于',
+];

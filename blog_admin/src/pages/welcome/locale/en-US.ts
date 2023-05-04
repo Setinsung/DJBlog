@@ -3,6 +3,7 @@ export default {
   'menu.user': 'User',
   'menu.comment': 'Comment',
   'menu.site.headerFooter': 'HeaderFooter',
+  'menu.site.right': 'Right',
   'menu.site': 'Site',
   'menu.site.home': 'HomeSite',
   'welcome.title.welcome': 'Welcome',

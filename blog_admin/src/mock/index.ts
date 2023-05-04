@@ -10,6 +10,7 @@ import '../pages/user/mock';
 import '../pages/comment/mock';
 import '../pages/site/home/mock';
 import '../pages/site/headerFooter/mock';
+import '../pages/site/right/mock';
 
 Mock.setup({
   timeout: '200-600',
