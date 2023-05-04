@@ -20,3 +20,24 @@ export async function updateIntroduction(data) {
     data,
   });
 }
+
+export async function queryAd() {
+  return request({
+    url: '/config/right/ad',
+  });
+}
+
+export async function addAd(data) {
+  return request({
+    url: '/config/right/ad',
+    method: 'post',
+    data,
+  });
+}
+export async function updateAd(data) {
+  return request({
+    url: '/config/right/ad',
+    method: 'put',
+    data,
+  });
+}

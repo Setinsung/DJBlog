@@ -2,6 +2,7 @@ import React from 'react';
 import { Breadcrumb, Card, Tabs } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import PersonProfile from './person-profile';
+import AdSettings from './ad-settings';
 
 const TabPane = Tabs.TabPane;
 
@@ -18,7 +19,7 @@ const HeaderFooter = () => {
               <PersonProfile />
             </TabPane>
             <TabPane key="1" title="广告设置">
-              <div>1</div>
+              <AdSettings />
             </TabPane>
             <TabPane key="2" title="推荐设置">
               <div>1</div>

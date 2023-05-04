@@ -30,7 +30,7 @@ const PersonProfile = () => {
   const onSave = async () => {
     await form.validate();
     const values = form.getFields();
-    console.log(values);
+    // console.log(values);
     const postData = values;
     postData.friendLink = postData.friendLink.map((item) => {
       return {
@@ -39,7 +39,7 @@ const PersonProfile = () => {
         _id: item._id,
       };
     });
-    console.log('postData', postData);
+    // console.log('postData', postData);
     const func = values._id ? updateIntroduction : addIntroduction;
     const res: any = await func(postData);
     if (res.data) {
