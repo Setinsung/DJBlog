@@ -2,6 +2,7 @@ export default {
   'menu.welcome': '欢迎页',
   'menu.user': '用户管理',
   'menu.comment': '评论管理',
+  'menu.site.headerFooter': '页头页脚配置',
   'menu.site.home': '首页配置',
   'menu.site': '网页配置',
   'welcome.title.welcome': '欢迎',

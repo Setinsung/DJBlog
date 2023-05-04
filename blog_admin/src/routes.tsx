@@ -8,6 +8,7 @@ import {
   IconMessage,
   IconSettings,
   IconHome,
+  IconStar,
 } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
@@ -71,6 +72,12 @@ export const routes = [
         key: 'home',
         icon: <IconHome />,
         componentPath: 'site/home',
+      },
+      {
+        name: 'menu.site.headerFooter',
+        key: 'hf',
+        icon: <IconStar />,
+        componentPath: 'site/headerFooter',
       },
     ],
   },

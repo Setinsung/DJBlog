@@ -9,6 +9,7 @@ import '../pages/about/mock';
 import '../pages/user/mock';
 import '../pages/comment/mock';
 import '../pages/site/home/mock';
+import '../pages/site/headerFooter/mock';
 
 Mock.setup({
   timeout: '200-600',

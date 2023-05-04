@@ -2,6 +2,7 @@ export default {
   'menu.welcome': 'Welcome',
   'menu.user': 'User',
   'menu.comment': 'Comment',
+  'menu.site.headerFooter': 'HeaderFooter',
   'menu.site': 'Site',
   'menu.site.home': 'HomeSite',
   'welcome.title.welcome': 'Welcome',
