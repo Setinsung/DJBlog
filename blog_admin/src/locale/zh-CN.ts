@@ -8,6 +8,7 @@ export default {
   'menu.list': '列表页',
   'navbar.docs': '文档中心',
   'menu.categories': '分类管理',
+  'menu.articles': '文章管理',
   'menu.tags': '标签管理',
   'menu.about': '关于管理',
   ...localeSettings,

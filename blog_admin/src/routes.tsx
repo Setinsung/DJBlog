@@ -10,6 +10,7 @@ import {
   IconHome,
   IconStar,
   IconNav,
+  IconBook,
 } from '@arco-design/web-react/icon';
 
 export const defaultRoute = 'welcome';
@@ -33,6 +34,12 @@ export const routes = [
       },
     ],
   }, */
+  {
+    name: 'menu.articles',
+    key: 'articles',
+    icon: <IconBook />,
+    componentPath: 'articles',
+  },
   {
     name: 'menu.categories',
     key: 'categories',

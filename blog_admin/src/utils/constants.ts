@@ -73,3 +73,25 @@ export const projects = [
     value: '音乐',
   },
 ];
+
+export const statusOptions = [
+  {
+    key: '1',
+    value: '启用',
+  },
+  {
+    key: '2',
+    value: '停用',
+  },
+];
+
+export const publishStatusOptions = [
+  {
+    key: '1',
+    value: '已发布',
+  },
+  {
+    key: '2',
+    value: '未发布',
+  },
+];

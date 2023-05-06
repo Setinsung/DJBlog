@@ -7,6 +7,7 @@ import login, { UserLoginState } from '../pages/login/redux/reducer';
 import user, { UserState } from '../pages/user/redux/reducer';
 import comment, { CommentState } from '../pages/comment/redux/reducer';
 import recommend, { RecommendState } from '../pages/site/right/redux/reducer';
+import articles, { ArticlesState } from '../pages/articles/redux/reducer';
 
 export interface ReducerState {
   global: GlobalState;
@@ -17,6 +18,7 @@ export interface ReducerState {
   user: UserState;
   comment: CommentState;
   recommend: RecommendState;
+  articles: ArticlesState;
 }
 
 export default combineReducers({
@@ -28,4 +30,5 @@ export default combineReducers({
   user,
   comment,
   recommend,
+  articles,
 });

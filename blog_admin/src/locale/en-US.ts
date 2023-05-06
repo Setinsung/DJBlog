@@ -8,6 +8,7 @@ export default {
   'menu.list': 'List',
   'navbar.docs': 'Docs',
   'menu.categories': 'Categories',
+  'menu.articles': 'Articles',
   'menu.tags': 'Tags',
   'menu.about': 'About',
   ...localeSettings,
