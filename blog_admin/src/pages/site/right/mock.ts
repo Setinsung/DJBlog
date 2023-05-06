@@ -184,17 +184,29 @@ setupMock({
       console.log('---', params);
 
       switch (params.type) {
+        case 'DELETE':
+          const delBody = JSON.parse(params.body);
+          const idx = recommendData.findIndex((item) => item._id === delBody._id);
+          recommendData.splice(idx, 1);
+          return {
+            msg: '推荐设置删除成功',
+            data: null,
+            code: 0,
+          };
         case 'PUT':
           const body = JSON.parse(params.body);
+          const index = recommendData.findIndex((item) => item._id === body._id);
+          recommendData[index] = { ...recommendData[index], ...body };
           return {
-            msg: '广告设置修改成功',
+            msg: '推荐设置修改成功',
             data: body,
             code: 0,
           };
         case 'POST':
           const postBody = JSON.parse(params.body);
+          recommendData.unshift(postBody);
           return {
-            msg: '广告设置添加成功',
+            msg: '推荐设置添加成功',
             code: 0,
             data: postBody,
           };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Breadcrumb, Card, Tabs } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import PersonProfile from './person-profile';
@@ -8,6 +8,10 @@ import RecSettings from './rec-settings';
 const TabPane = Tabs.TabPane;
 
 const HeaderFooter = () => {
+  const [key, setKey] = useState('0');
+  const onTabChange = (key) => {
+    setKey(key);
+  };
   return (
     <>
       <div className={styles.container}>
@@ -15,15 +19,15 @@ const HeaderFooter = () => {
           <Breadcrumb.Item>侧栏配置</Breadcrumb.Item>
         </Breadcrumb>
         <Card hoverable>
-          <Tabs defaultActiveTab="0">
+          <Tabs activeTab={key} onChange={onTabChange}>
             <TabPane key="0" title="个人简介">
-              <PersonProfile />
+              {key === '0' && <PersonProfile />}
             </TabPane>
             <TabPane key="1" title="广告设置">
-              <AdSettings />
+              {key === '1' && <AdSettings />}
             </TabPane>
             <TabPane key="2" title="推荐设置">
-              <RecSettings />
+              {key === '2' && <RecSettings />}
             </TabPane>
           </Tabs>
         </Card>

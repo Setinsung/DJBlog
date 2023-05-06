@@ -13,6 +13,7 @@ import {
   Avatar,
   Tooltip,
   Tag,
+  Radio,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
@@ -35,7 +36,8 @@ import {
   updateRecommend,
   removeRecommend,
 } from '../../../api/site/right';
-import { projects, showPositionsColorObj } from '../../../utils/constants';
+import { projects, showPositionsColorObj, showPositions } from '../../../utils/constants';
+import UploadImages from '../../../components/UploadImages/index.';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -59,6 +61,12 @@ function RecSettings() {
     // console.log(row);
     // console.log('update');
     dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
+    row.imgs = [
+      {
+        imgUrl: row.cover,
+        link: row.link,
+      },
+    ];
     form.setFieldsValue(row);
     setTitle('修改标签');
   };
@@ -138,11 +146,9 @@ function RecSettings() {
       dataIndex: 'showPosition',
       render: (_, record) => {
         const result = [];
-        console.log(record.showPosition);
         for (let i = 0; i < record.showPosition.length; i += 3) {
           result.push(record.showPosition.slice(i, i + 3)); // i=0 0-3 i=3 3-6
         }
-        console.log(result);
         return result.map((item, index) => {
           return (
             <div style={{ marginBottom: 10 }} key={index}>
@@ -260,7 +266,12 @@ function RecSettings() {
   const onOk = async () => {
     await form.validate();
     const data = form.getFields();
-    // console.log('data', data);
+    console.log('data', data);
+
+    if (data.imgs && data.imgs.length) {
+      data.cover = data.imgs[0].imgUrl;
+      data.link = data.imgs[0].link;
+    }
     let func = createRecommend;
     if (data._id) {
       func = updateRecommend;
@@ -282,16 +293,6 @@ function RecSettings() {
       Message.error('添加失败，请重试');
     }
   };
-
-  /* const onHandleSave = async (row) => {
-    const res: any = await updateRecommend(row);
-    if (res.code === 0) {
-      fetchData();
-      Message.success(res.msg);
-    } else {
-      Message.error('修改失败，请重试');
-    }
-  }; */
 
   return (
     <div className={styles.container}>
@@ -333,7 +334,7 @@ function RecSettings() {
         />
 
         <Modal
-          title={<div style={{ textAlign: 'left' }}>{title}</div>}
+          title={<div style={{ textAlign: 'left' }}> {title} </div>}
           visible={visible}
           onOk={onOk}
           confirmLoading={confirmLoading}
@@ -341,11 +342,58 @@ function RecSettings() {
         >
           <Form {...formItemLayout} form={form}>
             <FormItem
-              label="标签名称"
-              field="name"
-              rules={[{ required: true, message: '请输入标签名称' }]}
+              label="推荐项目"
+              field="project"
+              rules={[{ required: true, message: '请选择推荐项目' }]}
             >
-              <Input placeholder="" />
+              <Select placeholder="请选择推荐项目">
+                {projects.map((item) => (
+                  <Select.Option key={item.key} value={item.key}>
+                    {item.value}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+
+            <FormItem label="名称" field="name" rules={[{ required: true, message: '请输入名称' }]}>
+              <Input placeholder="请输入名称" />
+            </FormItem>
+
+            <FormItem
+              label="展示位置"
+              field="showPosition"
+              rules={[{ required: true, message: '请选择展示位置' }]}
+            >
+              <Select mode="multiple" placeholder="请选择展示位置">
+                {showPositions.map((option) => (
+                  <Select.Option key={option} value={option}>
+                    {option}
+                  </Select.Option>
+                ))}
+              </Select>
+            </FormItem>
+
+            <FormItem
+              label="平台"
+              field="platform"
+              rules={[{ required: true, message: '请输入平台' }]}
+            >
+              <Input placeholder="请输入平台" />
+            </FormItem>
+
+            <FormItem label="是否需要VIP" field="isVip">
+              <Radio.Group>
+                <Radio value>是</Radio>
+                <Radio value={false}>否</Radio>
+              </Radio.Group>
+            </FormItem>
+
+            <FormItem
+              label="封面/链接"
+              field="imgs"
+              rules={[{ required: true, message: '请上传封面/链接' }]}
+            >
+              <UploadImages />
             </FormItem>
           </Form>
         </Modal>
