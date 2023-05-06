@@ -3,6 +3,7 @@ import { Breadcrumb, Card, Tabs } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import PersonProfile from './person-profile';
 import AdSettings from './ad-settings';
+import RecSettings from './rec-settings';
 
 const TabPane = Tabs.TabPane;
 
@@ -22,23 +23,10 @@ const HeaderFooter = () => {
               <AdSettings />
             </TabPane>
             <TabPane key="2" title="推荐设置">
-              <div>1</div>
+              <RecSettings />
             </TabPane>
           </Tabs>
         </Card>
-        {/* <Card style={{ marginTop: 20 }} hoverable title="页脚配置">
-            <FormItem
-              labelCol={{ span: 2 }}
-              label="CopyRight"
-              field="footer.copyright"
-              rules={[{ required: true, message: '请输入copyright' }]}
-            >
-              <Input placeholder="请输入文本" />
-            </FormItem>
-            <FormItem labelCol={{ span: 2 }} label="额外信息" field="footer.extra">
-              <Input placeholder="请输入额外信息" />
-            </FormItem>
-          </Card> */}
       </div>
     </>
   );

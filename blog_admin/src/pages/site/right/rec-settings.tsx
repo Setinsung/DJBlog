@@ -3,16 +3,21 @@ import {
   Table,
   Button,
   Input,
-  Breadcrumb,
   Card,
   Modal,
   Form,
   Message,
   Popconfirm,
-  Switch,
+  Select,
+  Badge,
+  Avatar,
+  Tooltip,
+  Tag,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IconCheck, IconClose } from '@arco-design/web-react/icon';
+import dayjs from 'dayjs';
+import copy from 'copy-to-clipboard';
+import { IconLink } from '@arco-design/web-react/icon';
 import {
   TOGGLE_CONFIRM_LOADING,
   TOGGLE_VISIBLE,
@@ -21,14 +26,19 @@ import {
   UPDATE_LOADING,
   UPDATE_PAGINATION,
 } from './redux/actionTypes';
-import useLocale from '../../utils/useLocale';
-import { ReducerState } from '../../redux';
+import useLocale from '../../../utils/useLocale';
+import { ReducerState } from '../../../redux';
 import styles from './style/index.module.less';
-import { getList, create, update, remove, updateStatus } from '../../api/tags';
-import { EditableCell, EditableRow } from './edit';
+import {
+  getListRecommend,
+  createRecommend,
+  updateRecommend,
+  removeRecommend,
+} from '../../../api/site/right';
+import { projects, showPositionsColorObj } from '../../../utils/constants';
 
 const FormItem = Form.Item;
-
+const Option = Select.Option;
 const formItemLayout = {
   labelCol: {
     span: 5,
@@ -38,7 +48,7 @@ const formItemLayout = {
   },
 };
 
-function TagsTable() {
+function RecSettings() {
   const locale = useLocale();
   // 这里这个form就存储了表单的数据
   const [form] = Form.useForm();
@@ -55,7 +65,7 @@ function TagsTable() {
 
   const onDelete = async (row) => {
     // console.log(row);
-    const res: any = await remove(row);
+    const res: any = await removeRecommend(row);
     if (res.code === 0) {
       fetchData();
       Message.success(res.msg);
@@ -64,43 +74,109 @@ function TagsTable() {
     }
   };
 
+  const copyLink = (msg) => {
+    if (copy(msg)) Message.success('复制成功');
+    else Message.error('复制失败');
+  };
+
   const columns = [
     {
-      title: '标签名称',
+      title: '类别',
+      dataIndex: 'project',
+      width: 100,
+      render: (_, record) => {
+        const colorObj = {
+          1: 'purple',
+          2: 'pink',
+          3: '#52c41a',
+        };
+        const text = projects[+record.project - 1].value;
+        return <Badge dotStyle={{ background: colorObj[record.project] }} text={text} />;
+      },
+    },
+    {
+      title: '名称',
       dataIndex: 'name',
-      editable: true,
+      width: 110,
     },
     {
-      title: '文章数量',
-      dataIndex: 'articleNum',
+      title: '封面',
+      dataIndex: 'cover',
+      width: 100,
+      render: (_, record: any) => {
+        return (
+          <Avatar shape="square">
+            <img src={record.cover} />
+          </Avatar>
+        );
+      },
     },
     {
-      title: '状态',
-      dataIndex: 'status',
+      title: '链接',
+      dataIndex: 'link',
+      width: 80,
       render: (_, record) => {
         return (
-          <Switch
-            checkedIcon={<IconCheck />}
-            uncheckedIcon={<IconClose />}
-            checked={record.status}
-            onChange={(checked) => onStatusChange(checked, record)}
-          />
+          <Tooltip content={record.link}>
+            <a style={{ cursor: 'pointer' }}>
+              <IconLink onClick={() => copyLink(record.link)} />
+            </a>
+          </Tooltip>
         );
+      },
+    },
+    {
+      title: 'VIP',
+      dataIndex: 'isVip',
+      width: 80,
+      render: (_, record) => {
+        return record.isVip ? '是' : '否';
+      },
+    },
+    {
+      title: '展示位置',
+      dataIndex: 'showPosition',
+      render: (_, record) => {
+        const result = [];
+        console.log(record.showPosition);
+        for (let i = 0; i < record.showPosition.length; i += 3) {
+          result.push(record.showPosition.slice(i, i + 3)); // i=0 0-3 i=3 3-6
+        }
+        console.log(result);
+        return result.map((item, index) => {
+          return (
+            <div style={{ marginBottom: 10 }} key={index}>
+              {item.map((sub) => (
+                <Tag style={{ marginRight: 10 }} key={sub} color={showPositionsColorObj[sub]}>
+                  {sub}
+                </Tag>
+              ))}
+            </div>
+          );
+        });
       },
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
+      render: (_, record) => {
+        return dayjs(record.createTime * 1000).format('YYYY-MM-DD HH:mm:ss');
+      },
     },
     {
       title: '修改时间',
       dataIndex: 'updateTime',
+      render: (_, record) => {
+        return record.updateTime
+          ? dayjs(record.updateTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+          : '-';
+      },
     },
 
     {
       title: locale['searchTable.columns.operations'],
+      width: 140,
       dataIndex: 'operations',
-      // 这里这个record表示的是当前行的数据
       render: (_, record) => (
         <div className={styles.operations}>
           <Button
@@ -131,9 +207,9 @@ function TagsTable() {
     },
   ];
 
-  const TagsState = useSelector((state: ReducerState) => state.tags);
+  const RecommendState = useSelector((state: ReducerState) => state.recommend);
 
-  const { data, pagination, loading, formParams, visible, confirmLoading } = TagsState;
+  const { data, pagination, loading, formParams, visible, confirmLoading } = RecommendState;
 
   useEffect(() => {
     fetchData();
@@ -148,7 +224,7 @@ function TagsTable() {
         ...params,
       };
       // console.log(postData);
-      const res: any = await getList(postData);
+      const res: any = await getListRecommend(postData);
       // console.log(res);
       if (res) {
         dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
@@ -167,18 +243,13 @@ function TagsTable() {
     fetchData(current, pageSize, formParams);
   }
 
-  function onSearch(name) {
-    fetchData(1, pagination.pageSize, { name });
-  }
-  async function onStatusChange(status: boolean, row) {
-    const res: any = await updateStatus({ id: row._id, status });
-    if (res.code === 0) {
-      await fetchData();
-      Message.success(res.msg);
-    } else {
-      Message.error('修改失败，请重试');
-    }
-  }
+  /* function onSearch(name) {
+  } */
+  const onSelectChange = async (project) => {
+    console.log(project);
+    fetchData(1, pagination.pageSize, { project });
+  };
+
   const onAdd = () => {
     dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
   };
@@ -190,9 +261,9 @@ function TagsTable() {
     await form.validate();
     const data = form.getFields();
     // console.log('data', data);
-    let func = create;
+    let func = createRecommend;
     if (data._id) {
-      func = update;
+      func = updateRecommend;
     }
     dispatch({
       type: TOGGLE_CONFIRM_LOADING,
@@ -212,35 +283,44 @@ function TagsTable() {
     }
   };
 
-  const onHandleSave = async (row) => {
-    const res: any = await update(row);
+  /* const onHandleSave = async (row) => {
+    const res: any = await updateRecommend(row);
     if (res.code === 0) {
       fetchData();
       Message.success(res.msg);
     } else {
       Message.error('修改失败，请重试');
     }
-  };
+  }; */
 
   return (
     <div className={styles.container}>
-      <Breadcrumb style={{ marginBottom: 20 }}>
-        <Breadcrumb.Item>标签管理</Breadcrumb.Item>
-      </Breadcrumb>
       <Card bordered={false}>
         <div className={styles.toolbar}>
           <div>
             <Button onClick={onAdd} type="primary">
-              添加标签
+              添加推荐
             </Button>
           </div>
           <div>
-            <Input.Search
+            <Select
               style={{ width: 300 }}
-              searchButton
-              placeholder="请输入标签名称"
-              onSearch={onSearch}
-            />
+              placeholder="请选择推荐项目"
+              onChange={onSelectChange}
+              defaultValue=""
+            >
+              {[
+                {
+                  key: '',
+                  value: '全部',
+                },
+                ...projects,
+              ].map((item) => (
+                <Option key={item.key} value={item.key}>
+                  {item.value}
+                </Option>
+              ))}
+            </Select>
           </div>
         </div>
         <Table
@@ -249,23 +329,7 @@ function TagsTable() {
           onChange={onChangeTable}
           pagination={pagination}
           data={data}
-          components={{
-            body: {
-              row: EditableRow,
-              cell: EditableCell,
-            },
-          }}
-          columns={columns.map((column) =>
-            column.editable
-              ? {
-                  ...column,
-                  onCell: () => ({
-                    onHandleSave,
-                  }),
-                }
-              : column
-          )}
-          className={styles['table-demo-editable-cell']}
+          columns={columns}
         />
 
         <Modal
@@ -290,4 +354,4 @@ function TagsTable() {
   );
 }
 
-export default TagsTable;
+export default RecSettings;

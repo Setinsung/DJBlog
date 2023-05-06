@@ -41,3 +41,32 @@ export async function updateAd(data) {
     data,
   });
 }
+
+export async function getListRecommend(params) {
+  return request({
+    url: '/config/right/recommend',
+    params,
+  });
+}
+export async function createRecommend(data) {
+  return request({
+    url: '/config/right/recommend',
+    method: 'post',
+    data,
+  });
+}
+export async function updateRecommend(data) {
+  return request({
+    url: '/config/right/recommend',
+    method: 'put',
+    data,
+  });
+}
+
+export async function removeRecommend(data) {
+  return request({
+    url: '/config/right/recommend',
+    method: 'delete',
+    data,
+  });
+}
