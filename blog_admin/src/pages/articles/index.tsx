@@ -33,11 +33,18 @@ import {
   UPDATE_LOADING,
   UPDATE_PAGINATION,
 } from './redux/actionTypes';
+import history from '../../history';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList as getTagsList } from '../../api/tags';
 import { getList as getCategoriesList } from '../../api/categories';
-import { getList, remove, updateStatus, updatePublishStatus, updateCollectStatus } from '../../api/articles';
+import {
+  getList,
+  remove,
+  updateStatus,
+  updatePublishStatus,
+  updateCollectStatus,
+} from '../../api/articles';
 import { statusOptions, publishStatusOptions } from '../../utils/constants';
 
 const Row = Grid.Row;
@@ -331,7 +338,8 @@ function Articles() {
   };
 
   const onAdd = () => {
-    dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
+    // dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
+    history.push('/articles/edit');
   };
 
   const handleUpdateCollectStatus = async (isCollect) => {

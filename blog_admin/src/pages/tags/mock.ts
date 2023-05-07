@@ -9,7 +9,6 @@ const data = Mock.mock({
     {
       '_id|8': /[A-Z][a-z][-][0-9]/,
       'name|4-8': /[A-Z]/,
-      // 'articleNum|1-2': /[0-9]/,
       'articleNum|1': /[0]/,
       status: true,
       createTime: Random.datetime(),

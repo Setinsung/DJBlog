@@ -55,11 +55,13 @@ function renderRoutes(locale) {
         if (level > 1) {
           return <MenuItem key={route.key}>{titleDom}</MenuItem>;
         }
-        nodes.push(
-          <MenuItem key={route.key}>
-            <Link to={`/${route.key}`}>{titleDom}</Link>
-          </MenuItem>
-        );
+        if (!route.hide) {
+          nodes.push(
+            <MenuItem key={route.key}>
+              <Link to={`/${route.key}`}>{titleDom}</Link>
+            </MenuItem>
+          );
+        }
       }
       if (isArray(route.children) && route.children.length) {
         if (level > 1) {
@@ -167,7 +169,9 @@ function PageLayout() {
           <Content>
             <Switch>
               {flattenRoutes.map((route, index) => {
-                return <Route key={index} path={`/${route.key}`} component={route.component} />;
+                return (
+                  <Route exact key={index} path={`/${route.key}`} component={route.component} />
+                );
               })}
               <Redirect push to={`/${defaultRoute}`} />
             </Switch>

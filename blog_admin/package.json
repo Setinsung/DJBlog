@@ -61,6 +61,7 @@
     "bizcharts": "^4.1.11",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.7",
+    "for-editor": "^0.3.5",
     "lodash": "^4.17.20",
     "mockjs": "^1.1.0",
     "path-to-regexp": "^1.8.0",

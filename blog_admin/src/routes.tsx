@@ -41,6 +41,13 @@ export const routes = [
     componentPath: 'articles',
   },
   {
+    name: 'menu.articles',
+    key: 'articles/edit',
+    icon: <IconBook />,
+    componentPath: 'articles/edit',
+    hide: true,
+  },
+  {
     name: 'menu.categories',
     key: 'categories',
     icon: <IconStorage />,
