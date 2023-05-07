@@ -15,6 +15,7 @@ import {
   Badge,
   DatePicker,
   Grid,
+  Radio,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
@@ -36,7 +37,7 @@ import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList as getTagsList } from '../../api/tags';
 import { getList as getCategoriesList } from '../../api/categories';
-import { getList, remove, updateStatus, updatePublishStatus } from '../../api/articles';
+import { getList, remove, updateStatus, updatePublishStatus, updateCollectStatus } from '../../api/articles';
 import { statusOptions, publishStatusOptions } from '../../utils/constants';
 
 const Row = Grid.Row;
@@ -94,7 +95,9 @@ function Articles() {
 
   const onDelete = async (row) => {
     // console.log(row);
-    const res: any = await remove(row);
+    const res: any = await remove({
+      id: row._id,
+    });
     if (res.code === 0) {
       fetchData();
       Message.success(res.msg);
@@ -331,6 +334,18 @@ function Articles() {
     dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
   };
 
+  const handleUpdateCollectStatus = async (isCollect) => {
+    const res: any = await updateCollectStatus({
+      isCollect,
+    });
+    if (res.code === 0) {
+      Message.success(res.msg);
+      fetchData();
+    } else {
+      Message.error('一键操作失败，请重试！');
+    }
+  };
+
   const Layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -347,12 +362,15 @@ function Articles() {
             <Button onClick={onAdd} type="primary">
               添加文章
             </Button>
-            <Button.Group style={{ marginLeft: 20 }}>
-              <Button style={{ padding: '0 8px' }}>一键开启收藏</Button>
-              <Button status="danger" style={{ padding: '0 8px' }}>
-                一键关闭收藏
-              </Button>
-            </Button.Group>
+            <Radio.Group
+              onChange={handleUpdateCollectStatus}
+              type="button"
+              name="lang"
+              style={{ marginLeft: 20 }}
+            >
+              <Radio value>一键开启收藏</Radio>
+              <Radio value={false}>一键关闭收藏</Radio>
+            </Radio.Group>
           </div>
         </div>
 

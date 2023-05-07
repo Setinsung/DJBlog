@@ -43,7 +43,7 @@ const data = {
       updateTime: 1620479875,
       _id: '60967c75c4b76ef12cd14bb6',
       content: '123',
-      title: '文章标题',
+      title: '文章标题22',
       introduction: '文章简介',
       cover: 'http://img.nevergiveupt.top/5aaf7009ddf67741b0d0bc1b79470edb.jpg',
       categories: '生活',
@@ -53,6 +53,24 @@ const data = {
 
 setupMock({
   setup() {
+    Mock.mock(new RegExp('/api/v1/articles/collectStatus'), (params) => {
+      switch (params.type) {
+        case 'PUT':
+          const body = JSON.parse(params.body);
+          console.log('body', body); // isCollect
+
+          data.list.map((item) => {
+            item.isCollect = body.isCollect;
+            return item;
+          });
+          return {
+            msg: '一键操作成功',
+            data: null,
+            code: 0,
+          };
+        default:
+      }
+    });
     Mock.mock(new RegExp('/api/v1/articles/status'), (params) => {
       switch (params.type) {
         case 'PUT':
@@ -89,6 +107,15 @@ setupMock({
       console.log('---', params);
 
       switch (params.type) {
+        case 'DELETE':
+          const delBody = JSON.parse(params.body);
+          const idx = data.list.findIndex((item) => item._id === delBody.id);
+          data.list.splice(idx, 1);
+          return {
+            msg: '文章删除成功',
+            data: null,
+            code: 0,
+          };
         case 'PUT':
           const body = JSON.parse(params.body);
           return {

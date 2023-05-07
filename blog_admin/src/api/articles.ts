@@ -44,3 +44,11 @@ export async function updatePublishStatus(data) {
     data,
   });
 }
+
+export async function updateCollectStatus(data) {
+  return request({
+    url: '/articles/collectStatus',
+    method: 'put',
+    data,
+  });
+}
