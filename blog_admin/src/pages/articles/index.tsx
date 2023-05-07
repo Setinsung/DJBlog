@@ -37,6 +37,8 @@ import {
 } from './redux/actionTypes';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
+import { getList as getTagsList } from '../../api/tags';
+import { getList as getCategoriesList } from '../../api/categories';
 import { getList, create, update, remove } from '../../api/articles';
 import {
   projects,
@@ -64,6 +66,39 @@ function Articles() {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [title, setTitle] = useState('添加标签');
+  const [tagsArr, setTagsArr] = useState([]);
+  const [categoriesArr, setCategoriesArr] = useState([]);
+
+  const getTags = async () => {
+    const res: any = await getTagsList({
+      page: 1,
+      pageSize: 9999,
+    });
+    const list = res.list?.map((item) => {
+      item.key = item._id;
+      item.value = item.name;
+      return item;
+    });
+    setTagsArr(list);
+  };
+
+  const getCategories = async () => {
+    const res: any = await getCategoriesList({
+      page: 1,
+      pageSize: 9999,
+    });
+    const list = res.list?.map((item) => {
+      item.key = item._id;
+      item.value = item.name;
+      return item;
+    });
+    setCategoriesArr(list);
+  };
+
+  useEffect(() => {
+    getTags();
+    getCategories();
+  }, []);
 
   const onUpdate = async (row) => {
     // console.log(row);
@@ -263,11 +298,31 @@ function Articles() {
     fetchData(current, pageSize, formParams);
   }
 
-  /* function onSearch(name) {
-  } */
-  const onSelectChange = async (project) => {
-    console.log(project);
-    fetchData(1, pagination.pageSize, { project });
+  const onSearch = async () => {
+    const values = await form.getFields();
+    const postData = values;
+    if (postData.tags) {
+      postData.tags = postData.tags.join(',');
+    }
+    if (postData.createTime) {
+      postData.createStartTime = dayjs(postData.createTime[0]).unix();
+      postData.createEndTime = dayjs(postData.createTime[1]).unix();
+      delete postData.createTime;
+    }
+
+    if (postData.updateTime) {
+      postData.updateStartTime = dayjs(postData.updateTime[0]).unix();
+      postData.updateEndTime = dayjs(postData.updateTime[1]).unix();
+      delete postData.updateTime;
+    }
+    console.log('postData', postData);
+
+    fetchData(1, pagination.pageSize, postData);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+    fetchData();
   };
 
   const onAdd = () => {
@@ -311,6 +366,7 @@ function Articles() {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
   };
+
   return (
     <div className={styles.container}>
       <Breadcrumb style={{ marginBottom: 20 }}>
@@ -330,23 +386,33 @@ function Articles() {
             </Button.Group>
           </div>
         </div>
-        <Form {...Layout} layout="horizontal" style={{ marginBottom: 20 }}>
+
+        <Form
+          form={form}
+          initialValues={{
+            categories: '',
+            status: '0',
+            publishStatus: '0',
+          }}
+          {...Layout}
+          layout="horizontal"
+          style={{ marginBottom: 20 }}
+        >
           <Row>
             <Col span={6}>
-              {' '}
-              <Form.Item label="文章标题">
+              <Form.Item field="title" label="文章标题">
                 <Input placeholder="请输入文章标题" />
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="分类">
-                <Select placeholder="请选择分类" defaultValue="">
+              <Form.Item field="categories" label="分类">
+                <Select placeholder="请选择分类">
                   {[
                     {
                       key: '',
                       value: '全部',
                     },
-                    ...projects,
+                    ...categoriesArr,
                   ].map((item) => (
                     <Select.Option key={item.key} value={item.key}>
                       {item.value}
@@ -356,17 +422,10 @@ function Articles() {
               </Form.Item>
             </Col>
             <Col span={6}>
-              {' '}
-              <Form.Item label="标签">
-                <Select mode="multiple" placeholder="请选择标签" defaultValue="">
-                  {[
-                    {
-                      key: '',
-                      value: '全部',
-                    },
-                    ...projects,
-                  ].map((item) => (
-                    <Select.Option key={item.key} value={item.key}>
+              <Form.Item field="tags" label="标签">
+                <Select mode="multiple" placeholder="请选择标签">
+                  {tagsArr.map((item) => (
+                    <Select.Option key={item.key} value={item.value}>
                       {item.value}
                     </Select.Option>
                   ))}
@@ -374,11 +433,11 @@ function Articles() {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="文章状态">
-                <Select placeholder="请选择文章状态" defaultValue="">
+              <Form.Item field="status" label="文章状态">
+                <Select placeholder="请选择文章状态">
                   {[
                     {
-                      key: '',
+                      key: '0',
                       value: '全部',
                     },
                     ...statusOptions,
@@ -393,11 +452,11 @@ function Articles() {
           </Row>
           <Row>
             <Col span={6}>
-              <Form.Item label="发布状态">
+              <Form.Item field="publishStatus" label="发布状态">
                 <Select placeholder="请选择文章发布状态" defaultValue="">
                   {[
                     {
-                      key: '',
+                      key: '0',
                       value: '全部',
                     },
                     ...publishStatusOptions,
@@ -410,21 +469,19 @@ function Articles() {
               </Form.Item>
             </Col>
             <Col span={6}>
-              {' '}
-              <Form.Item label="创建时间">
+              <Form.Item field="createTime" label="创建时间">
                 <DatePicker.RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
               </Form.Item>
             </Col>
             <Col span={6}>
-              {' '}
-              <Form.Item label="修改时间">
+              <Form.Item field="updateTime" label="修改时间">
                 <DatePicker.RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />
               </Form.Item>
             </Col>
             <Col span={4} offset={2}>
               <Form.Item>
-                <Button>重置</Button>
-                <Button style={{ marginLeft: 20 }} type="primary">
+                <Button onClick={onReset}>重置</Button>
+                <Button onClick={onSearch} style={{ marginLeft: 20 }} type="primary">
                   搜索
                 </Button>
               </Form.Item>
@@ -441,7 +498,7 @@ function Articles() {
           columns={columns}
         />
 
-        <Modal
+        {/* <Modal
           title={<div style={{ textAlign: 'left' }}> {title} </div>}
           visible={visible}
           onOk={onOk}
@@ -504,7 +561,7 @@ function Articles() {
               <UploadImages />
             </FormItem>
           </Form>
-        </Modal>
+        </Modal> */}
       </Card>
     </div>
   );
