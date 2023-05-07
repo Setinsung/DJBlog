@@ -53,6 +53,38 @@ const data = {
 
 setupMock({
   setup() {
+    Mock.mock(new RegExp('/api/v1/articles/status'), (params) => {
+      switch (params.type) {
+        case 'PUT':
+          const body = JSON.parse(params.body);
+          console.log('body', body);
+
+          const index = data.list.findIndex((item) => item._id === body.id);
+          data.list[index] = { ...data.list[index], ...body };
+          return {
+            msg: '文章状态修改成功',
+            data: null,
+            code: 0,
+          };
+        default:
+      }
+    });
+    Mock.mock(new RegExp('/api/v1/articles/publishStatus'), (params) => {
+      switch (params.type) {
+        case 'PUT':
+          const body = JSON.parse(params.body);
+          console.log('body', body);
+
+          const index = data.list.findIndex((item) => item._id === body.id);
+          data.list[index] = { ...data.list[index], ...body };
+          return {
+            msg: '文章发布状态修改成功',
+            data: null,
+            code: 0,
+          };
+        default:
+      }
+    });
     Mock.mock(new RegExp('/api/v1/articles'), (params) => {
       console.log('---', params);
 

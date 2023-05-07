@@ -4,14 +4,12 @@ import {
   Button,
   Input,
   Card,
-  Modal,
   Form,
   Message,
   Popconfirm,
   Select,
   Avatar,
   Tag,
-  Radio,
   Breadcrumb,
   Switch,
   Badge,
@@ -28,7 +26,6 @@ import {
   IconUpload,
 } from '@arco-design/web-react/icon';
 import {
-  TOGGLE_CONFIRM_LOADING,
   TOGGLE_VISIBLE,
   UPDATE_FORM_PARAMS,
   UPDATE_LIST,
@@ -39,33 +36,15 @@ import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList as getTagsList } from '../../api/tags';
 import { getList as getCategoriesList } from '../../api/categories';
-import { getList, create, update, remove } from '../../api/articles';
-import {
-  projects,
-  showPositionsColorObj,
-  showPositions,
-  statusOptions,
-  publishStatusOptions,
-} from '../../utils/constants';
-import UploadImages from '../../components/UploadImages/index.';
+import { getList, remove, updateStatus, updatePublishStatus } from '../../api/articles';
+import { statusOptions, publishStatusOptions } from '../../utils/constants';
 
-const FormItem = Form.Item;
 const Row = Grid.Row;
 const Col = Grid.Col;
-
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 19,
-  },
-};
 
 function Articles() {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [title, setTitle] = useState('添加标签');
   const [tagsArr, setTagsArr] = useState([]);
   const [categoriesArr, setCategoriesArr] = useState([]);
 
@@ -111,7 +90,6 @@ function Articles() {
       },
     ];
     form.setFieldsValue(row);
-    setTitle('修改标签');
   };
 
   const onDelete = async (row) => {
@@ -125,14 +103,38 @@ function Articles() {
     }
   };
 
-  // 审核状态修改
-  const onStatusChange = (checked, record) => {};
+  // 文章状态修改
+  const onStatusChange = async (checked, record) => {
+    const postData = {
+      id: record._id,
+      status: checked ? 1 : 2,
+    };
+    const res: any = await updateStatus(postData);
+    if (res.code === 0) {
+      Message.success(res.msg);
+      fetchData();
+    } else {
+      Message.error('文章状态修改失败，请重试！');
+    }
+  };
 
   // 发布状态修改
-  const onChangePublishStatus = (record) => {};
+  const onChangePublishStatus = async (record) => {
+    const postData = {
+      id: record._id,
+      publishStatus: record.publishStatus === 1 ? 2 : 1,
+    };
+    const res: any = await updatePublishStatus(postData);
+    if (res.code === 0) {
+      Message.success(res.msg);
+      fetchData();
+    } else {
+      Message.error('文章状态修改失败，请重试！');
+    }
+  };
 
   // 查看
-  const onView = (record) => {};
+  const onView = () => {};
 
   const columns = [
     {
@@ -204,7 +206,7 @@ function Articles() {
     {
       title: '发布状态',
       dataIndex: 'publishStatus',
-      render: (text, record) => {
+      render: (_, record) => {
         const texts = {
           1: '已发布',
           2: '未发布',
@@ -264,7 +266,7 @@ function Articles() {
 
   const ArticlesState = useSelector((state: ReducerState) => state.articles);
 
-  const { data, pagination, loading, formParams, visible, confirmLoading } = ArticlesState;
+  const { data, pagination, loading, formParams } = ArticlesState;
 
   useEffect(() => {
     fetchData();
@@ -328,40 +330,7 @@ function Articles() {
   const onAdd = () => {
     dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
   };
-  const onCancel = () => {
-    dispatch({ type: TOGGLE_VISIBLE, payload: { visible: false } });
-    form.resetFields();
-  };
-  const onOk = async () => {
-    await form.validate();
-    const data = form.getFields();
-    console.log('data', data);
 
-    if (data.imgs && data.imgs.length) {
-      data.cover = data.imgs[0].imgUrl;
-      data.link = data.imgs[0].link;
-    }
-    let func = create;
-    if (data._id) {
-      func = update;
-    }
-    dispatch({
-      type: TOGGLE_CONFIRM_LOADING,
-      payload: { confirmLoading: true },
-    });
-    const res: any = await func(data);
-    if (res.code === 0) {
-      dispatch({
-        type: TOGGLE_CONFIRM_LOADING,
-        payload: { confirmLoading: false },
-      });
-      onCancel();
-      fetchData();
-      Message.success(res.msg);
-    } else {
-      Message.error('添加失败，请重试');
-    }
-  };
   const Layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -497,71 +466,6 @@ function Articles() {
           data={data}
           columns={columns}
         />
-
-        {/* <Modal
-          title={<div style={{ textAlign: 'left' }}> {title} </div>}
-          visible={visible}
-          onOk={onOk}
-          confirmLoading={confirmLoading}
-          onCancel={onCancel}
-        >
-          <Form {...formItemLayout} form={form}>
-            <FormItem
-              label="推荐项目"
-              field="project"
-              rules={[{ required: true, message: '请选择推荐项目' }]}
-            >
-              <Select placeholder="请选择推荐项目">
-                {projects.map((item) => (
-                  <Select.Option key={item.key} value={item.key}>
-                    {item.value}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormItem>
-
-            <FormItem label="名称" field="name" rules={[{ required: true, message: '请输入名称' }]}>
-              <Input placeholder="请输入名称" />
-            </FormItem>
-
-            <FormItem
-              label="展示位置"
-              field="showPosition"
-              rules={[{ required: true, message: '请选择展示位置' }]}
-            >
-              <Select mode="multiple" placeholder="请选择展示位置">
-                {showPositions.map((option) => (
-                  <Select.Option key={option} value={option}>
-                    {option}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormItem>
-
-            <FormItem
-              label="平台"
-              field="platform"
-              rules={[{ required: true, message: '请输入平台' }]}
-            >
-              <Input placeholder="请输入平台" />
-            </FormItem>
-
-            <FormItem label="是否需要VIP" field="isVip">
-              <Radio.Group>
-                <Radio value>是</Radio>
-                <Radio value={false}>否</Radio>
-              </Radio.Group>
-            </FormItem>
-
-            <FormItem
-              label="封面/链接"
-              field="imgs"
-              rules={[{ required: true, message: '请上传封面/链接' }]}
-            >
-              <UploadImages />
-            </FormItem>
-          </Form>
-        </Modal> */}
       </Card>
     </div>
   );
