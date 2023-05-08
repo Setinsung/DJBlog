@@ -23,4 +23,10 @@ exports.site = (config, env) => {
       ...(themeColor ? { 'arcoblue-6': themeColor } : {})
     }
   }));
+
+  config.devServer = {
+    proxy: {
+      '/api/v1': 'http://localhost:7001'
+    }
+  }
 };

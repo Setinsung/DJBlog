@@ -8,6 +8,7 @@ import {
   Dropdown,
   Menu,
   Space,
+  Message,
 } from '@arco-design/web-react';
 import { IconSunFill, IconMoonFill } from '@arco-design/web-react/icon';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +16,7 @@ import { ReducerState } from '../../redux';
 import useLocale from '../../utils/useLocale';
 import Logo from '../../assets/logo.svg';
 import history from '../../history';
+import { logout } from '../../api/login';
 
 // import MessageBox from '../MessageBox';
 
@@ -26,17 +28,17 @@ function Navbar() {
   const userInfo = useSelector((state: ReducerState) => state.login.userInfo);
   const dispatch = useDispatch();
 
-  function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userInfo');
-    history.push('/admin/login');
-  }
-
-  function onMenuItemClick(key) {
+  const onMenuItemClick = async (key) => {
     if (key === 'logout') {
-      logout();
+      const res: any = await logout();
+      if (res.code === 0) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        Message.success(res.msg);
+        history.push('/admin/login');
+      }
     }
-  }
+  };
 
   return (
     <div className={styles.navbar}>
@@ -49,12 +51,6 @@ function Navbar() {
         </Space>
       </div>
       <ul className={styles.right}>
-        {/* <li>
-          <MessageBox />
-        </li>
-        <li>
-          <a>{locale['navbar.docs']}</a>
-        </li> */}
         <li>
           <Select
             options={[

@@ -29,6 +29,12 @@ class AdminController extends Controller {
     const res = await service.admin.adminLogin(data);
     ctx.helper.success({ ctx, res });
   }
+
+  async adminLogout() {
+    const { ctx, service } = this;
+    const res = await service.admin.adminLogout();
+    ctx.helper.success({ ctx, res });
+  }
 }
 
 module.exports = AdminController;

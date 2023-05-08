@@ -37,6 +37,17 @@ class AdminService extends Service {
       msg: '登录成功',
     };
   }
+
+  async adminLogout() {
+    const { ctx } = this;
+    ctx.cookies.set('token', '', {
+      maxAge: 0,
+    });
+
+    return {
+      msg: '退出登录成功',
+    };
+  }
 }
 
 module.exports = AdminService;
