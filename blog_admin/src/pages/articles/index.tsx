@@ -27,7 +27,6 @@ import {
   IconUpload,
 } from '@arco-design/web-react/icon';
 import {
-  TOGGLE_VISIBLE,
   UPDATE_FORM_PARAMS,
   UPDATE_LIST,
   UPDATE_LOADING,
@@ -87,19 +86,6 @@ function Articles() {
     getCategories();
   }, []);
 
-  const onUpdate = async (row) => {
-    // console.log(row);
-    // console.log('update');
-    dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
-    row.imgs = [
-      {
-        imgUrl: row.cover,
-        link: row.link,
-      },
-    ];
-    form.setFieldsValue(row);
-  };
-
   const onDelete = async (row) => {
     // console.log(row);
     const res: any = await remove({
@@ -144,7 +130,13 @@ function Articles() {
   };
 
   // 查看
-  const onView = () => {};
+  const onView = (record) => {
+    console.log('record', record);
+  };
+
+  const onUpdate = async (row) => {
+    history.push(`/articles/edit?id=${row._id}`);
+  };
 
   const columns = [
     {
@@ -327,7 +319,7 @@ function Articles() {
       postData.updateEndTime = dayjs(postData.updateTime[1]).unix();
       delete postData.updateTime;
     }
-    console.log('postData', postData);
+    // console.log('postData', postData);
 
     fetchData(1, pagination.pageSize, postData);
   };
@@ -338,7 +330,6 @@ function Articles() {
   };
 
   const onAdd = () => {
-    // dispatch({ type: TOGGLE_VISIBLE, payload: { visible: true } });
     history.push('/articles/edit');
   };
 

@@ -22,6 +22,14 @@ export async function update(data) {
   });
 }
 
+export async function queryArticles(params) {
+  return request({
+    url: `/articles/edit`,
+    method: 'get',
+    params,
+  });
+}
+
 export async function remove(data) {
   return request({
     url: '/articles',

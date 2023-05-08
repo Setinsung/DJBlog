@@ -1,26 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Input,
   Breadcrumb,
   Card,
   Form,
   Grid,
-  Input,
   Switch,
   Message,
   Select,
   InputNumber,
 } from '@arco-design/web-react';
 import Editor from 'for-editor';
+import { useLocation } from 'react-router-dom';
 import styles from './style/index.module.less';
 import Save from '../../components/Save';
 import UploadImages from '../../components/UploadImages/index.';
-import { queryAbout, addAbout, updateAbout } from '../../api/about';
+import { queryArticles, create, update } from '../../api/articles';
 import { getList as getCategoriesList } from '../../api/categories';
 import { getList as getTagsList } from '../../api/tags';
-import { upload } from '../../api/common';
+// import { upload } from '../../api/common';
+import history from '../../history';
 
 const Row = Grid.Row;
 const Col = Grid.Col;
+
 const layout = {
   labelCol: {
     span: 2,
@@ -29,6 +32,7 @@ const layout = {
     span: 22,
   },
 };
+
 const formItemLayout = {
   labelCol: {
     span: 4,
@@ -40,12 +44,13 @@ const formItemLayout = {
 
 const formItemLayout2 = {
   labelCol: {
-    span: 8,
+    span: 10,
   },
   wrapperCol: {
-    span: 16,
+    span: 14,
   },
 };
+
 const Edit = () => {
   const [form] = Form.useForm();
   const [time, setTime] = useState();
@@ -53,17 +58,31 @@ const Edit = () => {
   const [tagsArr, setTagsArr] = useState([]);
 
   const editorRef = useRef(null);
+  const { search } = useLocation();
+  let id = '';
+  if (search) {
+    id = search.split('id=')[1];
+  }
 
   const loadData = async (isRefresh?: boolean) => {
-    const res: any = await queryAbout();
+    if (!id) return;
+    const res: any = await queryArticles({ id });
     if (isRefresh) {
       Message.success('刷新成功');
     }
     const data = res.data;
+
     if (!data) return;
+    console.log('data', data);
+    data.cover = [
+      {
+        imgUrl: data.cover,
+      },
+    ];
     form.setFieldsValue(data);
     setTime(data.updateTime);
   };
+
   const getTags = async () => {
     const res: any = await getTagsList({
       page: 1,
@@ -76,6 +95,7 @@ const Edit = () => {
     });
     setTagsArr(list);
   };
+
   const getCategories = async () => {
     const res: any = await getCategoriesList({
       page: 1,
@@ -88,33 +108,35 @@ const Edit = () => {
     });
     setCategoriesArr(list);
   };
+
   useEffect(() => {
-    // loadData();
     getTags();
     getCategories();
+  }, []);
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const onRefresh = () => {
     loadData(true);
   };
-  const onSave = async () => {
+
+  const onSave = async (publishStatus: number) => {
     await form.validate();
-    const values = form.getFields();
-    values.imgs = values.imgs?.map((item) => {
-      return {
-        _id: item._id,
-        imgUrl: item.imgUrl,
-        link: item.link,
-      };
-    });
-    // console.log(values);
-    const func = values.id ? updateAbout : addAbout;
+    const values = await form.getFields();
+    values.cover = values.cover[0].imgUrl;
+    values.publishStatus = publishStatus;
+    if (id) {
+      values.id = id;
+    }
+    const func = id ? update : create;
     const res: any = await func(values);
     if (res.data) {
+      history.goBack();
       Message.success(res.msg);
-      loadData();
     } else {
-      Message.error('保存失败，请重试');
+      Message.error('修改失败，请重试');
     }
   };
 
@@ -152,6 +174,7 @@ const Edit = () => {
               views: 1,
               like: 1,
               collect: 0,
+              comment: 0,
             }}
           >
             <Form.Item
@@ -161,6 +184,7 @@ const Edit = () => {
             >
               <Input placeholder="请输入文章标题" />
             </Form.Item>
+
             <Form.Item
               label="文章简介"
               field="introduction"
@@ -178,6 +202,7 @@ const Edit = () => {
             >
               <Input.TextArea rows={5} />
             </Form.Item>
+
             <Row>
               <Col span={12}>
                 <Form.Item
@@ -197,7 +222,7 @@ const Edit = () => {
                 >
                   <Select placeholder="请给文章选择分类">
                     {categoriesArr.map((item) => (
-                      <Select.Option key={item.key} value={item.key}>
+                      <Select.Option key={item.key} value={item.value}>
                         {item.value}
                       </Select.Option>
                     ))}
@@ -212,7 +237,7 @@ const Edit = () => {
                 >
                   <Select mode="multiple" placeholder="请给文章选择标签">
                     {tagsArr.map((item) => (
-                      <Select.Option key={item._id} value={item.value}>
+                      <Select.Option key={item.key} value={item.value}>
                         {item.value}
                       </Select.Option>
                     ))}
@@ -256,13 +281,28 @@ const Edit = () => {
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                    <Form.Item {...formItemLayout2} label="查看数量" field="views">
+                    <Form.Item
+                      {...formItemLayout2}
+                      label="查看数量"
+                      field="views"
+                      rules={[{ required: true, message: '请输入查看数量' }]}
+                    >
                       <InputNumber />
                     </Form.Item>
-                    <Form.Item {...formItemLayout2} label="点赞数量" field="like">
+                    <Form.Item
+                      {...formItemLayout2}
+                      label="点赞数量"
+                      field="like"
+                      rules={[{ required: true, message: '请输入点赞数量' }]}
+                    >
                       <InputNumber />
                     </Form.Item>
-                    <Form.Item {...formItemLayout2} label="收藏数量" field="collect">
+                    <Form.Item
+                      {...formItemLayout2}
+                      label="收藏数量"
+                      field="collect"
+                      rules={[{ required: true, message: '请输入收藏数量' }]}
+                    >
                       <InputNumber />
                     </Form.Item>
                   </Col>
@@ -283,7 +323,13 @@ const Edit = () => {
           </Form>
         </Card>
       </div>
-      <Save time={time} onRefresh={onRefresh} onSave={onSave} />
+      <Save
+        showBack
+        time={time}
+        onRefresh={id && onRefresh}
+        onSave={() => onSave(2)}
+        onPublish={() => onSave(1)}
+      />
     </>
   );
 };
