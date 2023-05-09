@@ -1,7 +1,13 @@
 const bcrypt = require('bcrypt');
-
+const dayjs = require('dayjs');
 
 module.exports = {
+  /** 获取当前时间戳
+   * @return {number} 时间戳
+   * */
+  moment() {
+    return dayjs().unix();
+  },
   /** 密码加密
    * @param {string} password 原始密码
    * @return {string} hash

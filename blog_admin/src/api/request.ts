@@ -11,7 +11,6 @@ export const request = (config) => {
     (config) => {
       if (config.method === 'put' || config.method === 'delete') {
         config.url = `${config.url}/${config.data._id || config.data.id}`;
-        // config.url += config.data._id || config.data.id;
       }
       return config;
     }

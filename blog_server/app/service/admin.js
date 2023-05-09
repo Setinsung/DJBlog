@@ -45,7 +45,7 @@ class AdminService extends Service {
     });
 
     return {
-      msg: '退出登录成功',
+      msg: '退出成功',
     };
   }
 }
