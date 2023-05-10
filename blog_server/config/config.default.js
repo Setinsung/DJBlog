@@ -19,7 +19,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1681261932544_2249';
 
   // add your middleware config here
-  config.middleware = [ 'auth' ];
+  config.middleware = [ 'errorhandler', 'auth' ];
   config.security = {
     csrf: false,
   };
@@ -31,9 +31,26 @@ module.exports = appInfo => {
     secret: '1qaz',
   };
   config.auth = {
-    urlWhiteList: [ '/web', '/admin/login', '/admin/logout' ],
-    whiteList: [ userConfig.userName ],
+    urlWhiteList: [ '/web', '/admin/login', '/admin/logout' ]
+      .map(item => userConfig.baseRouter + item),
+    userWhiteList: [ userConfig.userName ],
   };
+
+  config.onerror = {
+    all(err, ctx) {
+      ctx.body = 'error';
+      ctx.status = 500;
+    },
+    html(err, ctx) {
+      ctx.body = '<h3>error</h3>';
+      ctx.status = 500;
+    },
+    json(err, ctx) {
+      ctx.body = { message: 'error' };
+      ctx.status = 500;
+    },
+  };
+
   return {
     ...config,
     ...userConfig,

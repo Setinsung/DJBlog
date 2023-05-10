@@ -100,7 +100,7 @@ class TagsService extends Service {
         { $set: updateFields }
       );
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return {
         msg: '标签修改失败',
       };
@@ -140,7 +140,7 @@ class TagsService extends Service {
         }
       );
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return {
         msg: '标签状态修改失败',
       };
@@ -171,7 +171,7 @@ class TagsService extends Service {
         _id: id,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return {
         msg: '标签删除失败',
       };
