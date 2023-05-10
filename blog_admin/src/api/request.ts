@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notification } from '@arco-design/web-react';
 
 export const request = (config) => {
   const http = axios.create({
@@ -12,6 +13,8 @@ export const request = (config) => {
       if (config.method === 'put' || config.method === 'delete') {
         config.url = `${config.url}/${config.data._id || config.data.id}`;
       }
+      const token = localStorage.getItem('token');
+      config.headers.Authorization = `Bearer ${token}`;
       return config;
     }
     // (error) => {}
@@ -25,6 +28,16 @@ export const request = (config) => {
     (error) => {
       // 这里暂时打印错误信息
       console.log('error===', error.response);
+      if (error.response && error.response.status) {
+        if (error.response.status === 403) {
+          // location.href = '/403';
+          location.href = '/#/admin/login';
+          Notification.error({
+            title: '权限错误',
+            content: error.response.data.msg,
+          });
+        }
+      }
     }
   );
 

@@ -12,6 +12,7 @@
     "egg": "^3",
     "egg-jwt": "^3.1.7",
     "egg-mongoose": "^3.3.1",
+    "egg-onerror": "^2.2.0",
     "egg-scripts": "^2",
     "egg-validate": "^2.0.2"
   },

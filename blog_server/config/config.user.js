@@ -1,4 +1,4 @@
 module.exports = {
-  userName: '1q2w',
+  userName: 'admin',
   baseRouter: '/api/v1',
 };

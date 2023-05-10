@@ -19,7 +19,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1681261932544_2249';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = [ 'auth' ];
   config.security = {
     csrf: false,
   };
@@ -28,7 +28,11 @@ module.exports = appInfo => {
     options: {},
   };
   config.jwt = {
-    secret: userConfig.userName,
+    secret: '1qaz',
+  };
+  config.auth = {
+    urlWhiteList: [ '/web', '/admin/login', '/admin/logout' ],
+    whiteList: [ userConfig.userName ],
   };
   return {
     ...config,
