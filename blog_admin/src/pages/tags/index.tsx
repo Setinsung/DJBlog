@@ -13,6 +13,7 @@ import {
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IconCheck, IconClose } from '@arco-design/web-react/icon';
+import dayjs from 'dayjs';
 import {
   TOGGLE_CONFIRM_LOADING,
   TOGGLE_VISIBLE,
@@ -91,10 +92,20 @@ function TagsTable() {
     {
       title: '创建时间',
       dataIndex: 'createTime',
+      render: (_, record) => {
+        return record.createTime
+          ? dayjs(record.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+          : '-';
+      },
     },
     {
       title: '修改时间',
       dataIndex: 'updateTime',
+      render: (_, record) => {
+        return record.updateTime
+          ? dayjs(record.updateTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+          : '-';
+      },
     },
 
     {

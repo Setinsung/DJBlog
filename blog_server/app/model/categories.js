@@ -2,7 +2,7 @@ module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
 
-  const TagsSchema = new Schema(
+  const CategoriesSchema = new Schema(
     {
       name: {
         type: String,
@@ -22,16 +22,11 @@ module.exports = app => {
         type: Number,
         default: 0,
       },
-      status: {
-        type: Boolean,
-        default: true,
-      },
     },
     {
-      collection: 'tags',
+      collection: 'categories',
       versionKey: false,
     }
   );
-  // 这里的model第一个参数就是ctx.model.后面的名字
-  return mongoose.model('Tags', TagsSchema);
+  return mongoose.model('Categories', CategoriesSchema);
 };
