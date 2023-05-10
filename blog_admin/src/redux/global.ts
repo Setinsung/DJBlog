@@ -17,24 +17,24 @@ export interface GlobalState {
   theme?: string;
   settings?: typeof defaultSettings;
   collapsed?: boolean;
-  userInfo?: {
+  /* userInfo?: {
     name?: string;
     avatar?: string;
     job?: string;
     organization?: string;
     location?: string;
     email?: string;
-  };
+  }; */
 }
 
 const initialState: GlobalState = {
   theme: defaultTheme,
   settings: defaultSettings,
   collapsed: false,
-  userInfo: {
-    name: 'whid',
+  /* userInfo: {
+    name: 'admin1',
     avatar: 'https://www.baidu.com/img/flexible/logo/pc/index.png',
-  },
+  }, */
 };
 
 export default function(state = initialState, action) {

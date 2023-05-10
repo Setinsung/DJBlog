@@ -14,6 +14,22 @@ export const colors = [
   'gray',
 ];
 
+export const colors2 = [
+  '#f50',
+  '#2db7f5',
+  '#87d068',
+  '#108ee9',
+  '#f04134',
+  '#a0d911',
+  '#1890ff',
+  '#722ed1',
+  '#eb2f96',
+  '#13c2c2',
+  '#fa8c16',
+  '#52c41a',
+  '#722ed1',
+];
+
 export const imagesType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
 export const auditStatusOptions = [

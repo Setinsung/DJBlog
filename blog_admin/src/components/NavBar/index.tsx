@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Tooltip,
   Button,
@@ -17,8 +17,7 @@ import useLocale from '../../utils/useLocale';
 import Logo from '../../assets/logo.svg';
 import history from '../../history';
 import { logout } from '../../api/login';
-
-// import MessageBox from '../MessageBox';
+import { randomColor2 } from '../../utils/color';
 
 import styles from './style/index.module.less';
 
@@ -27,6 +26,18 @@ function Navbar() {
   const theme = useSelector((state: ReducerState) => state.global.theme);
   const userInfo = useSelector((state: ReducerState) => state.login.userInfo);
   const dispatch = useDispatch();
+  const [avatarColor, setAvatarColor] = useState('');
+
+  useEffect(() => {
+    const savedColor = localStorage.getItem('avatarColor');
+    if (savedColor) {
+      setAvatarColor(savedColor);
+    } else {
+      const newColor = randomColor2();
+      localStorage.setItem('avatarColor', newColor);
+      setAvatarColor(newColor);
+    }
+  }, []);
 
   const onMenuItemClick = async (key) => {
     if (key === 'logout') {
@@ -93,8 +104,14 @@ function Navbar() {
         </li>
         {userInfo && (
           <li>
-            <Avatar size={24} style={{ marginRight: 8 }}>
-              <img alt="avatar" src={userInfo.avatar} />
+            <Avatar
+              size={24}
+              style={{
+                marginRight: 8,
+                backgroundColor: avatarColor,
+              }}
+            >
+              {userInfo.name[0].toUpperCase()}
             </Avatar>
             <Dropdown
               trigger="click"

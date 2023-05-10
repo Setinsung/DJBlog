@@ -6,7 +6,7 @@ setupMock({
     Mock.XHR.prototype.withCredentials = true;
 
     // 用户信息
-    Mock.mock(new RegExp('/api/user/userInfo'), () => {
+    Mock.mock(new RegExp('/api/v1/user/info'), () => {
       return {
         name: '王立群',
         avatar:

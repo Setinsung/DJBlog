@@ -14,7 +14,9 @@ export const request = (config) => {
         config.url = `${config.url}/${config.data._id || config.data.id}`;
       }
       const token = localStorage.getItem('token');
-      config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
       return config;
     }
     // (error) => {}
@@ -35,6 +37,14 @@ export const request = (config) => {
           Notification.error({
             title: '权限错误',
             content: error.response.data.msg,
+          });
+        }
+        if (error.response.status === 401) {
+          // location.href = '/401';
+          location.href = '/#/admin/login';
+          Notification.error({
+            title: 'token错误',
+            content: 'token无效或已过期，请重新登录',
           });
         }
       }

@@ -22,18 +22,6 @@ export const routes = [
     icon: <IconGift />,
     componentPath: 'welcome',
   },
-  /* {
-    name: 'menu.list',
-    key: 'list',
-    icon: <IconList />,
-    children: [
-      {
-        name: 'menu.list.searchTable',
-        key: 'list/search-table',
-        componentPath: 'search-table',
-      },
-    ],
-  }, */
   {
     name: 'menu.articles',
     key: 'articles',

@@ -16,9 +16,6 @@ export default function(state = initialState, action) {
     case LOGIN: {
       const userInfo = {
         ...action.payload,
-        avatar:
-          'https://cdn.cdnjson.com/tvax3.sinaimg.cn//large/0072Vf1pgy1fodqp01lzvj31kw0zkb29.jpg',
-        name: action.payload.userName,
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       state.userInfo = userInfo;
