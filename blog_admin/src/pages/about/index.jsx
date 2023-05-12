@@ -28,6 +28,13 @@ const About = () => {
     }
     const data = res.data;
     if (!data) return;
+    console.log('data', data);
+    data.tags = data.tags?.map((item, index) => {
+      return {
+        id: index,
+        name: item,
+      };
+    });
     form.setFieldsValue(data);
     updateDesc(data.desc);
     setTime(data.updateTime);
@@ -44,14 +51,17 @@ const About = () => {
     const values = form.getFields();
     values.imgs = values.imgs?.map((item) => {
       return {
-        _id: item._id,
         imgUrl: item.imgUrl,
         link: item.link,
       };
     });
-    // console.log(values);
-    const func = values.id ? updateAbout : addAbout;
+    values.tags = values.tags?.map((item) => {
+      return item.name;
+    });
+    const func = values._id ? updateAbout : addAbout;
     const res = await func(values);
+    console.log('func',func);
+    console.log('values',values);
     if (res.data) {
       Message.success(res.msg);
       loadData();

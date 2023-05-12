@@ -29,7 +29,7 @@ class CategoriesController extends Controller {
       },
     };
 
-    this.categoryRule = {
+    this.createRule = {
       name: {
         type: 'string',
         min: 2,
@@ -51,7 +51,7 @@ class CategoriesController extends Controller {
   async create() {
     const { ctx, service } = this;
     const data = ctx.request.body;
-    ctx.validate(this.categoryRule, data);
+    ctx.validate(this.createRule, data);
     const res = await service.categories.create(data);
     ctx.helper.success({ ctx, res });
   }
@@ -60,7 +60,7 @@ class CategoriesController extends Controller {
     const { ctx, service } = this;
     const data = ctx.request.body;
     const id = ctx.params.id;
-    ctx.validate(this.categoryRule, data);
+    ctx.validate(this.createRule, data);
     const res = await service.categories.update({
       id,
       name: data.name,

@@ -21,9 +21,9 @@ module.exports = () => {
         ctx.throw(403, '无权限访问');
       }
       // ctx.state.user = decode._doc;
-      await next();
     } catch (err) {
       ctx.throw(401, 'token无效或过期');
     }
+    await next();
   };
 };

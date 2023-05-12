@@ -29,7 +29,7 @@ class TagsController extends Controller {
       },
     };
 
-    this.tagRule = {
+    this.createRule = {
       name: {
         type: 'string',
         min: 2,
@@ -57,7 +57,7 @@ class TagsController extends Controller {
   async create() {
     const { ctx, service } = this;
     const data = ctx.request.body;
-    ctx.validate(this.tagRule, data);
+    ctx.validate(this.createRule, data);
     const res = await service.tags.create(data);
     ctx.helper.success({ ctx, res });
   }
@@ -66,7 +66,7 @@ class TagsController extends Controller {
     const { ctx, service } = this;
     const data = ctx.request.body;
     const id = ctx.params.id;
-    ctx.validate(this.tagRule, data);
+    ctx.validate(this.createRule, data);
     const res = await service.tags.update({
       id,
       name: data.name,
