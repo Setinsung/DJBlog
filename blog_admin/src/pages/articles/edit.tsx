@@ -14,7 +14,7 @@ import Editor from 'for-editor';
 import { useLocation } from 'react-router-dom';
 import styles from './style/index.module.less';
 import Save from '../../components/Save';
-import UploadImages from '../../components/UploadImages/index.';
+import UploadImages from '../../components/UploadImages';
 import { queryArticles, create, update } from '../../api/articles';
 import { getList as getCategoriesList } from '../../api/categories';
 import { getList as getTagsList } from '../../api/tags';

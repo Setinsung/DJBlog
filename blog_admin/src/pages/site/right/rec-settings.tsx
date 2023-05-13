@@ -37,7 +37,7 @@ import {
   removeRecommend,
 } from '../../../api/site/right';
 import { projects, showPositionsColorObj, showPositions } from '../../../utils/constants';
-import UploadImages from '../../../components/UploadImages/index.';
+import UploadImages from '../../../components/UploadImages';
 
 const FormItem = Form.Item;
 const Option = Select.Option;

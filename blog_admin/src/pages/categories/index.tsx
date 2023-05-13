@@ -24,7 +24,7 @@ import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList, create, update, remove } from '../../api/categories';
-import { EditableCell, EditableRow } from './edit';
+import { EditableCell, EditableRow } from './editable';
 
 const FormItem = Form.Item;
 

@@ -11,7 +11,7 @@ import {
 } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import Save from '../../../components/Save';
-import UploadImages from '../../../components/UploadImages/index.';
+import UploadImages from '../../../components/UploadImages';
 import { queryHeaderFooter, addHeaderFooter, updateHeaderFooter } from '../../../api/site/hf';
 
 const FormItem = Form.Item;
@@ -52,10 +52,8 @@ const HeaderFooter = () => {
         ],
       });
     } else {
-      console.log('---+++++', data);
-
+      // console.log('---+++++', data);
       setType(2);
-
       form.setFieldsValue({ ...data, type: 2 });
     }
     setTime(data.updateTime);
@@ -70,13 +68,13 @@ const HeaderFooter = () => {
   const onSave = async () => {
     await form.validate();
     const values = form.getFields();
-    console.log(values);
+    // console.log(values);
     const postData = values;
     if (type === 1) {
       postData.header.logo = postData.header.logo[0].imgUrl;
     }
 
-    console.log('postData', postData);
+    // console.log('postData', postData);
     const func = values._id ? updateHeaderFooter : addHeaderFooter;
     const res = await func(postData);
     if (res.data) {

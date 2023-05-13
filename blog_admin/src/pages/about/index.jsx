@@ -3,7 +3,7 @@ import { Breadcrumb, Card, Form, Grid, Input, Link, Switch, Message } from '@arc
 import styles from './style/index.module.less';
 import BlogTags from './blog-tags';
 import Save from '../../components/Save';
-import UploadImages from '../../components/UploadImages/index.';
+import UploadImages from '../../components/UploadImages';
 import { queryAbout, addAbout, updateAbout } from '../../api/about';
 
 const FormItem = Form.Item;
@@ -28,7 +28,6 @@ const About = () => {
     }
     const data = res.data;
     if (!data) return;
-    console.log('data', data);
     data.tags = data.tags?.map((item, index) => {
       return {
         id: index,
@@ -60,8 +59,6 @@ const About = () => {
     });
     const func = values._id ? updateAbout : addAbout;
     const res = await func(values);
-    console.log('func',func);
-    console.log('values',values);
     if (res.data) {
       Message.success(res.msg);
       loadData();

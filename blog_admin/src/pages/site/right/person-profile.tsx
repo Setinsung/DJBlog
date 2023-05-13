@@ -1,6 +1,6 @@
 import { Input, Form, Grid, Select, Message } from '@arco-design/web-react';
 import React, { useEffect, useState } from 'react';
-import UploadImages from '../../../components/UploadImages/index.';
+import UploadImages from '../../../components/UploadImages';
 import Save from '../../../components/Save';
 import { queryIntroduction, addIntroduction, updateIntroduction } from '../../../api/site/right';
 import { getList } from '../../../api/tags';

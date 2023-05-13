@@ -7,7 +7,7 @@ import RecSettings from './rec-settings';
 
 const TabPane = Tabs.TabPane;
 
-const HeaderFooter = () => {
+const Right = () => {
   const [key, setKey] = useState('0');
   const onTabChange = (key) => {
     setKey(key);
@@ -36,4 +36,4 @@ const HeaderFooter = () => {
   );
 };
 
-export default HeaderFooter;
+export default Right;

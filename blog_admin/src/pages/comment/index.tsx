@@ -30,7 +30,7 @@ import { auditStatusOptions } from '../../utils/constants';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
-function CategoriesTable() {
+function CommentsTable() {
   const locale = useLocale();
   const dispatch = useDispatch();
   const [query, setQuery] = useState({
@@ -264,4 +264,4 @@ function CategoriesTable() {
   );
 }
 
-export default CategoriesTable;
+export default CommentsTable;

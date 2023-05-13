@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 import {
   UPDATE_FORM_PARAMS,
   UPDATE_LIST,
@@ -22,9 +23,8 @@ import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList, remove } from '../../api/user';
-import dayjs from 'dayjs';
 
-function CategoriesTable() {
+function UserTable() {
   const locale = useLocale();
   const dispatch = useDispatch();
   const onDelete = async (row) => {
@@ -174,4 +174,4 @@ function CategoriesTable() {
   );
 }
 
-export default CategoriesTable;
+export default UserTable;

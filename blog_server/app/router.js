@@ -22,4 +22,6 @@ module.exports = app => {
   router.resources('user', baseRouter + '/user', controller.user);
   // 网页配置 - 首页
   router.resources('home', baseRouter + '/config/home', jwt, controller.siteConfig.home);
+  // 网页配置 - 页头页脚
+  router.resources('hf', baseRouter + '/config/hf', jwt, controller.siteConfig.hf);
 };

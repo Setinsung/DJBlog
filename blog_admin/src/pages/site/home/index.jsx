@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Card, Form, Grid, Input, Link, Switch, Message } from '@arco-design/web-react';
 import styles from './style/index.module.less';
 import Save from '../../../components/Save';
-import UploadImages from '../../../components/UploadImages/index.';
+import UploadImages from '../../../components/UploadImages';
 import { queryHome, addHome, updateHome } from '../../../api/site/home';
 
 const FormItem = Form.Item;
@@ -10,7 +10,7 @@ const Row = Grid.Row;
 const Col = Grid.Col;
 const { TextArea } = Input;
 
-const About = () => {
+const Home = () => {
   const [form] = Form.useForm();
   const [RemainLength, setRemainLength] = React.useState(800);
   const [showTip, setShowTip] = useState(false);
@@ -73,7 +73,7 @@ const About = () => {
   const onSave = async () => {
     await form.validate();
     const values = form.getFields();
-    console.log(values);
+    // console.log(values);
     const postData = {
       ...values,
       archiveBgImg: values.archiveBgImg[0].imgUrl,
@@ -83,7 +83,7 @@ const About = () => {
       tagsDetailBgImg: values.tagsDetailBgImg[0].imgUrl,
       aboutBgImg: values.aboutBgImg[0].imgUrl,
     };
-    console.log('postData', postData);
+    // console.log('postData', postData);
     const func = values._id ? updateHome : addHome;
     const res = await func(postData);
     if (res.data) {
@@ -201,4 +201,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Home;
