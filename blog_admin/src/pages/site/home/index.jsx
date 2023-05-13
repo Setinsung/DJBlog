@@ -84,7 +84,7 @@ const About = () => {
       aboutBgImg: values.aboutBgImg[0].imgUrl,
     };
     console.log('postData', postData);
-    const func = values.id ? updateHome : addHome;
+    const func = values._id ? updateHome : addHome;
     const res = await func(postData);
     if (res.data) {
       Message.success(res.msg);
@@ -185,7 +185,12 @@ const About = () => {
               </Col>
             </Row>
 
-            <FormItem label="简介特效" field="effects" triggerPropName="checked">
+            <FormItem
+              label="简介特效"
+              field="effects"
+              defaultValue={false}
+              triggerPropName="checked"
+            >
               <Switch checkedText="开启" uncheckedText="关闭" />
             </FormItem>
           </Form>

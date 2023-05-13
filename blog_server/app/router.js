@@ -20,4 +20,6 @@ module.exports = app => {
   router.resources('about', baseRouter + '/about', jwt, controller.about);
   // 用户
   router.resources('user', baseRouter + '/user', controller.user);
+  // 网页配置 - 首页
+  router.resources('home', baseRouter + '/config/home', jwt, controller.siteConfig.home);
 };

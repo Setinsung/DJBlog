@@ -12,7 +12,6 @@ class UserService extends Service {
     if (params.nickName) {
       query.nickName = new RegExp(params.nickName, 'i');
     }
-    console.log(params);
     const countPromise = ctx.model.User.countDocuments(query);
     const tagsPromise = ctx.model.User
       .find(query)
