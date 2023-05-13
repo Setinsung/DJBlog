@@ -148,10 +148,10 @@ class CategoriesService extends Service {
         msg: '分类不存在',
       };
     }
-    const tag = await ctx.model.Categories.findOne({
+    const delItem = await ctx.model.Categories.findOne({
       _id: id,
     });
-    if (!tag) {
+    if (!delItem) {
       return {
         msg: '分类不存在',
       };

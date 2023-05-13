@@ -22,6 +22,7 @@ import useLocale from '../../utils/useLocale';
 import { ReducerState } from '../../redux';
 import styles from './style/index.module.less';
 import { getList, remove } from '../../api/user';
+import dayjs from 'dayjs';
 
 function CategoriesTable() {
   const locale = useLocale();
@@ -64,7 +65,7 @@ function CategoriesTable() {
       dataIndex: 'articleIds',
       width: 100,
       render: (_, record) => {
-        return <Tag color="orange">{record.articleIds?.length}</Tag>;
+        return <Tag color="orange">{record.articleIds ? record.articleIds.length : 0}</Tag>;
       },
     },
     {
@@ -83,6 +84,11 @@ function CategoriesTable() {
       title: '注册时间',
       dataIndex: 'registerTime',
       width: 120,
+      render: (_, record) => {
+        return record.updateTime
+          ? dayjs(record.updateTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+          : '-';
+      },
     },
     {
       title: locale['searchTable.columns.operations'],
@@ -119,10 +125,10 @@ function CategoriesTable() {
       const res: any = await getList(postData);
       // console.log(res);
       if (res) {
-        dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
+        dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({
           type: UPDATE_PAGINATION,
-          payload: { pagination: { ...pagination, current, pageSize, total: res.totalCount } },
+          payload: { pagination: { ...pagination, current, pageSize, total: res.data.totalCount } },
         });
         dispatch({ type: UPDATE_LOADING, payload: { loading: false } });
         dispatch({ type: UPDATE_FORM_PARAMS, payload: { params } });

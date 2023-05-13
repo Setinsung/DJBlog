@@ -157,10 +157,10 @@ class TagsService extends Service {
         msg: '标签不存在',
       };
     }
-    const tag = await ctx.model.Tags.findOne({
+    const delItem = await ctx.model.Tags.findOne({
       _id: id,
     });
-    if (!tag) {
+    if (!delItem) {
       return {
         msg: '标签不存在',
       };
