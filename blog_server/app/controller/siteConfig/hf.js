@@ -59,7 +59,7 @@ class HfController extends Controller {
   async create() {
     const { ctx, service } = this;
     const data = ctx.request.body;
-    console.log('data', data);
+    // console.log('data', data);
     ctx.validate(this.createRule, data);
     const res = await service.siteConfig.hf.create(data);
     ctx.helper.success({ ctx, res });

@@ -36,7 +36,6 @@ const PersonProfile = () => {
       return {
         icon: item.icon,
         link: item.link,
-        _id: item._id,
       };
     });
     // console.log('postData', postData);
@@ -54,7 +53,7 @@ const PersonProfile = () => {
       page: 1,
       pageSize: 9999,
     });
-    setTagsArr(res.list?.map((item) => item.name) || []);
+    setTagsArr(res.data.list?.map((item) => item.name) || []);
   };
 
   useEffect(() => {

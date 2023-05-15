@@ -2,35 +2,34 @@
 
 const Service = require('egg').Service;
 
-class HfService extends Service {
+class PersonalProfileService extends Service {
 
   async index() {
     const { ctx } = this;
-    const data = await ctx.model.SiteConfig.Hf.findOne({});
+    const data = await ctx.model.SiteConfig.Right.PersonalProfile.findOne({});
     return {
       data,
-      msg: '页头页脚配置信息获取成功',
+      msg: '个人简介配置信息获取成功',
     };
-
   }
 
   async create(params) {
     const { ctx } = this;
 
-    const totalCount = await ctx.model.SiteConfig.Hf.find().countDocuments();
+    const totalCount = await ctx.model.SiteConfig.Right.PersonalProfile.find().countDocuments();
     if (totalCount === 0) {
       const data = {
         ...params,
         createTime: ctx.helper.moment(),
       };
-      const res = await ctx.model.SiteConfig.Hf.create(data);
+      const res = await ctx.model.SiteConfig.Right.PersonalProfile.create(data);
       return {
-        msg: '页头页脚配置信息添加成功',
+        msg: '个人简介配置信息添加成功',
         data: res,
       };
     }
     return {
-      msg: '页头页脚配置信息已存在',
+      msg: '个人简介配置信息已存在',
     };
   }
 
@@ -38,15 +37,15 @@ class HfService extends Service {
     const { ctx, app } = this;
     if (!app.mongoose.Types.ObjectId.isValid(params.id)) {
       return {
-        msg: '页头页脚配置信息不存在',
+        msg: '个人简介配置信息不存在',
       };
     }
-    const hfInfo = await ctx.model.SiteConfig.Hf.findOne({
+    const personalProfileInfo = await ctx.model.SiteConfig.Right.PersonalProfile.findOne({
       _id: params.id,
     });
-    if (!hfInfo) {
+    if (!personalProfileInfo) {
       return {
-        msg: '页头页脚配置信息不存在',
+        msg: '个人简介配置信息不存在',
       };
     }
 
@@ -57,7 +56,7 @@ class HfService extends Service {
 
     let res;
     try {
-      res = await ctx.model.SiteConfig.Hf.findByIdAndUpdate(
+      res = await ctx.model.SiteConfig.Right.PersonalProfile.findByIdAndUpdate(
         { _id: params.id },
         { $set: updateFields },
         {
@@ -67,15 +66,15 @@ class HfService extends Service {
       );
     } catch (err) {
       return {
-        msg: '页头页脚配置信息修改失败',
+        msg: '个人简介配置信息修改失败',
       };
     }
     return {
-      msg: '页头页脚配置信息修改成功',
+      msg: '个人简介配置信息修改成功',
       data: res,
     };
   }
 
 }
 
-module.exports = HfService;
+module.exports = PersonalProfileService;

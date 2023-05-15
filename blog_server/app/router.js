@@ -24,4 +24,6 @@ module.exports = app => {
   router.resources('home', baseRouter + '/config/home', jwt, controller.siteConfig.home);
   // 网页配置 - 页头页脚
   router.resources('hf', baseRouter + '/config/hf', jwt, controller.siteConfig.hf);
+  // 网页配置 - 侧栏配置
+  router.resources('personalProfile', baseRouter + '/config/right/introduction', jwt, controller.siteConfig.right.personalProfile);
 };

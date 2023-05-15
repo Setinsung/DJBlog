@@ -6,7 +6,7 @@ class HomeService extends Service {
 
   async index() {
     const { ctx } = this;
-    const data = await ctx.model.Home.findOne({});
+    const data = await ctx.model.SiteConfig.Home.findOne({});
     return {
       data,
       msg: '首页配置信息获取成功',
@@ -17,13 +17,13 @@ class HomeService extends Service {
   async create(params) {
     const { ctx } = this;
 
-    const totalCount = await ctx.model.Home.find().countDocuments();
+    const totalCount = await ctx.model.SiteConfig.Home.find().countDocuments();
     if (totalCount === 0) {
       const data = {
         ...params,
         createTime: ctx.helper.moment(),
       };
-      const res = await ctx.model.Home.create(data);
+      const res = await ctx.model.SiteConfig.Home.create(data);
       return {
         msg: '首页配置信息添加成功',
         data: res,
@@ -42,7 +42,7 @@ class HomeService extends Service {
         msg: '首页配置信息不存在',
       };
     }
-    const homeInfo = await ctx.model.Home.findOne({
+    const homeInfo = await ctx.model.SiteConfig.Home.findOne({
       _id: params.id,
     });
     if (!homeInfo) {
@@ -59,7 +59,7 @@ class HomeService extends Service {
     let res;
     try {
       // $set表示只更新传入的字段，不传入的字段不做修改
-      res = await ctx.model.Home.findByIdAndUpdate(
+      res = await ctx.model.SiteConfig.Home.findByIdAndUpdate(
         { _id: params.id },
         { $set: updateFields },
         {
