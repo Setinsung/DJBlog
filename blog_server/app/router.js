@@ -26,4 +26,5 @@ module.exports = app => {
   router.resources('hf', baseRouter + '/config/hf', jwt, controller.siteConfig.hf);
   // 网页配置 - 侧栏配置
   router.resources('personalProfile', baseRouter + '/config/right/introduction', jwt, controller.siteConfig.right.personalProfile);
+  router.resources('ad', baseRouter + '/config/right/ad', jwt, controller.siteConfig.right.ad);
 };

@@ -34,7 +34,6 @@ const AdSettings = () => {
       return {
         imgUrl: item.imgUrl,
         link: item.link,
-        _id: item._id,
       };
     });
     // console.log('postData', postData);
