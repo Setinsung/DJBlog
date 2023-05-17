@@ -13,14 +13,14 @@ class UserService extends Service {
       query.nickName = new RegExp(params.nickName, 'i');
     }
     const countPromise = ctx.model.User.countDocuments(query);
-    const tagsPromise = ctx.model.User
+    const listPromise = ctx.model.User
       .find(query)
       .sort({ loginTime: -1 })
       .skip((page - 1) * params.pageSize)
       .limit(pageSize)
       .lean()
       .exec();
-    const [ totalCount, list ] = await Promise.all([ countPromise, tagsPromise ]);
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
     return {
       data: {
         page,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UploadThing from './uploadThing';
 
 interface Image {
-  uid?: string;
+  _id?: string;
   imgUrl?: string;
   link?: string;
   icon?: string;
@@ -22,7 +22,7 @@ const UploadImages = (props) => {
   } = props;
   const initImgs: Array<Image> = [
     {
-      uid: '1',
+      _id: '',
       imgUrl: '',
       link: '',
       icon: '',
@@ -33,7 +33,10 @@ const UploadImages = (props) => {
   });
 
   useEffect(() => {
-    if (!value) return;
+    if (!value) {
+      setImgsArr(initImgs);
+      return;
+    }
     const length = value.length;
     value.map((item, idx) => {
       if (length < max) {

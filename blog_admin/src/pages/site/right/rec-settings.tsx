@@ -68,7 +68,7 @@ function RecSettings() {
       },
     ];
     form.setFieldsValue(row);
-    setTitle('修改标签');
+    setTitle('修改推荐信息');
   };
 
   const onDelete = async (row) => {
@@ -145,21 +145,15 @@ function RecSettings() {
       title: '展示位置',
       dataIndex: 'showPosition',
       render: (_, record) => {
-        const result = [];
-        for (let i = 0; i < record.showPosition.length; i += 3) {
-          result.push(record.showPosition.slice(i, i + 3)); // i=0 0-3 i=3 3-6
-        }
-        return result.map((item, index) => {
-          return (
-            <div style={{ marginBottom: 10 }} key={index}>
-              {item.map((sub) => (
-                <Tag style={{ marginRight: 10 }} key={sub} color={showPositionsColorObj[sub]}>
-                  {sub}
-                </Tag>
-              ))}
-            </div>
-          );
-        });
+        return record.showPosition.map((sub) => (
+          <Tag
+            style={{ marginRight: 10, marginBottom: 10 }}
+            key={sub}
+            color={showPositionsColorObj[sub]}
+          >
+            {sub}
+          </Tag>
+        ));
       },
     },
     {
@@ -233,10 +227,10 @@ function RecSettings() {
       const res: any = await getListRecommend(postData);
       // console.log(res);
       if (res) {
-        dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
+        dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({
           type: UPDATE_PAGINATION,
-          payload: { pagination: { ...pagination, current, pageSize, total: res.totalCount } },
+          payload: { pagination: { ...pagination, current, pageSize, total: res.data.totalCount } },
         });
         dispatch({ type: UPDATE_LOADING, payload: { loading: false } });
         dispatch({ type: UPDATE_FORM_PARAMS, payload: { params } });
@@ -252,7 +246,7 @@ function RecSettings() {
   /* function onSearch(name) {
   } */
   const onSelectChange = async (project) => {
-    console.log(project);
+    // console.log(project);
     fetchData(1, pagination.pageSize, { project });
   };
 
@@ -266,7 +260,7 @@ function RecSettings() {
   const onOk = async () => {
     await form.validate();
     const data = form.getFields();
-    console.log('data', data);
+    // console.log('data', data);
 
     if (data.imgs && data.imgs.length) {
       data.cover = data.imgs[0].imgUrl;
@@ -290,6 +284,10 @@ function RecSettings() {
       fetchData();
       Message.success(res.msg);
     } else {
+      dispatch({
+        type: TOGGLE_CONFIRM_LOADING,
+        payload: { confirmLoading: false },
+      });
       Message.error('添加失败，请重试');
     }
   };

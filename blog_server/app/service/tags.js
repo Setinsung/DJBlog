@@ -16,7 +16,7 @@ class TagsService extends Service {
 
     const countPromise = ctx.model.Tags.countDocuments(query);
     // 使用lean()方法可以将mongoose返回的Document对象转换成普通的JS对象，减少因为mongoose对象的包装导致的性能损耗
-    const tagsPromise = ctx.model.Tags
+    const listPromise = ctx.model.Tags
       .find(query)
       .sort({ createTime: -1 })
       .skip((page - 1) * params.pageSize)
@@ -24,7 +24,7 @@ class TagsService extends Service {
       .lean()
       .exec();
     // 这里使用Promise.all()方法，并行执行两个查询，提高查询效率
-    const [ totalCount, list ] = await Promise.all([ countPromise, tagsPromise ]);
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
     return {
       data: {
         page,

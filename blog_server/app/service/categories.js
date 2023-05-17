@@ -14,14 +14,14 @@ class CategoriesService extends Service {
     }
 
     const countPromise = ctx.model.Categories.countDocuments(query);
-    const tagsPromise = ctx.model.Categories
+    const listPromise = ctx.model.Categories
       .find(query)
       .sort({ createTime: -1 })
       .skip((page - 1) * params.pageSize)
       .limit(pageSize)
       .lean()
       .exec();
-    const [ totalCount, list ] = await Promise.all([ countPromise, tagsPromise ]);
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
     return {
       data: {
         page,

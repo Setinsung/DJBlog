@@ -47,6 +47,18 @@ export const request = (config) => {
             content: 'token无效或已过期，请重新登录',
           });
         }
+        if (error.response.status === 422) {
+          const detail = error.response.data.detail;
+          const errorMsg = detail.map((item) => `Field (${item.field}) ${item.message}`).join('，');
+          Notification.error({
+            title: '参数错误',
+            content: errorMsg,
+          });
+          return {
+            code: error.response.status,
+            msg: errorMsg,
+          };
+        }
       }
     }
   );
