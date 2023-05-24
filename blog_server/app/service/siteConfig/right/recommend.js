@@ -16,7 +16,7 @@ class RecommendService extends Service {
     const listPromise = ctx.model.SiteConfig.Right.Recommend
       .find(query)
       .sort({ createTime: -1 })
-      .skip((page - 1) * params.pageSize)
+      .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean()
       .exec();

@@ -24,9 +24,8 @@ export async function update(data) {
 
 export async function queryArticles(params) {
   return request({
-    url: `/articles/edit`,
+    url: `/articles/${params.id}/edit`,
     method: 'get',
-    params,
   });
 }
 

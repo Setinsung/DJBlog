@@ -6,11 +6,11 @@ export const request = (config) => {
     baseURL: '/api/v1',
     // timeout: 5000
   });
-
+  const putall = ['/articles/collectStatus'];
   // 请求拦截，对请求参数处理
   http.interceptors.request.use(
     (config) => {
-      if (config.method === 'put' || config.method === 'delete') {
+      if ((config.method === 'put' && !putall.includes(config.url)) || config.method === 'delete') {
         config.url = `${config.url}/${config.data._id || config.data.id}`;
       }
       const token = localStorage.getItem('token');

@@ -88,7 +88,7 @@ const Edit = () => {
       page: 1,
       pageSize: 9999,
     });
-    const list = res.list?.map((item) => {
+    const list = res.data.list?.map((item) => {
       item.key = item._id;
       item.value = item.name;
       return item;
@@ -101,7 +101,7 @@ const Edit = () => {
       page: 1,
       pageSize: 9999,
     });
-    const list = res.list?.map((item) => {
+    const list = res.data.list?.map((item) => {
       item.key = item._id;
       item.value = item.name;
       return item;
@@ -127,12 +127,13 @@ const Edit = () => {
     const values = await form.getFields();
     values.cover = values.cover[0].imgUrl;
     values.publishStatus = publishStatus;
+    values.status = 1;
     if (id) {
       values.id = id;
     }
     const func = id ? update : create;
     const res: any = await func(values);
-    if (res.data) {
+    if (res.code === 0) {
       history.goBack();
       Message.success(res.msg);
     } else {

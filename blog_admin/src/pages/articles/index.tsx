@@ -16,6 +16,8 @@ import {
   DatePicker,
   Grid,
   Radio,
+  Trigger,
+  Typography,
 } from '@arco-design/web-react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
@@ -60,7 +62,7 @@ function Articles() {
       page: 1,
       pageSize: 9999,
     });
-    const list = res.list?.map((item) => {
+    const list = res.data.list?.map((item) => {
       item.key = item._id;
       item.value = item.name;
       return item;
@@ -73,7 +75,8 @@ function Articles() {
       page: 1,
       pageSize: 9999,
     });
-    const list = res.list?.map((item) => {
+    console.log('res', res);
+    const list = res.data.list?.map((item) => {
       item.key = item._id;
       item.value = item.name;
       return item;
@@ -130,8 +133,10 @@ function Articles() {
   };
 
   // 查看
-  const onView = (record) => {
-    console.log('record', record);
+  const onView = (row) => {
+    // console.log('record', record);
+    // console.log('record._id', record._id);
+    history.push(`/articles/edit?id=${row._id}`);
   };
 
   const onUpdate = async (row) => {
@@ -243,21 +248,70 @@ function Articles() {
       dataIndex: 'operations',
       render: (_, record) => (
         <div className={styles.operations}>
-          <Button onClick={() => onChangePublishStatus(record)} type="text" size="default">
-            {record.publishStatus === 1 ? <IconDownload color="red" /> : <IconUpload />}
-          </Button>
-          <Button onClick={() => onView(record)} type="text" size="default">
-            <IconEye />
-          </Button>
+          <Trigger
+            popup={() => (
+              <Typography.Paragraph className={styles['trigger-popup']}>
+                {record.publishStatus === 1 ? '下线' : '发布'}
+              </Typography.Paragraph>
+            )}
+            showArrow
+            position="top"
+            arrowProps={{ style: { background: '#333' } }}
+            trigger="hover"
+          >
+            <Button onClick={() => onChangePublishStatus(record)} type="text" size="default">
+              {record.publishStatus === 1 ? <IconDownload /> : <IconUpload />}
+            </Button>
+          </Trigger>
+
+          <Trigger
+            popup={() => (
+              <Typography.Paragraph className={styles['trigger-popup']}>查看</Typography.Paragraph>
+            )}
+            showArrow
+            position="top"
+            arrowProps={{ style: { background: '#333' } }}
+            trigger="hover"
+          >
+            <Button onClick={() => onView(record)} type="text" size="default">
+              <IconEye />
+            </Button>
+          </Trigger>
+
           {record.publishStatus === 2 && (
             <>
-              <Button onClick={() => onUpdate(record)} type="text" size="default">
-                <IconEdit />
-              </Button>
-              <Popconfirm focusLock title="确定要删除吗？" onOk={() => onDelete(record)}>
-                <Button type="text" status="danger" size="default">
-                  <IconDelete />
+              <Trigger
+                popup={() => (
+                  <Typography.Paragraph className={styles['trigger-popup']}>
+                    编辑
+                  </Typography.Paragraph>
+                )}
+                showArrow
+                position="top"
+                arrowProps={{ style: { background: '#333' } }}
+                trigger="hover"
+              >
+                <Button onClick={() => onUpdate(record)} type="text" size="default">
+                  <IconEdit />
                 </Button>
+              </Trigger>
+
+              <Popconfirm focusLock title="确定要删除吗？" onOk={() => onDelete(record)}>
+                <Trigger
+                  popup={() => (
+                    <Typography.Paragraph className={styles['trigger-popup']}>
+                      删除
+                    </Typography.Paragraph>
+                  )}
+                  showArrow
+                  position="top"
+                  arrowProps={{ style: { background: '#333' } }}
+                  trigger="hover"
+                >
+                  <Button type="text" status="danger" size="default">
+                    <IconDelete />
+                  </Button>
+                </Trigger>
               </Popconfirm>
             </>
           )}
@@ -286,10 +340,10 @@ function Articles() {
       const res: any = await getList(postData);
       // console.log(res);
       if (res) {
-        dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
+        dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({
           type: UPDATE_PAGINATION,
-          payload: { pagination: { ...pagination, current, pageSize, total: res.totalCount } },
+          payload: { pagination: { ...pagination, current, pageSize, total: res.data.totalCount } },
         });
         dispatch({ type: UPDATE_LOADING, payload: { loading: false } });
         dispatch({ type: UPDATE_FORM_PARAMS, payload: { params } });
@@ -319,7 +373,7 @@ function Articles() {
       postData.updateEndTime = dayjs(postData.updateTime[1]).unix();
       delete postData.updateTime;
     }
-    // console.log('postData', postData);
+    console.log('postData', postData);
 
     fetchData(1, pagination.pageSize, postData);
   };
@@ -376,9 +430,9 @@ function Articles() {
         <Form
           form={form}
           initialValues={{
-            categories: '',
-            status: '0',
-            publishStatus: '0',
+            categories: '全部',
+            status: 0,
+            publishStatus: 0,
           }}
           {...Layout}
           layout="horizontal"
@@ -392,15 +446,15 @@ function Articles() {
             </Col>
             <Col span={6}>
               <Form.Item field="categories" label="分类">
-                <Select placeholder="请选择分类">
+                <Select placeholder="请选择分类" defaultValue="全部">
                   {[
                     {
-                      key: '',
+                      key: '0',
                       value: '全部',
                     },
                     ...categoriesArr,
                   ].map((item) => (
-                    <Select.Option key={item.key} value={item.key}>
+                    <Select.Option key={item.key} value={item.value}>
                       {item.value}
                     </Select.Option>
                   ))}
@@ -420,10 +474,10 @@ function Articles() {
             </Col>
             <Col span={6}>
               <Form.Item field="status" label="文章状态">
-                <Select placeholder="请选择文章状态">
+                <Select placeholder="请选择文章状态" defaultValue={0}>
                   {[
                     {
-                      key: '0',
+                      key: 0,
                       value: '全部',
                     },
                     ...statusOptions,
@@ -439,10 +493,10 @@ function Articles() {
           <Row>
             <Col span={6}>
               <Form.Item field="publishStatus" label="发布状态">
-                <Select placeholder="请选择文章发布状态" defaultValue="">
+                <Select placeholder="请选择文章发布状态" defaultValue={0}>
                   {[
                     {
-                      key: '0',
+                      key: 0,
                       value: '全部',
                     },
                     ...publishStatusOptions,
@@ -466,8 +520,20 @@ function Articles() {
             </Col>
             <Col span={4} offset={2}>
               <Form.Item>
-                <Button onClick={onReset}>重置</Button>
-                <Button onClick={onSearch} style={{ marginLeft: 20 }} type="primary">
+                <Trigger
+                  popup={() => (
+                    <Typography.Paragraph className={styles['trigger-popup']}>
+                      重置
+                    </Typography.Paragraph>
+                  )}
+                  showArrow
+                  trigger="hover"
+                >
+                  <Button onClick={onReset} style={{ marginRight: 10, marginBottom: 10 }}>
+                    重置
+                  </Button>
+                </Trigger>
+                <Button onClick={onSearch} type="primary">
                   搜索
                 </Button>
               </Form.Item>

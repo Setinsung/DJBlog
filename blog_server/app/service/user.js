@@ -16,7 +16,7 @@ class UserService extends Service {
     const listPromise = ctx.model.User
       .find(query)
       .sort({ loginTime: -1 })
-      .skip((page - 1) * params.pageSize)
+      .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean()
       .exec();

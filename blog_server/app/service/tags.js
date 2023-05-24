@@ -19,7 +19,7 @@ class TagsService extends Service {
     const listPromise = ctx.model.Tags
       .find(query)
       .sort({ createTime: -1 })
-      .skip((page - 1) * params.pageSize)
+      .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean()
       .exec();
