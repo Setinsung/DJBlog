@@ -6,19 +6,25 @@ class ArticlesService extends Service {
 
   async updateCategoriesArticleNum() {
     const { ctx } = this;
-    const aggCursor = ctx.model.Categories.aggregate([
+    const pipeline = [
       {
         $lookup: {
           from: 'articles',
-          localField: 'name',
-          foreignField: 'categories',
+          let: { categoryName: '$name' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: [ '$categories', '$$categoryName' ] },
+                    { $eq: [ '$status', 1 ] },
+                    { $eq: [ '$publishStatus', 1 ] },
+                  ],
+                },
+              },
+            },
+          ],
           as: 'articles',
-        },
-      },
-      {
-        $match: {
-          'articles.status': 1,
-          'articles.publishStatus': 1,
         },
       },
       {
@@ -27,51 +33,64 @@ class ArticlesService extends Service {
           articleNum: { $size: '$articles' },
         },
       },
-    ]);
-    // for await...of是ES2018引入的新语法。它允许你迭代异步可迭代对象，因为forEach在处理异步操作时表现不佳，所以通常使用for await...of。注意由于for await...of是异步迭代器，因此需要在循环中使用await关键字等待每个异步操作完成。
-    for await (const item of aggCursor) {
-      await ctx.model.Categories.updateOne(
-        { name: item.name },
-        { $set: { articleNum: item.articleNum } }
-      );
+    ];
+    const results = await ctx.model.Categories.aggregate(pipeline).exec();
+    let bulkOps = [];
+    if (results && results.length > 0) {
+      bulkOps = results.map(result => ({
+        updateOne: {
+          filter: { name: result.name },
+          update: { articleNum: result.articleNum },
+        },
+      }));
     }
+    if (bulkOps.length > 0) { await ctx.model.Categories.bulkWrite(bulkOps, { ordered: false }); }
   }
 
   async updateTagsArticleNum() {
     const { ctx } = this;
-    // 先将所有标签的文章数量置为0
-    await ctx.model.Tags.updateMany({}, { $set: { articleNum: 0 } });
     // 使用聚合管道查询每个标签下符合条件的文章数量
     const pipeline = [
       {
-        $match: {
-          status: 1,
-          publishStatus: 1,
+        $lookup: {
+          from: 'articles',
+          let: { tagName: '$name' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $in: [ '$$tagName', '$tags' ] },
+                    { $eq: [ '$status', 1 ] },
+                    { $eq: [ '$publishStatus', 1 ] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'articles',
         },
       },
-      // $unwind: 展开数组字段 tags，使得后续的 $group 操作可以统计每个标签出现的次数。
       {
-        $unwind: '$tags',
-      },
-      {
-        $group: {
-          _id: '$tags',
-          articleNum: { $sum: 1 },
+        $project: {
+          name: 1,
+          articleNum: { $size: '$articles' },
         },
       },
     ];
-    const results = await ctx.model.Articles.aggregate(pipeline).exec();
+    const results = await ctx.model.Tags.aggregate(pipeline).exec();
     // console.log('results', results);
+    let bulkOps = [];
     if (results && results.length > 0) {
       // 构造批量更新操作数组
-      const bulkOps = results.map(result => ({
+      bulkOps = results.map(result => ({
         updateOne: {
-          filter: { name: result._id },
+          filter: { name: result.name },
           update: { articleNum: result.articleNum },
         },
       }));
       // 执行批量更新操作
-      await ctx.model.Tags.bulkWrite(bulkOps, { ordered: false });
+      if (bulkOps.length > 0) { await ctx.model.Tags.bulkWrite(bulkOps, { ordered: false }); }
     }
   }
 
@@ -82,27 +101,18 @@ class ArticlesService extends Service {
     const pageSize = parseInt(params.pageSize, 10) || 20;
     params.status = parseInt(params.status, 10) || 0;
     params.publishStatus = parseInt(params.publishStatus, 10) || 0;
-    const necessaryCon = {};
-    const fuzzyCon = {};
-    if (params.categories && params.categories !== '全部') {
-      necessaryCon.categories = params.categories;
-    }
-    if (params.tags) {
-      // vue,react
-      necessaryCon.tags = {
-        $all: params.tags.split(','), // [vue,react]
-      };
-    }
-    if (params.status !== 0) {
-      necessaryCon.status = params.status;
-    }
-    if (params.publishStatus !== 0) {
-      necessaryCon.publishStatus = params.publishStatus;
-    }
-    if (params.title) {
-      fuzzyCon.title = new RegExp(params.title, 'i');
-    }
+
+    const necessaryCon = {
+      ...(params.categories && params.categories !== '全部' && { categories: params.categories }),
+      ...(params.tags && { tags: { $all: params.tags.split(',') } }),
+      ...(params.status !== 0 && { status: params.status }),
+      ...(params.publishStatus !== 0 && { publishStatus: params.publishStatus }),
+    };
+
+    const fuzzyCon = params.title ? { title: new RegExp(params.title, 'i') } : {};
+
     const timeQuery = ctx.helper.getTimeQueryCon(params);
+
     const query = {
       $and: [
         necessaryCon,
@@ -273,10 +283,8 @@ class ArticlesService extends Service {
         msg: '文章状态修改失败',
       };
     }
-    if (params.publishStatus === 1) {
-      await this.updateCategoriesArticleNum();
-      await this.updateTagsArticleNum();
-    }
+    await this.updateCategoriesArticleNum();
+    await this.updateTagsArticleNum();
     return {
       msg: `文章${params.publishStatus === 1 ? '发布' : '取消发布'}成功`,
     };
