@@ -176,10 +176,10 @@ function CommentsTable() {
       const res: any = await getList(postData);
       console.log(res);
       if (res) {
-        dispatch({ type: UPDATE_LIST, payload: { data: res.list } });
+        dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({
           type: UPDATE_PAGINATION,
-          payload: { pagination: { ...pagination, current, pageSize, total: res.totalCount } },
+          payload: { pagination: { ...pagination, current, pageSize, total: res.data.totalCount } },
         });
         dispatch({ type: UPDATE_LOADING, payload: { loading: false } });
         dispatch({ type: UPDATE_FORM_PARAMS, payload: { params } });
@@ -253,8 +253,8 @@ function CommentsTable() {
               rules={[{ required: true, message: '请选择审核状态' }]}
             >
               <RadioGroup>
-                <Radio value="1">通过</Radio>
-                <Radio value="2">驳回</Radio>
+                <Radio value={1}>通过</Radio>
+                <Radio value={2}>驳回</Radio>
               </RadioGroup>
             </FormItem>
           </Form>

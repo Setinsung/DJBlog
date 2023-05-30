@@ -9,7 +9,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
   // 前台 /web
 
-  // 登录
+  // 登录/退出
   router.post(baseRouter + '/admin/login', controller.admin.adminLogin);
   router.post(baseRouter + '/admin/logout', controller.admin.adminLogout);
 
@@ -21,7 +21,6 @@ module.exports = app => {
   router.put(baseRouter + '/articles/status/:id', jwt, controller.articles.changeStatus);
   // 修改发布状态
   router.put(baseRouter + '/articles/publishStatus/:id', jwt, controller.articles.changePublishStatus);
-
 
   // 标签
   router.resources('tags', baseRouter + '/tags', jwt, controller.tags);
@@ -35,6 +34,9 @@ module.exports = app => {
 
   // 用户
   router.resources('user', baseRouter + '/user', controller.user);
+
+  // 评论
+  router.resources('comment', baseRouter + '/comment', jwt, controller.comments);
 
   // 网页配置 - 首页
   router.resources('home', baseRouter + '/config/home', jwt, controller.siteConfig.home);
