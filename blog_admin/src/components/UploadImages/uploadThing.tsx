@@ -3,7 +3,7 @@ import { Button, Upload, Input, Modal, Form, Spin, Message } from '@arco-design/
 import { IconDelete, IconEdit, IconPlus } from '@arco-design/web-react/icon';
 import styles from './style/uploadThing.module.less';
 import { imagesType } from '../../utils/constants';
-// import { upload } from '../../api/common';
+import { upload } from '../../api/common';
 
 const FormItem = Form.Item;
 
@@ -77,14 +77,14 @@ const UploadThing = (props) => {
     setImageUrl('');
     const formData = new FormData();
     formData.append('file', file);
-    // const res = await upload(formData);
-    const res = [
-      {
-        hash: 'FmQ4J4',
-        key: 'tree.png',
-        url: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
-      },
-    ];
+    const res = await upload(formData);
+    // const res = [
+    //   {
+    //     hash: 'FmQ4J4',
+    //     key: 'tree.png',
+    //     url: 'http://up.deskcity.org/pic_source/2f/f4/42/2ff442798331f6cc6005098766304e39.jpg',
+    //   },
+    // ];
     if (res) {
       setImageUrl(res[0].url);
       onChange({

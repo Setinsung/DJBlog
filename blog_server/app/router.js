@@ -9,6 +9,9 @@ module.exports = app => {
   router.get('/', controller.home.index);
   // 前台 /web
 
+  // 上传文件
+  router.post(baseRouter + '/upload', controller.upload.uploadFiles);
+
   // 登录/退出
   router.post(baseRouter + '/admin/login', controller.admin.adminLogin);
   router.post(baseRouter + '/admin/logout', controller.admin.adminLogout);

@@ -14,7 +14,9 @@
     "egg-mongoose": "^3.3.1",
     "egg-onerror": "^2.2.0",
     "egg-scripts": "^2",
-    "egg-validate": "^2.0.2"
+    "egg-validate": "^2.0.2",
+    "md5": "^2.3.0",
+    "qiniu": "^7.8.0"
   },
   "devDependencies": {
     "egg-bin": "^5",

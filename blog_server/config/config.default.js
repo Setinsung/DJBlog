@@ -15,9 +15,13 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  config.userName = 'admin';
+  config.baseRouter = '/api/v1';
+  config.qiniu = userConfig.qiniu;
+
+
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1681261932544_2249';
-
   // add your middleware config here
   config.middleware = [ 'errorhandler', 'auth' ];
   // config.middleware = [ 'auth' ];
@@ -25,16 +29,16 @@ module.exports = appInfo => {
     csrf: false,
   };
   config.mongoose = {
-    url: 'mongodb://127.0.0.1/blog',
+    url: userConfig.mongoDbUrl,
     options: {},
   };
   config.jwt = {
-    secret: '1qaz',
+    secret: userConfig.jwtSecret,
   };
   config.auth = {
     urlWhiteList: [ '/web', '/admin/login', '/admin/logout' ]
-      .map(item => userConfig.baseRouter + item),
-    userWhiteList: [ userConfig.userName ],
+      .map(item => config.baseRouter + item),
+    userWhiteList: [ config.userName ],
   };
 
   config.onerror = {
@@ -55,6 +59,5 @@ module.exports = appInfo => {
 
   return {
     ...config,
-    ...userConfig,
   };
 };
