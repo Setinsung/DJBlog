@@ -158,9 +158,9 @@ function TagsTable() {
         pageSize,
         ...params,
       };
-      console.log(postData);
+      // console.log(postData);
       const res: any = await getList(postData);
-      console.log(res);
+      // console.log(res);
       if (res.code === 0) {
         dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({

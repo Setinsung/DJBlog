@@ -57,7 +57,7 @@ setupMock({
       switch (params.type) {
         case 'GET':
           const { id } = qs.parseUrl(params.url).query;
-          console.log('id', id);
+          // console.log('id', id);
           const detailData = data.list.filter((item) => item._id === id);
           return {
             msg: '文章详情获取成功',
@@ -71,7 +71,7 @@ setupMock({
       switch (params.type) {
         case 'PUT':
           const body = JSON.parse(params.body);
-          console.log('body', body); // isCollect
+          // console.log('body', body); // isCollect
 
           data.list.map((item) => {
             item.isCollect = body.isCollect;
@@ -89,7 +89,7 @@ setupMock({
       switch (params.type) {
         case 'PUT':
           const body = JSON.parse(params.body);
-          console.log('body', body);
+          // console.log('body', body);
 
           const index = data.list.findIndex((item) => item._id === body.id);
           data.list[index] = { ...data.list[index], ...body };
@@ -105,7 +105,7 @@ setupMock({
       switch (params.type) {
         case 'PUT':
           const body = JSON.parse(params.body);
-          console.log('body', body);
+          // console.log('body', body);
 
           const index = data.list.findIndex((item) => item._id === body.id);
           data.list[index] = { ...data.list[index], ...body };
@@ -118,7 +118,7 @@ setupMock({
       }
     });
     Mock.mock(new RegExp('/api/v1/articles'), (params) => {
-      console.log('---', params);
+      // console.log('---', params);
 
       switch (params.type) {
         case 'DELETE':

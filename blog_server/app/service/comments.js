@@ -113,6 +113,37 @@ class CommentsService extends Service {
     };
   }
 
+  async autoAudit() {
+    const { ctx } = this;
+    const unAuditComments = await ctx.model.Comments.find({
+      auditStatus: 3,
+    });
+    if (unAuditComments.length === 0) {
+      return {
+        msg: null,
+      };
+    }
+    try {
+      await ctx.model.Comments.updateMany(
+        {
+          auditStatus: 3,
+        },
+        {
+          auditStatus: 1,
+          auditTime: ctx.helper.moment(),
+        }
+      );
+    } catch (err) {
+      // console.log(err);
+      return {
+        msg: '评论自动审核失败',
+      };
+    }
+    return {
+      msg: '评论自动审核成功',
+    };
+  }
+
   async delete(id) {
     const { ctx, app } = this;
     if (!app.mongoose.Types.ObjectId.isValid(id)) {

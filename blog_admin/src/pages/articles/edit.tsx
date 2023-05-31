@@ -73,7 +73,7 @@ const Edit = () => {
     const data = res.data;
 
     if (!data) return;
-    console.log('data', data);
+    // console.log('data', data);
     data.cover = [
       {
         imgUrl: data.cover,

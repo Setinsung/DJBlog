@@ -49,7 +49,7 @@ function Index() {
 
   useEffect(() => {
     if (!checkLogin()) {
-      console.log('checkLogin------------------------------');
+      // console.log('checkLogin------------------------------');
       history.push('/admin/login');
     }
   }, []);

@@ -126,7 +126,7 @@ const recommendData = [
 setupMock({
   setup() {
     Mock.mock(new RegExp('/api/v1/config/right/introduction'), (params) => {
-      console.log('---', params);
+      // console.log('---', params);
 
       switch (params.type) {
         case 'PUT':
@@ -153,7 +153,7 @@ setupMock({
       }
     });
     Mock.mock(new RegExp('/api/v1/config/right/ad'), (params) => {
-      console.log('---', params);
+      // console.log('---', params);
 
       switch (params.type) {
         case 'PUT':
@@ -181,7 +181,7 @@ setupMock({
     });
 
     Mock.mock(new RegExp('/api/v1/config/right/recommend'), (params) => {
-      console.log('---', params);
+      // console.log('---', params);
 
       switch (params.type) {
         case 'DELETE':

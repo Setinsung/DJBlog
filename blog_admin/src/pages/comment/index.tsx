@@ -172,9 +172,9 @@ function CommentsTable() {
         pageSize,
         ...params,
       };
-      console.log(postData);
+      // console.log(postData);
       const res: any = await getList(postData);
-      console.log(res);
+      // console.log(res);
       if (res) {
         dispatch({ type: UPDATE_LIST, payload: { data: res.data.list } });
         dispatch({

@@ -75,7 +75,7 @@ function Articles() {
       page: 1,
       pageSize: 9999,
     });
-    console.log('res', res);
+    // console.log('res', res);
     const list = res.data.list?.map((item) => {
       item.key = item._id;
       item.value = item.name;
@@ -373,7 +373,7 @@ function Articles() {
       postData.updateEndTime = dayjs(postData.updateTime[1]).unix();
       delete postData.updateTime;
     }
-    console.log('postData', postData);
+    // console.log('postData', postData);
 
     fetchData(1, pagination.pageSize, postData);
   };

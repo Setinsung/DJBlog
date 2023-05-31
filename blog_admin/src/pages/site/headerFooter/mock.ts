@@ -24,7 +24,7 @@ const data = {
 setupMock({
   setup() {
     Mock.mock(new RegExp('/api/v1/config/hf'), (params) => {
-      console.log('---', params);
+      // console.log('---', params);
 
       switch (params.type) {
         case 'PUT':
