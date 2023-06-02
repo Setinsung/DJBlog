@@ -2,52 +2,82 @@
   <div class="articles">
     <Header :light-index="1"></Header>
     <div class="content">
+      <div v-if="isPC" class="right">
+        <RightConfig showPosition="文章"></RightConfig>
+      </div>
       <div :class="[{ 'wap-left': !isPC }, 'left']">
-        <mu-card class="card" v-for="item in info.list" :key="item._id">
+        <mu-card class="card" @click="goDetail(1)">
           <div v-if="isPC" class="cover">
-            <img class="cover-img" v-lazy="item.cover">
+            <img
+              class="cover-img"
+              src="http://nevergiveupt.top/canvas/html2canvas.png"
+            />
           </div>
           <div class="card-box">
-            <div class="title">{{ item.title }}</div>
+            <div class="title">使用jspdf+canvas2html将网页保存为pdf文件</div>
             <mu-card-actions class="sub-title">
-              <mu-button class="cursor-default" flat color="info">查看（{{ item.views }}）</mu-button>
-              <mu-button class="cursor-default" flat color="error">评论（{{ item.comment }}）</mu-button>
-              <mu-button class="cursor-default" flat color="primary">点赞（{{ item.like }}）</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">{{ item.createTime }}</mu-button>
+              <mu-button class="cursor-default" flat color="info"
+                >查看(10)</mu-button
+              >
+              <mu-button class="cursor-default" flat color="error"
+                >评论(0)</mu-button
+              >
+              <mu-button class="cursor-default" flat color="primary"
+                >点赞(20)</mu-button
+              >
+              <mu-button class="cursor-default" flat color="#9e9e9e"
+                >2021-02-04 09:57</mu-button
+              >
             </mu-card-actions>
-            <mu-card-text class="text">{{ item.introduction }}</mu-card-text>
+            <mu-card-text class="text">简介</mu-card-text>
             <mu-card-actions>
-              <mu-button class="cursor-default chip" flat color="primary">
+              <mu-button flat class="chip cursor-default" color="primary">
                 <mu-icon left value="dns"></mu-icon>
-                {{ item.categories }}
+                分类
               </mu-button>
-              <mu-button v-for="sub in item.tags" :key="sub" class="cursor-default chip" flat>
+
+              <mu-button flat class="chip cursor-default">
                 <mu-icon left value="loyalty"></mu-icon>
-                {{ sub }}
+                标签1
+              </mu-button>
+              <mu-button flat class="chip cursor-default">
+                <mu-icon left value="loyalty"></mu-icon>
+                标签2
               </mu-button>
             </mu-card-actions>
           </div>
         </mu-card>
       </div>
     </div>
+
     <div v-if="info.totalCount > pageSize" class="pagination">
-      <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize"
-        :pageCount="5"></mu-pagination>
+      <mu-pagination
+        raised
+        circle
+        :total="info.totalCount"
+        :current.sync="page"
+        :pageSize.sync="pageSize"
+        :pageCount="5"
+        @change="pageChange"
+      ></mu-pagination>
     </div>
+
     <Footer></Footer>
   </div>
 </template>
-
 <script>
-import Header from "@/components/Header";
+import RightConfig from "@/components/RightConfig";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 export default {
-  name: 'articles',
+  name: "articles",
   components: {
+    RightConfig,
+    Footer,
     Header,
-    Footer
   },
+
   data() {
     return {
       page: 1,
@@ -78,7 +108,7 @@ export default {
             title: "使用jspdf+canvas2html将网页保存为pdf文件",
             updateTime: 1612416421,
             views: 9,
-            _id: "1",
+            _id: "601b546ce268db458626529c",
           },
           {
             categories: "生活",
@@ -101,33 +131,38 @@ export default {
             title: "使用jspdf+canvas2html将网页保存为pdf文件",
             updateTime: 1612416421,
             views: 9,
-            _id: "2",
+            _id: "601b546ce268db458626529c",
           },
         ],
       },
     };
   },
-}
+  mounted() {},
+  methods: {
+    goDetail(_id) {
+      this.$router.push({
+        name: "articlesDetails",
+        query: { id: _id },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .articles {
   padding-top: 64px;
-
   .content {
     padding-bottom: 0.53333rem;
     display: flex;
-
     .left {
       flex: 9;
-
       &.wap-left {
         .card {
           float: none;
           width: 90%;
         }
       }
-
       .card {
         width: 80%;
         float: left;
@@ -135,72 +170,69 @@ export default {
         display: flex;
         flex-wrap: wrap;
         border-radius: 5px;
-
         &:hover {
           animation: pulse 1s;
         }
-
-        .card-box {
-          flex: 2;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-        }
-
         .title {
           padding: 0.42667rem 0.42667rem 0 0.42667rem;
           font-size: 0.4rem;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
-          -webkit-box-orient: vertical; // 指定为垂直方向的
-          -webkit-line-clamp: 1; // 指定显示的行数
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
           cursor: pointer;
         }
-
         .sub-title {
           display: flex;
           flex-wrap: wrap;
         }
-
         .text {
           padding: 0 0.42667rem;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
+          -webkit-line-clamp: 3;
         }
-
         .chip {
           margin-right: 0.26667rem;
         }
-
         .cover {
           flex: 1;
           border-radius: 0;
           padding: 0.42667rem;
-
           .cover-img {
-            object-fit: cover; // 这个属性是让图片的宽高比例不变，但是图片会被拉伸，所以要配合width和height使用
+            object-fit: cover;
             width: 100%;
             height: 4.26667rem;
             vertical-align: middle;
           }
         }
+        .card-box {
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
       }
     }
-
     .right {
       flex: 3;
       display: flex;
       justify-content: center;
     }
   }
-  .pagination {
-    margin: 0.53333rem 0;
-    display: flex;
-    justify-content: center;
+
+  .box {
+    justify-content: center !important;
+    padding-bottom: 0.53333rem;
   }
+}
+
+.pagination {
+  margin: 0.53333rem 0;
+  display: flex;
+  justify-content: center;
 }
 </style>

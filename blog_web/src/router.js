@@ -70,6 +70,12 @@ const routes = [
         /* webpackChunkName: "categories" */ "./views/Articles/Index.vue"
       ),
   },
+  {
+    path: "/articles/details",
+    name: "articlesDetails",
+    component: () =>
+      import(/* webpackChunkName: "articles" */ "./views/Articles/Details.vue"),
+  },
 ];
 
 const router = new VueRouter({
