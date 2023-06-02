@@ -87,4 +87,13 @@ module.exports = {
     }
     return timeQuery;
   },
+
+  getWhiteList(urlList) {
+    return urlList.map(item => {
+      if (item.includes('*')) {
+        return new RegExp(`^${item.replace('*', '.*')}$`);
+      }
+      return item;
+    });
+  },
 };

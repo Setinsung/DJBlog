@@ -17,14 +17,14 @@ module.exports = appInfo => {
 
   config.userName = 'admin';
   config.baseRouter = '/api/v1';
+  config.baseWebRouter = '/web/v1';
   config.qiniu = userConfig.qiniu;
 
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1681261932544_2249';
   // add your middleware config here
-  config.middleware = [ 'errorhandler', 'auth' ];
-  // config.middleware = [ 'auth' ];
+  config.middleware = [ 'errorhandler' ];
   config.security = {
     csrf: false,
   };
@@ -35,11 +35,7 @@ module.exports = appInfo => {
   config.jwt = {
     secret: userConfig.jwtSecret,
   };
-  config.auth = {
-    urlWhiteList: [ '/web', '/admin/login', '/admin/logout' ]
-      .map(item => config.baseRouter + item),
-    userWhiteList: [ config.userName ],
-  };
+
 
   config.onerror = {
     all(err, ctx) {

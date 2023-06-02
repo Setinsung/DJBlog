@@ -95,8 +95,9 @@ class ArticlesService extends Service {
   }
 
   async index(params) {
-    // console.log('params index', params);
     const { ctx } = this;
+    // console.log('ctx.state.user', ctx.state.user);
+    // console.log('params index', params);
     const page = parseInt(params.page, 10) || 1;
     const pageSize = parseInt(params.pageSize, 10) || 20;
     params.status = parseInt(params.status, 10) || 0;

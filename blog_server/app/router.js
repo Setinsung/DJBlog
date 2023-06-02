@@ -6,15 +6,20 @@
 module.exports = app => {
   const { router, controller, jwt } = app;
   const baseRouter = app.config.baseRouter;
+  // const baseWebRouter = app.config.baseWebRouter;
   router.get('/', controller.home.index);
+
   // 前台 /web
+  // 文章展示
+  // router.get(baseWebRouter + '/articles', controller.web.articles.index);
 
-  // 上传文件
-  router.post(baseRouter + '/upload', controller.upload.uploadFiles);
-
+  // 后台 /api
   // 登录/退出
   router.post(baseRouter + '/admin/login', controller.admin.adminLogin);
   router.post(baseRouter + '/admin/logout', controller.admin.adminLogout);
+
+  // 上传文件
+  router.post(baseRouter + '/upload', jwt, controller.upload.uploadFiles);
 
   // 一键开启关闭收藏
   router.put(baseRouter + '/articles/collectStatus', jwt, controller.articles.changeCollectStatus);
@@ -36,7 +41,7 @@ module.exports = app => {
   router.resources('about', baseRouter + '/about', jwt, controller.about);
 
   // 用户
-  router.resources('user', baseRouter + '/user', controller.user);
+  router.resources('user', baseRouter + '/user', jwt, controller.user);
 
   // 评论
   router.resources('comment', baseRouter + '/comment', jwt, controller.comments);
