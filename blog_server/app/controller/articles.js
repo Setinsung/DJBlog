@@ -235,7 +235,12 @@ class ArticlesController extends Controller {
     const res = await service.articles.delete(id);
     ctx.helper.success({ ctx, res });
   }
-
+  async show() {
+    const { ctx, service } = this;
+    const id = ctx.params.id;
+    const res = await service.articles.show(id);
+    ctx.helper.success({ ctx, res });
+  }
   async edit() {
     const { ctx, service } = this;
     const id = ctx.params.id;

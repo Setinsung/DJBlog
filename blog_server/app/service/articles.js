@@ -303,6 +303,26 @@ class ArticlesService extends Service {
       msg: `文章${params.isCollect ? '一键开启' : '一键取消'}成功`,
     };
   }
+  async show(id) {
+    const { ctx, app } = this;
+    if (!app.mongoose.Types.ObjectId.isValid(id)) {
+      return {
+        msg: '文章不存在',
+      };
+    }
+    const editItem = await ctx.model.Articles.findOne({
+      _id: id,
+    });
+    if (!editItem) {
+      return {
+        msg: '文章不存在',
+      };
+    }
+    return {
+      msg: '文章获取成功',
+      data: editItem,
+    };
+  }
 
   async edit(id) {
     const { ctx, app } = this;

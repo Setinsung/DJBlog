@@ -6,12 +6,31 @@
 module.exports = app => {
   const { router, controller, jwt } = app;
   const baseRouter = app.config.baseRouter;
-  // const baseWebRouter = app.config.baseWebRouter;
+  const baseWebRouter = app.config.baseWebRouter;
   router.get('/', controller.home.index);
 
   // 前台 /web
+  // 标签展示
+  router.get(baseWebRouter + '/tags', controller.tags.index);
+  // 分类展示
+  router.get(baseWebRouter + '/categories', controller.categories.index);
+  // 关于展示
+  router.get(baseWebRouter + '/about', controller.about.index);
+  // 评论展示
+  router.get(baseWebRouter + '/comment', controller.comments.index);
   // 文章展示
-  // router.get(baseWebRouter + '/articles', controller.web.articles.index);
+  router.get(baseWebRouter + '/articles', controller.articles.index);
+  // 文章详情
+  router.get(baseWebRouter + '/articles/:id', controller.articles.show);
+  // 网页配置
+  router.get(baseWebRouter + '/config/home', controller.siteConfig.home.index);
+  router.get(baseWebRouter + '/config/hf', controller.siteConfig.hf.index);
+  router.get(baseWebRouter + '/config/right/introduction', controller.siteConfig.right.personalProfile.index);
+  router.get(baseWebRouter + '/config/right/ad', controller.siteConfig.right.ad.index);
+  router.get(baseWebRouter + '/config/right/recommend', controller.siteConfig.right.recommend.index);
+  // 用户
+  router.get(baseWebRouter + '/user', controller.user.index);
+
 
   // 后台 /api
   // 登录/退出
