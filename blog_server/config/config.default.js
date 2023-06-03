@@ -46,7 +46,14 @@ module.exports = appInfo => {
     schemes: [ 'http', 'https' ],
     consumes: [ 'application/json', 'multipart/form-data' ],
     produces: [ 'application/json', 'multipart/form-data' ],
-    enableSecurity: false,
+    securityDefinitions: { // 配置接口安全授权方式
+      Jwt: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+      },
+    },
+    enableSecurity: true,
     // enableValidate: true,
     routerMap: true,
     enable: true,

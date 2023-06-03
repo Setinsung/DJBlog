@@ -1,8 +1,9 @@
+/* eslint-disable jsdoc/check-tag-names */
 'use strict';
 
 const Controller = require('egg').Controller;
 /**
- * @Controller web端评论信息
+ * @Controller 评论管理
  */
 class CommentsController extends Controller {
   constructor(ctx) {
@@ -39,14 +40,23 @@ class CommentsController extends Controller {
     };
   }
 
+  async showComments() {
+    const { ctx, service } = this;
+    const data = ctx.request.query;
+    ctx.validate(this.queryRule, data);
+    const res = await service.comments.index(data);
+    ctx.helper.success({ ctx, res });
+  }
+
   /**
    * @summary 获取评论列表
    * @description 获取评论列表
-   * @router get /web/v1/comments
+   * @router get /api/v1/comment
    * @request query string page 页码
    * @request query string pageSize 每页数量
    * @request query string articleTitle 文章标题
    * @request query string auditStatus 审核状态
+   * @Jwt
    */
   async index() {
     const { ctx, service } = this;
@@ -63,7 +73,14 @@ class CommentsController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
-  // 更新审核状态
+  /**
+   * @summary 更新评论审核状态
+   * @description 更新评论审核状态
+   * @router put /api/v1/comment/{id}
+   * @request path string *id
+   * @request body updateAuditStatusRequest *body
+   * @Jwt
+   */
   async update() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -76,6 +93,13 @@ class CommentsController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
+  /**
+   * @summary 删除评论
+   * @description 删除评论
+   * @router delete /api/v1/comment/{id}
+   * @request path string *id
+   * @Jwt
+   */
   async destroy() {
     const { ctx, service } = this;
     const id = ctx.params.id;

@@ -33,6 +33,27 @@ class CategoriesService extends Service {
 
   }
 
+  async showCategories(params) {
+    const { ctx } = this;
+    const query = {};
+    if (params.name) {
+      query.name = new RegExp(params.name, 'i');
+    }
+    const countPromise = ctx.model.Categories.countDocuments(query);
+    const listPromise = ctx.model.Categories
+      .find(query, { name: 1, articleNum: 1 })
+      .lean()
+      .exec();
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
+    return {
+      data: {
+        totalCount,
+        list,
+      },
+    };
+
+  }
+
   async create(params) {
     const { ctx } = this;
     const findItem = await ctx.model.Categories.findOne({

@@ -142,6 +142,46 @@ class ArticlesService extends Service {
 
   }
 
+  async showArticles(params) {
+    const { ctx } = this;
+    const page = parseInt(params.page, 10) || 1;
+    const pageSize = parseInt(params.pageSize, 10) || 20;
+
+    const necessaryCon = {
+      ...(params.categories && params.categories !== '全部' && { categories: params.categories }),
+      ...(params.tags && { tags: { $all: params.tags.split(',') } }),
+      status: 1,
+      publishStatus: 1,
+    };
+
+    const fuzzyCon = params.title ? { title: new RegExp(params.title, 'i') } : {};
+
+    const query = {
+      $and: [
+        necessaryCon,
+        fuzzyCon,
+      ],
+    };
+    const countPromise = ctx.model.Articles.countDocuments(query);
+    const listPromise = ctx.model.Articles
+      .find(query, { status: 0, publishStatus: 0 })
+      .sort({ createTime: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .lean()
+      .exec();
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
+    return {
+      data: {
+        page,
+        pageSize,
+        totalCount,
+        list,
+      },
+    };
+
+  }
+
   async create(params) {
     const { ctx } = this;
     const findItem = await ctx.model.Articles.findOne({
@@ -303,24 +343,27 @@ class ArticlesService extends Service {
       msg: `文章${params.isCollect ? '一键开启' : '一键取消'}成功`,
     };
   }
-  async show(id) {
+
+  async showArticleDetail(id) {
     const { ctx, app } = this;
     if (!app.mongoose.Types.ObjectId.isValid(id)) {
       return {
         msg: '文章不存在',
       };
     }
-    const editItem = await ctx.model.Articles.findOne({
+    const Item = await ctx.model.Articles.findOne({
       _id: id,
-    });
-    if (!editItem) {
+      status: 1,
+      publishStatus: 1,
+    }, { status: 0, publishStatus: 0 });
+    if (!Item) {
       return {
         msg: '文章不存在',
       };
     }
     return {
       msg: '文章获取成功',
-      data: editItem,
+      data: Item,
     };
   }
 

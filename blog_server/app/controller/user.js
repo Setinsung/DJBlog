@@ -1,7 +1,10 @@
+/* eslint-disable jsdoc/check-tag-names */
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller 用户管理
+ */
 class UserController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -28,6 +31,15 @@ class UserController extends Controller {
     };
   }
 
+  /**
+   * @summary 获取用户列表
+   * @description 获取用户列表
+   * @router get /api/v1/user
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   * @request query string nickName 昵称
+   * @Jwt
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;
@@ -36,6 +48,13 @@ class UserController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
+  /**
+   * @summary 删除用户
+   * @description 删除用户
+   * @router delete /api/v1/user/{id}
+   * @request path string *id
+   * @Jwt
+   */
   async destroy() {
     const { ctx, service } = this;
     const id = ctx.params.id;

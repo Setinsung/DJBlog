@@ -1,8 +1,9 @@
+/* eslint-disable jsdoc/check-tag-names */
 'use strict';
 
 const Controller = require('egg').Controller;
 /**
- * @Controller web端文章信息
+ * @Controller 文章管理
  */
 class ArticlesController extends Controller {
   constructor(ctx) {
@@ -77,6 +78,37 @@ class ArticlesController extends Controller {
         type: 'string',
         required: false,
         default: 0,
+      },
+    };
+    this.webQueryListParamsRules = {
+      page: {
+        type: 'string',
+        required: false,
+        allowEmpty: true,
+        default: 1,
+      },
+      pageSize: {
+        type: 'string',
+        required: false,
+        allowEmpty: true,
+        default: 20,
+      },
+      title: {
+        type: 'string',
+        required: false,
+        min: 1,
+        max: 200,
+        allowEmpty: true,
+      },
+      categories: {
+        type: 'string',
+        required: false,
+        default: '',
+      },
+      tags: {
+        type: 'string', // vue,react
+        required: false,
+        default: '',
       },
     };
 
@@ -162,10 +194,29 @@ class ArticlesController extends Controller {
       },
     };
   }
+
+  /**
+   * @summary 展示文章列表
+   * @description 展示文章列表
+   * @router get /web/v1/articles
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   * @request query string title 文章标题
+   * @request query string categories 文章分类
+   * @request query string tags 文章标签
+   */
+  async showArticles() {
+    const { ctx, service } = this;
+    const data = ctx.request.query;
+    ctx.validate(this.webQueryListParamsRules, data);
+    const res = await service.articles.showArticles(data);
+    ctx.helper.success({ ctx, res });
+  }
+
   /**
    * @summary 获取文章列表
    * @description 获取文章列表
-   * @router get /web/v1/articles
+   * @router get /api/v1/articles
    * @request query string page 页码
    * @request query string pageSize 每页数量
    * @request query string title 文章标题
@@ -177,6 +228,7 @@ class ArticlesController extends Controller {
    * @request query string createEndTime 文章创建结束时间
    * @request query string updateStartTime 文章更新开始时间
    * @request query string updateEndTime 文章更新结束时间
+   * @Jwt
    */
   async index() {
     const { ctx, service } = this;
@@ -187,6 +239,40 @@ class ArticlesController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
+  /**
+   * @summary 展示文章详情
+   * @description 展示文章详情
+   * @router get /web/v1/articles/{id}
+   * @request path string *id 文章id
+   */
+  async showArticleDetail() {
+    const { ctx, service } = this;
+    const id = ctx.params.id;
+    const res = await service.articles.showArticleDetail(id);
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
+   * @summary 获取文件修改详情
+   * @description 获取文件修改详情
+   * @router get /api/v1/articles/{id}/edit
+   * @request path string *id 文章id
+   * @Jwt
+   */
+  async edit() {
+    const { ctx, service } = this;
+    const id = ctx.params.id;
+    const res = await service.articles.edit(id);
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
+   * @summary 创建文章
+   * @description 创建文章
+   * @router post /api/v1/articles
+   * @request body createArticleRequest *body
+   * @Jwt
+   */
   async create() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -195,6 +281,14 @@ class ArticlesController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
+  /**
+   * @summary 修改文章
+   * @description 修改文章
+   * @router put /api/v1/articles/{id}
+   * @request path string *id 文章id
+   * @request body updateArticleRequest *body
+   * @Jwt
+   */
   async update() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -207,7 +301,14 @@ class ArticlesController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
-  // 启用/禁用
+  /**
+   * @summary 启用/禁用文章
+   * @description 启用/禁用文章
+   * @router put /api/v1/articles/status/{id}
+   * @request path string *id 文章id
+   * @request body changeStatusRequest *body
+   * @Jwt
+   */
   async changeStatus() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -220,6 +321,14 @@ class ArticlesController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
+  /**
+   * @summary 发布/取消发布文章
+   * @description 发布/取消发布文章
+   * @router put /api/v1/articles/publishStatus/{id}
+   * @request path string *id 文章id
+   * @request body changePublishStatusRequest *body
+   * @Jwt
+   */
   async changePublishStatus() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -236,6 +345,13 @@ class ArticlesController extends Controller {
     });
   }
 
+  /**
+   * @summary 一键收藏/取消收藏文章
+   * @description 一键收藏/取消收藏文章
+   * @router put /api/v1/articles/collectStatus
+   * @request body changeCollectStatusRequest *body
+   * @Jwt
+   */
   async changeCollectStatus() {
     const { ctx, service } = this;
     const data = ctx.request.body;
@@ -246,32 +362,19 @@ class ArticlesController extends Controller {
     });
   }
 
+  /**
+   * @summary 删除文章
+   * @description 删除文章
+   * @router delete /api/v1/articles/{id}
+   * @request path string *id 文章id
+   * @Jwt
+   */
   async destroy() {
     const { ctx, service } = this;
     const id = ctx.params.id;
     const res = await service.articles.delete(id);
     ctx.helper.success({ ctx, res });
   }
-
-  /**
-   * @summary 获取文章详情
-   * @description 获取文章详情
-   * @router get /web/v1/articles/{id}
-   * @request path string *id 文章id
-   */
-  async show() {
-    const { ctx, service } = this;
-    const id = ctx.params.id;
-    const res = await service.articles.show(id);
-    ctx.helper.success({ ctx, res });
-  }
-  async edit() {
-    const { ctx, service } = this;
-    const id = ctx.params.id;
-    const res = await service.articles.edit(id);
-    ctx.helper.success({ ctx, res });
-  }
-
 }
 
 module.exports = ArticlesController;

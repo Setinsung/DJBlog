@@ -36,6 +36,27 @@ class TagsService extends Service {
 
   }
 
+  async showTags(params) {
+    const { ctx } = this;
+    const query = {};
+    if (params.name) {
+      query.name = new RegExp(params.name, 'i');
+    }
+    query.status = true;
+    const countPromise = ctx.model.Tags.countDocuments(query);
+    const listPromise = ctx.model.Tags
+      .find(query, { name: 1, articleNum: 1 })
+      .lean()
+      .exec();
+    const [ totalCount, list ] = await Promise.all([ countPromise, listPromise ]);
+    return {
+      data: {
+        totalCount,
+        list,
+      },
+    };
+  }
+
   async create(params) {
     const { ctx } = this;
     // 先查询是否有重复，如果有重复，则不添加
@@ -146,7 +167,7 @@ class TagsService extends Service {
       };
     }
     return {
-      msg: `标签${tagStatus === 1 ? '启用' : '禁用'}成功`,
+      msg: `标签${tagStatus === (true || 1) ? '启用' : '禁用'}成功`,
     };
   }
 

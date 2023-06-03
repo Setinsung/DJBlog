@@ -14,17 +14,17 @@ module.exports = app => {
 
   // 前台 /web
   // 标签展示
-  router.get(baseWebRouter + '/tags', controller.tags.index);
+  router.get(baseWebRouter + '/tags', controller.tags.showTags);
   // 分类展示
-  router.get(baseWebRouter + '/categories', controller.categories.index);
+  router.get(baseWebRouter + '/categories', controller.categories.showCategories);
   // 关于展示
-  router.get(baseWebRouter + '/about', controller.about.index);
+  router.get(baseWebRouter + '/about', controller.about.showAbout);
   // 评论展示
-  router.get(baseWebRouter + '/comment', controller.comments.index);
+  // router.get(baseWebRouter + '/comment', controller.comments.showComments);
   // 文章展示
-  router.get(baseWebRouter + '/articles', controller.articles.index);
+  router.get(baseWebRouter + '/articles', controller.articles.showArticles);
   // 文章详情
-  router.get(baseWebRouter + '/articles/:id', controller.articles.show);
+  router.get(baseWebRouter + '/articles/:id', controller.articles.showArticleDetail);
   // 网页配置
   router.get(baseWebRouter + '/config/home', controller.siteConfig.home.index);
   router.get(baseWebRouter + '/config/hf', controller.siteConfig.hf.index);

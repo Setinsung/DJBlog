@@ -11,7 +11,15 @@ class AboutService extends Service {
       data,
       msg: '关于信息获取成功',
     };
+  }
 
+  async showAbout() {
+    const { ctx } = this;
+    const data = await ctx.model.About.findOne({}, { createTime: 0, updateTime: 0 });
+    return {
+      data,
+      msg: '关于信息获取成功',
+    };
   }
 
   async create(params) {

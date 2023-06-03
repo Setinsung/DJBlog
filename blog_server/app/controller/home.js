@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller 测试
+ */
 class HomeController extends Controller {
   /**
   * @summary 接口测试
