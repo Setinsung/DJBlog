@@ -36,6 +36,21 @@ module.exports = appInfo => {
     secret: userConfig.jwtSecret,
   };
 
+  config.swaggerdoc = {
+    dirScanner: './app/controller',
+    apiInfo: {
+      title: '接口文档',
+      description: '博客后端接口文档',
+      version: '1.0.0',
+    },
+    schemes: [ 'http', 'https' ],
+    consumes: [ 'application/json', 'multipart/form-data' ],
+    produces: [ 'application/json', 'multipart/form-data' ],
+    enableSecurity: false,
+    // enableValidate: true,
+    routerMap: true,
+    enable: true,
+  };
 
   config.onerror = {
     all(err, ctx) {

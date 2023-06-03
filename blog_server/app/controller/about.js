@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端关于信息
+ */
 class AboutController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -38,6 +40,14 @@ class AboutController extends Controller {
     };
   }
 
+  /**
+   * @summary 获取关于
+   * @description 获取关于
+   * @router get /web/v1/about
+   * @request query string name 标签名称
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   */
   async index() {
     const { ctx, service } = this;
     const res = await service.about.index();

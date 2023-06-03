@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端首页配置信息
+ */
 class HomeController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -36,7 +38,11 @@ class HomeController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取首页配置信息
+   * @description 获取首页配置信息
+   * @router get /web/v1/config/home
+   */
   async index() {
     const { ctx, service } = this;
     const res = await service.siteConfig.home.index();

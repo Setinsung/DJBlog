@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端评论信息
+ */
 class CommentsController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -37,6 +39,15 @@ class CommentsController extends Controller {
     };
   }
 
+  /**
+   * @summary 获取评论列表
+   * @description 获取评论列表
+   * @router get /web/v1/comments
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   * @request query string articleTitle 文章标题
+   * @request query string auditStatus 审核状态
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;

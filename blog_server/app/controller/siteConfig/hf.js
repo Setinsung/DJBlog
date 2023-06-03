@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端页头页脚配置信息
+ */
 class HfController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -49,7 +51,11 @@ class HfController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取页头页脚配置
+   * @description 获取页头页脚配置
+   * @router get /web/v1/config/hf
+   */
   async index() {
     const { ctx, service } = this;
     const res = await service.siteConfig.hf.index();

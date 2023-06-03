@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端广告配置信息
+ */
 class AdController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -28,7 +30,11 @@ class AdController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取广告配置
+   * @description 获取广告配置
+   * @router get /web/v1/config/right/ad
+   */
   async index() {
     const { ctx, service } = this;
     const res = await service.siteConfig.right.ad.index();

@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端文章信息
+ */
 class ArticlesController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -160,7 +162,22 @@ class ArticlesController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取文章列表
+   * @description 获取文章列表
+   * @router get /web/v1/articles
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   * @request query string title 文章标题
+   * @request query string categories 文章分类
+   * @request query string tags 文章标签
+   * @request query string status 文章状态
+   * @request query string publishStatus 文章发布状态
+   * @request query string createStartTime 文章创建开始时间
+   * @request query string createEndTime 文章创建结束时间
+   * @request query string updateStartTime 文章更新开始时间
+   * @request query string updateEndTime 文章更新结束时间
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;
@@ -235,6 +252,13 @@ class ArticlesController extends Controller {
     const res = await service.articles.delete(id);
     ctx.helper.success({ ctx, res });
   }
+
+  /**
+   * @summary 获取文章详情
+   * @description 获取文章详情
+   * @router get /web/v1/articles/{id}
+   * @request path string *id 文章id
+   */
   async show() {
     const { ctx, service } = this;
     const id = ctx.params.id;

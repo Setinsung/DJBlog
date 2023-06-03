@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端标签信息
+ */
 class TagsController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -45,7 +47,14 @@ class TagsController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取标签列表
+   * @description 获取标签列表
+   * @router get /api/v1/tags
+   * @request query string name 标签名称
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;

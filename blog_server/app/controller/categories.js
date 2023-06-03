@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端分类信息
+ */
 class CategoriesController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -40,6 +42,14 @@ class CategoriesController extends Controller {
 
   }
 
+  /**
+   * @summary 获取分类列表
+   * @description 获取分类列表
+   * @router get /web/v1/categories
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   * @request query string name 分类名称
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;

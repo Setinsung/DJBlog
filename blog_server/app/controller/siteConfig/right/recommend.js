@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端推荐配置信息
+ */
 class RecommendController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -55,7 +57,14 @@ class RecommendController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取推荐配置
+   * @description 获取推荐配置
+   * @router get /web/v1/config/recommend
+   * @request query string project 项目名称
+   * @request query string page 页码
+   * @request query string pageSize 每页数量
+   */
   async index() {
     const { ctx, service } = this;
     const data = ctx.request.query;

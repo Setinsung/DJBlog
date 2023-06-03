@@ -1,7 +1,9 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+/**
+ * @Controller web端个人简介配置信息
+ */
 class PersonalProfileController extends Controller {
   constructor(ctx) {
     super(ctx);
@@ -44,7 +46,11 @@ class PersonalProfileController extends Controller {
       },
     };
   }
-
+  /**
+   * @summary 获取个人简介配置
+   * @description 获取个人简介配置
+   * @router get /web/v1/config/right/introduction
+   */
   async index() {
     const { ctx, service } = this;
     const res = await service.siteConfig.right.personalProfile.index();

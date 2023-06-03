@@ -1,11 +1,21 @@
 'use strict';
 
-const { Controller } = require('egg');
+const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
+  /**
+  * @summary 接口测试
+  * @description 测试swagger文档是否可用
+  * @router get /home
+  * @request query string str 随机字符串
+  * @response 200 homeResponse
+  */
   async index() {
     const { ctx } = this;
-    ctx.body = 'hi, egg';
+    const str = ctx.query.str;
+    ctx.body = {
+      message: 'swagger 测试正常!!! url传参是:' + str,
+    };
   }
 }
 

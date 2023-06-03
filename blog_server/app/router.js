@@ -7,6 +7,9 @@ module.exports = app => {
   const { router, controller, jwt } = app;
   const baseRouter = app.config.baseRouter;
   const baseWebRouter = app.config.baseWebRouter;
+  // 重定向到swagger
+  router.redirect('/', '/swagger-ui.html', 302);
+
   router.get('/', controller.home.index);
 
   // 前台 /web
@@ -28,8 +31,6 @@ module.exports = app => {
   router.get(baseWebRouter + '/config/right/introduction', controller.siteConfig.right.personalProfile.index);
   router.get(baseWebRouter + '/config/right/ad', controller.siteConfig.right.ad.index);
   router.get(baseWebRouter + '/config/right/recommend', controller.siteConfig.right.recommend.index);
-  // 用户
-  router.get(baseWebRouter + '/user', controller.user.index);
 
 
   // 后台 /api
