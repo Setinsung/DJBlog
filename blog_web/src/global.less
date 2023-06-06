@@ -1,0 +1,80 @@
+.common {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  .right-box {
+    position: fixed;
+    top: 80px;
+    left: 70px;
+    z-index: 3;
+  }
+}
+//分类详情和标签详情
+.pc-box {
+  width: 50%;
+}
+
+// 分类详情和标签详情
+.mu-paper.pc-box {
+  width: 50%;
+  .header {
+    font-size: 0.4rem;
+  }
+  /deep/ .mu-item {
+    height: 40px;
+  }
+  .sub-title {
+    font-size: 0.4rem;
+    padding-left: 16px;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    .title {
+      display: inline-block;
+      width: 70%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+  .pagination {
+    margin: 0.53333rem 0;
+    display: flex;
+    justify-content: center;
+  }
+}
+.wap-box {
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  .sub-title {
+    font-size: 0.48rem;
+    padding: 0.42667rem 0.69333rem 0;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.26667rem;
+    .title {
+      display: inline-block;
+      width: 70%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}
+// 移动端返回上一页
+.back-fab {
+  position: fixed;
+  left: 10px;
+  top: 50%;
+}
+img {
+  max-width: 100%;
+}
