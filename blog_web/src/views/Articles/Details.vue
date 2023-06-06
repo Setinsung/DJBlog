@@ -107,6 +107,12 @@
             </mu-tooltip>
           </div>
 
+          <mu-card id="comment" class="card">
+            <Comment
+              @comment="comment"
+              :comment-success="commentSuccess"
+            ></Comment>
+          </mu-card>
         </div>
       </div>
     </div>
@@ -116,7 +122,7 @@
 </template>
 <script>
 import RightConfig from "@/components/RightConfig";
-
+import Comment from "@/components/Comment";
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -131,6 +137,7 @@ export default {
   name: "articlesDetails",
   components: {
     RightConfig,
+    Comment,
     Footer,
     Header,
     mavonEditor,
@@ -177,12 +184,12 @@ export default {
 
 
     this.$nextTick(() => {
-      let clipboard = new Clipboard(".copy-btn");
+      this.clipboard = new Clipboard(".copy-btn");
       // 复制成功失败的提示
-      clipboard.on("success", () => {
+      this.clipboard.on("success", () => {
         this.$toast.success("复制成功");
       });
-      clipboard.on("error", () => {
+      this.clipboard.on("error", () => {
         this.$toast.error("复制失败");
       });
     });
@@ -194,6 +201,10 @@ export default {
       var position = $(id).offset();
       position.top = position.top - 80;
       $("html,body").animate({ scrollTop: position.top }, 1000);
+    },
+    async comment(data) {
+      console.log("评论数据", data);
+      this.commentSuccess = true;
     },
   },
 };

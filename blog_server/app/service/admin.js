@@ -21,6 +21,7 @@ class AdminService extends Service {
         msg: '用户名或密码错误',
       };
     }
+    console.log('resUser', resUser);
     // 成功登录后，生成token
     const token = app.jwt.sign({ ...resUser }, app.config.jwt.secret, { expiresIn: '1h' });
     // 直接放到cookie中，httpOnly为true表示只有服务器端可以获取cookie

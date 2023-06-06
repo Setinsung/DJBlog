@@ -5,17 +5,13 @@ import router from './router.js'
 Vue.config.productionTip = false
 
 import { isPC } from '@/utils'
-// 把是否为PC挂载到Vue的原型上，使其全局可用
-// 把头像挂载到Vue的原型上，使其全局可用
-Vue.prototype.isPC = isPC
-Vue.prototype.avatar = "http://nevergiveupt.top/index.jpg"
-
 
 import './global.less';
 // 用于适配大屏幕和移动端
 import 'lib-flexible';
 
 import 'muse-ui/lib/styles/base.less';
+import Toast from "muse-ui-toast";
 import {
   Button,
   Select,
@@ -30,7 +26,11 @@ import {
   Pagination,
   Chip,
   Carousel,
-  Card
+  Card,
+  Tooltip,
+  TextField,
+  Dialog,
+  Snackbar,
 } from 'muse-ui';
 import 'muse-ui/lib/styles/theme.less';
 Vue.use(Button);
@@ -47,6 +47,10 @@ Vue.use(Pagination);
 Vue.use(Chip);
 Vue.use(Carousel);
 Vue.use(Card);
+Vue.use(Tooltip);
+Vue.use(TextField);
+Vue.use(Dialog);
+Vue.use(Snackbar);
 //过滤器
 import { filterDate as filters } from "./utils";
 Object.keys(filters).forEach((k) => Vue.filter(k, filters[k])); //注册过滤器
@@ -58,7 +62,9 @@ Vue.use(VueLazyload, {
   loading: "http://www.nevergiveupt.top/loading.gif",
   attempt: 1,
 });
-import Toast from "muse-ui-toast";
+Vue.prototype.isPC = isPC
+Vue.prototype.avatar = "http://nevergiveupt.top/index.jpg"
+
 
 Vue.use(Toast, {
   position: "top", // 弹出的位置
