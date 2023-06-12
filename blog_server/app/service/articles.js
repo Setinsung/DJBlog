@@ -179,7 +179,6 @@ class ArticlesService extends Service {
         list,
       },
     };
-
   }
 
   async create(params) {
@@ -361,9 +360,22 @@ class ArticlesService extends Service {
         msg: '文章不存在',
       };
     }
+    // 查询上一篇文章和下一篇文章
+    const prevItem = await ctx.model.Articles.findOne({
+      _id: { $lt: id },
+      status: 1,
+      publishStatus: 1,
+    }, { title: 1 });
+    const nextItem = await ctx.model.Articles.findOne({
+      _id: { $gt: id },
+      status: 1,
+      publishStatus: 1,
+    }, { title: 1 });
     return {
       msg: '文章获取成功',
       data: Item,
+      prev: prevItem,
+      next: nextItem,
     };
   }
 
