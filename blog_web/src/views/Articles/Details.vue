@@ -83,11 +83,11 @@
           </mu-card>
 
           <!-- 评论列表 -->
-          <mu-card v-if="commentList.length > 0" class="card">
+          <!-- <mu-card v-if="commentList.length > 0" class="card">
             <mu-card-title title="评论（3）"></mu-card-title>
             <mu-divider></mu-divider>
             <CommentList :list="commentList" :articleId="info._id" :articleTitle="info.title"></CommentList>
-          </mu-card>
+          </mu-card> -->
 
 
           <prev-next :prev="prev" :next="next"></prev-next>
@@ -106,7 +106,7 @@ import Comment from "@/components/Comment.vue"
 import { mavonEditor } from "mavon-editor"
 import "mavon-editor/dist/css/index.css"
 import $ from "jquery"
-import CommentList from "@/components/CommentList.vue"
+// import CommentList from "@/components/CommentList.vue"
 import PrevNext from "@/components/PrevNext"
 import { getArticle } from "@/api/articles"
 
@@ -118,11 +118,11 @@ export default {
     RightConfig,
     mavonEditor,
     Comment,
-    CommentList,
+    // CommentList,
     PrevNext
   },
 
-  data () {
+  data() {
     return {
       info: {
         _id: '1',
@@ -131,7 +131,7 @@ export default {
         cover: ""
       },
       toc: [],
-      content: "在前端开发中， html 转 pdf 是最常见的需求，实现这块需求的开发[html2canvas](http://html2canvas.hertzen.com/)和 [jspdf](http://mozilla.github.io/pdf.js/getting_started/) 是最常用的两个插件，插件都是现成的。\n### 1.安装\n### 2.使用 \n ```js \n console.log(123); \n```",
+      content: "",
       commentSuccess: false,
       commentList: [{
         targetReplayId: "6084ce48e268db458626591a",
@@ -227,48 +227,48 @@ export default {
       },
     }
   },
-  created () {
+  created() {
     this.getArticle()
   },
-  mounted () {
-
-    // 到接口请求哪一步，直接将这部分代码移动到接口请求成功之后即可。
-    this.$nextTick(() => {
-      const aArr = $(
-        ".v-note-wrapper .v-note-panel .v-note-navigation-wrapper .v-note-navigation-content a"
-      ).toArray()
-      let toc = []
-      aArr.forEach((item) => {
-        let href = $(item).attr("id")
-        let name = $(item).parent().text()
-        if (href) { // 这里判断是因为我们只需要有id的内容，没有id的则过滤掉。
-          toc.push({
-            href: "#" + href,
-            name,
-          })
-        }
-      })
-      this.toc = toc
-    })
+  mounted() {
     this.commentList = this.listToTree(this.commentList)
   },
   methods: {
-    async getArticle () {
+    async getArticle() {
       const res = await getArticle({ id: this.$route.params.id })
-      console.log("res", res)
+      // console.log("res", res)
       this.info = res.data
       this.content = res.data.content
+      this.$nextTick(() => {
+        const aArr = $(
+          ".v-note-wrapper .v-note-panel .v-note-navigation-wrapper .v-note-navigation-content a"
+        ).toArray()
+        // console.log('arrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', aArr);
+        let toc = []
+        aArr.forEach((item) => {
+          let href = $(item).attr("id")
+          let name = $(item).parent().text()
+          if (href) { // 这里判断是因为我们只需要有id的内容，没有id的则过滤掉。
+            toc.push({
+              href: "#" + href,
+              name,
+            })
+          }
+        })
+        // console.log('tocccccccccccccccccccccccccccccccccccccc', toc);
+        this.toc = toc
+      })
     },
-    scrollToPosition (id) {
+    scrollToPosition(id) {
       let position = $(id).offset()
       position.top -= 80
       $("html,body").animate({ scrollTop: position.top }, 1000)
     },
-    async comment (data) {
-      console.log("评论数据", data)
+    async comment() {
+      // console.log("评论数据", data)
       this.commentSuccess = true // 评论成功
     },
-    listToTree (list) {
+    listToTree(list) {
       let info = list.reduce(
         (map, node) => ((map[node._id] = node), (node.children = []), map),
         {}

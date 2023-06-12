@@ -13,8 +13,6 @@
         :color="lightIndex === index ? '#00e676' : ''" flat @click="jumpTo(item)">
         <mu-icon size="16" :value="item.icon"></mu-icon>
         {{ item.name }}
-
-
       </mu-button>
 
       <!-- 主题切换 -->
@@ -96,7 +94,7 @@
 
     <LoginForm :open="openLoginModal" @toggle="toggleLoginModal"></LoginForm>
 
-    <SearchForm :open="openSearchModal" @toggle="toggleSearchModal"></SearchForm>
+    <SearchForm :open="openSearchModal" @update:open="openSearchModal = $event"></SearchForm>
 
     <mu-slide-bottom-transition>
       <mu-tooltip placement="top" content="Top">
@@ -223,8 +221,10 @@ export default {
   methods: {
     async getHInfo () {
       const res = await getHF()
-      console.log(res)
-      // this.info = res.data.Headers
+      // console.log(res);
+      this.info.login = res.data.header.login
+      this.info.openSearch = res.data.header.openSearch
+      this.info.register = res.data.header.register
     },
     // 跳转
     jumpTo (item) {
@@ -250,6 +250,9 @@ export default {
     },
     toggleSearchModal (bool) {
       this.openSearchModal = bool
+    },
+    handleContainerClick(e){
+      console.log(e.target);
     },
     scrollTop () {
       document.body.scrollIntoView({ block: "start", behavior: "smooth" })

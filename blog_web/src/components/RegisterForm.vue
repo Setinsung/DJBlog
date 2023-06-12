@@ -167,7 +167,8 @@ export default {
   },
   methods: {
     async getCaptcha() {
-      const res = await this.$axios.get("/captcha");
+      // const res = await this.$axios.get("/captcha");
+      const res = {data: '123456'}
       if (res) {
         this.captcha = res.data;
       }
@@ -175,7 +176,8 @@ export default {
     submit() {
       this.$refs.form.validate().then(async (result) => {
         if (result) {
-          const res = await this.$axios.post("/register", this.validateForm);
+          // const res = await this.$axios.post("/register", this.validateForm);
+          const res = {data: {id: 1}}
           if (res.data) {
             localStorage.setItem("user", JSON.stringify(res.data));
             this.$toast.success("注册成功");

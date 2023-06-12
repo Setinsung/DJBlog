@@ -6,6 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+
   .right-box {
     position: fixed;
     top: 80px;
@@ -13,6 +14,7 @@
     z-index: 3;
   }
 }
+
 //分类详情和标签详情
 .pc-box {
   width: 50%;
@@ -21,19 +23,24 @@
 // 分类详情和标签详情
 .mu-paper.pc-box {
   width: 50%;
+
   .header {
     font-size: 0.4rem;
   }
+
   /deep/ .mu-item {
     height: 40px;
   }
+
   .sub-title {
     font-size: 0.4rem;
     padding-left: 16px;
   }
+
   .item {
     display: flex;
     justify-content: space-between;
+
     .title {
       display: inline-block;
       width: 70%;
@@ -42,24 +49,29 @@
       white-space: nowrap;
     }
   }
+
   .pagination {
     margin: 0.53333rem 0;
     display: flex;
     justify-content: center;
   }
 }
+
 .wap-box {
   width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+
   .sub-title {
     font-size: 0.48rem;
     padding: 0.42667rem 0.69333rem 0;
   }
+
   .item {
     display: flex;
     justify-content: space-between;
     padding: 0 0.26667rem;
+
     .title {
       display: inline-block;
       width: 70%;
@@ -69,12 +81,38 @@
     }
   }
 }
+
 // 移动端返回上一页
 .back-fab {
   position: fixed;
   left: 10px;
   top: 50%;
 }
+
 img {
   max-width: 100%;
+}
+
+.markdown-body img {
+  width: 100%;
+}
+
+// 文章导航
+.v-note-wrapper .v-note-panel .v-note-navigation-wrapper.transition {
+  height: 300px;
+  position: fixed;
+  right: 25px;
+  top: 80px;
+  border-radius: 5px;
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+    0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  display: none;
+}
+
+.v-note-wrapper .v-note-panel .v-note-navigation-wrapper .v-note-navigation-content h3 {
+  padding-left: 20px !important;
+}
+
+.v-note-wrapper .v-note-panel .v-note-navigation-wrapper .v-note-navigation-title .v-note-navigation-close {
+  display: none;
 }

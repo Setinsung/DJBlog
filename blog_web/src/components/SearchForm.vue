@@ -1,6 +1,6 @@
 <template>
 <div>
-  <mu-dialog width="60%" :open.sync="open">
+  <mu-dialog width="60%" :open.sync="openModel">
     <mu-auto-complete action-icon="search" label-float :data="keywords" 
     label="文章搜索" :max-search-results="20" v-model="keyword" open-on-focus 
     avatar full-width @change="handleSearch">
@@ -42,6 +42,16 @@ export default{
       type: Boolean,
       default: false
     },
+  },
+  computed: {
+    openModel: {
+      get() {
+        return this.open;
+      },
+      set(val) {
+        this.$emit("update:open", val);
+      }
+    }
   },
   data(){
     return{

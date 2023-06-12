@@ -27,9 +27,20 @@ import {
   Badge,
   Form,
   AutoComplete,
+  Snackbar,
+  Picker,
+  Alert,
+  Drawer,
+  GridList,
+  BottomSheet,
+  Progress,
+  Grid,
+  LoadMore,
+  SubHeader,
 } from "muse-ui"
 import "muse-ui/lib/styles/theme.less"
-
+import "./global.less";
+import Helpers from 'muse-ui/lib/Helpers';
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(AppBar)
@@ -50,6 +61,16 @@ Vue.use(Divider)
 Vue.use(Badge)
 Vue.use(Form)
 Vue.use(AutoComplete)
+Vue.use(Snackbar)
+Vue.use(Picker)
+Vue.use(Alert)
+Vue.use(Drawer)
+Vue.use(GridList)
+Vue.use(BottomSheet)
+Vue.use(Progress)
+Vue.use(Grid)
+Vue.use(LoadMore)
+Vue.use(SubHeader)
 import VueLazyload from 'vue-lazyload'
 import tagCloud from 'v-tag-cloud'
 Vue.use(tagCloud)
@@ -59,6 +80,7 @@ Vue.use(VueLazyload, {
   loading: "http://www.nevergiveupt.top/loading.gif",
   attempt: 1,
 })
+Vue.use(Helpers)
 
 //过滤器
 import * as filters from "./filter"
