@@ -2,12 +2,12 @@
   <div class="articles">
     <Header :light-index="1"></Header>
     <div class="content">
-      <div class="right">
-        <RightConfig></RightConfig>
+      <div v-if="isPC" class="right">
+        <RightConfig showPosition="文章"></RightConfig>
       </div>
 
       <div class="left">
-        <mu-card @click="goDetails(item)" class="card" v-for="item in info.list" :key="item._id">
+        <mu-card @click="goDetails(item)" :style="{width:isPC?'80%':'90%'}" class="card" v-for="item in info.list" :key="item._id">
           <div class="cover">
             <img class="cover-img" v-lazy="item.cover" alt="">
           </div>
@@ -126,8 +126,8 @@ export default {
         pageSize: this.pageSize
       });
       this.info = res.data;
-      console.log('res', res)
-      console.log('info', this.info)
+      // console.log('res', res)
+      // console.log('info', this.info)
     }
   }
 }

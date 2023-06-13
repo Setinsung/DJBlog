@@ -72,7 +72,7 @@ export default {
         result[yearIndex].articles.push(newArticle);
       });
       this.yearWithArticles = result
-      console.log('yearWithArticles', this.yearWithArticles);
+      // console.log('yearWithArticles', this.yearWithArticles);
     },
     goDetails(item) {
       this.$router.push(`/articles/details/${item._id}`)

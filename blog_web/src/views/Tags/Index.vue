@@ -49,7 +49,6 @@ export default {
           color: randomColor()
         }
       })
-      console.log('store',this.$store.state.count);
       // console.log("res", res)
       this.$nextTick(() => {
         window.tagcloud({

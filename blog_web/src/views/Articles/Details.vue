@@ -124,9 +124,9 @@ export default {
   data() {
     return {
       info: {
-        _id: '1',
-        title: '使用jspdf+canvas2html将网页保存为pdf文件',
-        introduction: '使用jspdf+canvas2html将网页保存为pdf文件 ',
+        _id: '',
+        title: '',
+        introduction: '',
         cover: ""
       },
       toc: [],
