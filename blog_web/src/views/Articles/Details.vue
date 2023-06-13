@@ -239,6 +239,8 @@ export default {
       // console.log("res", res)
       this.info = res.data
       this.content = res.data.content
+      this.next = res.next
+      this.prev = res.prev
       this.$nextTick(() => {
         const aArr = $(
           ".v-note-wrapper .v-note-panel .v-note-navigation-wrapper .v-note-navigation-content a"

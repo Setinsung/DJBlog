@@ -180,7 +180,7 @@ export default {
         openSearch: true,// 是否开启搜索
         register: true,// 是否开启注册 
       },
-      isShowAction: true, // 是否显示操作按钮
+      // isShowAction: true, // 是否显示操作按钮
       showToolBtn: false, // 点击切换显示操作按钮
       user: JSON.parse(localStorage.getItem("user")), // 用户信息
 
@@ -269,15 +269,15 @@ export default {
       this.introInfo = res.data
     }
   },
-  // computed: {
-  //   isShowAction() {
-  //     return !(
-  //       !this.info.openSearch &&
-  //       !this.info.register &&
-  //       !this.info.login
-  //     );
-  //   },
-  // },
+  computed: {
+    isShowAction() {
+      return !(
+        !this.info.openSearch &&
+        !this.info.register &&
+        !this.info.login
+      );
+    },
+  },
 
 }
 </script>

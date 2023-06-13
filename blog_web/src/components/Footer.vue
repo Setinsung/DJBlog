@@ -2,20 +2,38 @@
   <div class="footer" :class="{ 'fixed-footer': fixed }"> 
     <div class="copyright">
       <a href="#"></a>
-      <div>本系统由Vue+Muse-UI提供技术支持</div>
+      <div>{{ copyright }}</div>
     </div>
   </div>
 </template>
+
 <script>
+import { getHF } from '@/api/hf.js'
 export default {
   props:{
     fixed:{
       type:Boolean,
       default:false,
     }
+  },
+  data() {
+    return {
+      copyright: ""
+    }
+  },
+  created () {
+    this.getHInfo()
+  },
+  methods: {
+    async getHInfo () {
+      const res = await getHF()
+      console.log(res)
+      this.copyright = res.data.footer.copyright
+    }
   }
 }
 </script>
+
 <style lang="less" scoped>
 .footer {
   text-align:center;

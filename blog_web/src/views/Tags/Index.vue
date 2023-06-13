@@ -3,15 +3,15 @@
     background: `url(${tagsBgImg}) center center no-repeat`,
     backgroundSize: 'cover',
   }">
-
     <Header :light-index="4" background="transparent"></Header>
     <Footer fixed></Footer>
+
     <div class="content">
-      <div class="tags-wap tagcloud">
-        <router-link v-for="item in tags" :key="item.name" :to="{ name: 'tagsDetails', query: { id: item.name } }">
-          <mu-chip v-if="item.articleNum > 0" class="tag" :color="item.color">{{ item.name }}{{ item.articleNum
-          }}</mu-chip>
-        </router-link>
+      <div class="tags-wap tagcloud" :style="{ width: isPC ? '70%' : '100%' }">
+        <a v-for="(item, index) in tags" :key="index">
+          <mu-chip v-if="item.articleNum > 0" class="tag" :color="item.color"
+            @click="goDetail(item)">{{ item.name }}({{ item.articleNum }})</mu-chip>
+        </a>
       </div>
     </div>
   </div>
@@ -27,30 +27,22 @@ export default {
     Header,
     Footer
   },
-  data () {
+  data() {
     return {
-      tagsBgImg: "http://nevergiveupt.top/tags.jpg",
       tags: [
 
-      ]
-    }
+      ],
+      tagsBgImg: "http://nevergiveupt.top/tags.jpg",
+    };
   },
-  mounted () {
-    window.tagcloud({
-      selector: ".tagcloud", //元素选择器
-      fontsize: 16, //基本字体大小, 单位px
-      radius: 100, //滚动半径, 单位px
-      mspeed: "normal", //滚动最大速度, 取值: slow, normal(默认), fast
-      ispeed: "normal", //滚动初速度, 取值: slow, normal(默认), fast
-      direction: 135, //初始滚动方向, 取值角度(顺时针360): 0对应top, 90对应left, 135对应right-bottom(默认)...
-      keep: false, //鼠标移出组件后是否继续随鼠标滚动, 取值: false, true(默认) 对应 减速至初速度滚动, 随鼠标滚动
-    })
+  mounted() {
+
   },
-  created () {
+  created() {
     this.getTagInfo()
   },
   methods: {
-    async getTagInfo () {
+    async getTagInfo() {
       const res = await getTags()
       console.log("res", res)
       this.TagInfo = res.data.list
@@ -62,10 +54,25 @@ export default {
         }
       })
       console.log("res", res)
+      this.$nextTick(() => {
+        window.tagcloud({
+          selector: ".tagcloud", //元素选择器
+          fontsize: 16, //基本字体大小, 单位px
+          radius: 100, //滚动半径, 单位px
+          mspeed: "normal", //滚动最大速度, 取值: slow, normal(默认), fast
+          ispeed: "normal", //滚动初速度, 取值: slow, normal(默认), fast
+          direction: 135, //初始滚动方向, 取值角度(顺时针360): 0对应top, 90对应left, 135对应right-bottom(默认)...
+          keep: false, //鼠标移出组件后是否继续随鼠标滚动, 取值: false, true(默认) 对应 减速至初速度滚动, 随鼠标滚动
+        })
+      })
     },
-    clickTagItem (e) {
-      console.log("e", e)
-      this.$router.push("/tags/details")
+    goDetail(item) {
+      this.$router.push({
+        name: "tagsDetails",
+        query: {
+          id: item._id
+        }
+      });
     }
   }
 
@@ -86,14 +93,15 @@ export default {
 .content {
   padding-top: 64px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  height: 100%;
   position: absolute;
-  width: 100%;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   bottom: 0;
+  right: 0;
 }
 
 .tags-wap {

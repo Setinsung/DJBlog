@@ -16,10 +16,7 @@ export default {
   },
   methods: {
     goDetails(item) {
-      this.$router.push({
-        name: "articlesDetails",
-        query: { id: item._id }
-      });
+      this.$router.push(`/articles/details/${item._id}`)
       location.reload();
       document.body.scrollIntoView();
     }

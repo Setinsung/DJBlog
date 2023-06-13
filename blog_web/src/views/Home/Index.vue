@@ -15,6 +15,7 @@
 import IndexAnimation from "@/components/IndexAnimation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getHF } from '@/api/hf.js'
 let i = 0;
 let timer = null;
 export default {
@@ -32,10 +33,18 @@ export default {
       },
     };
   },
+  created () {
+    this.getHInfo()
+  },
   mounted() {
     this.typing();
   },
   methods: {
+    async getHInfo () {
+      const res = await getHF()
+      console.log(res);
+      this.info.introductionTarget = res.data.footer.extra
+    },
     typing() {
       if (i <= this.info.introductionTarget.length) {
         this.info.introduction =
