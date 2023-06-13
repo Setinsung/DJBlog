@@ -17,7 +17,7 @@
               <mu-button class="cursor-default" flat color="info">查看{{ item.views }}</mu-button>
               <mu-button class="cursor-default" flat color="error">评论{{ item.comment }}</mu-button>
               <mu-button class="cursor-default" flat color="primary">点赞{{ item.like }}</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">{{ item.createTime }}</mu-button>
+              <mu-button class="cursor-default" flat color="#9e9e9e">{{ timestampToDate(item.createTime*1000) }}</mu-button>
             </mu-card-actions>
             <mu-card-text class="text">{{ item.introduction }}</mu-card-text>
             <mu-card-actions>
@@ -47,6 +47,7 @@
 import Header from "@/components/Header";
 import RightConfig from "@/components/RightConfig.vue";
 import { getList } from '@/api/articles'
+import { timestampToDate } from '@/utils'
 export default {
   name: 'articles',
   components: {
@@ -117,6 +118,7 @@ export default {
     this.getList();
   },
   methods: {
+    timestampToDate,
     goDetails(item) {
       this.$router.push(`/articles/details/${item._id}`)
     },
@@ -227,4 +229,5 @@ export default {
   display: flex;
   justify-content: center;
 
-}</style>
+}
+</style>

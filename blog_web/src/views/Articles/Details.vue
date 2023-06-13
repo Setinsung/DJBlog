@@ -40,12 +40,13 @@
               <img :src="info.cover" style="height:100" alt="">
             </mu-card-media>
             <mu-card-actions class="sub-title">
-              <mu-button class="cursor-default" flat color="warning">字数（1000）</mu-button>
-              <mu-button class="cursor-default" flat color="secondary">阅读大约2分钟</mu-button>
+              <mu-button class="cursor-default" flat color="warning">字数{{ countWords(content) }}</mu-button>
+              <mu-button class="cursor-default" flat color="secondary">阅读大约{{ min }}分钟</mu-button>
               <mu-button class="cursor-default" flat color="info">查看{{ info.views }}</mu-button>
               <mu-button class="cursor-default" flat color="error">评论{{ info.comment }}</mu-button>
               <mu-button class="cursor-default" flat color="primary">点赞（{{ info.like }}）</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">2021-05-20 13:14</mu-button>
+              <mu-button class="cursor-default" flat color="#9e9e9e">{{ timestampToDate(info.createTime * 1000)
+              }}</mu-button>
             </mu-card-actions>
 
             <mavonEditor :ishljs="true" v-model="content" defaultOpen="preview" :toolbarsFlag="false" :subfield="false"
@@ -107,6 +108,7 @@ import $ from "jquery"
 // import CommentList from "@/components/CommentList.vue"
 import PrevNext from "@/components/PrevNext"
 import { getArticle } from "@/api/articles"
+import { timestampToDate } from "@/utils"
 
 export default {
   name: 'articlesDetails',
@@ -175,51 +177,11 @@ export default {
         articleTitle: "测试评论文章",
       }],
       prev: {
-        categories: "技术",
-        collect: 0,
-        comment: 0,
-        content:
-          "### 1.toRefs↵把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref↵↵`应用`: ",
-        cover: "http://nevergiveupt.top/vue/vue_composition_api.jpeg",
-        createTime: 1611739740,
-        introduction:
-          "toRefs把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref ，和响应式对象 property 一一对应。",
-        isCollect: true,
-        isComment: true,
-        isLike: true,
-        isReward: false,
-        like: 0,
-        publishStatus: 1,
-        sort: 0,
-        status: 1,
-        tags: ["Vue"],
         title: "Vue3.x-toRefs & shallowReactive & shallowRef & shallowReadonly",
-        updateTime: 1611739813,
-        views: 5,
         _id: "6011325cc4ae0128013d3210",
       },
       next: {
-        categories: "技术",
-        collect: 0,
-        comment: 0,
-        content:
-          "### 1.注册GitHub账号并创建一个OAuth Apps↵↵登录GitHub账号然后右上角找到你的头像点击",
-        cover: "http://nevergiveupt.top/egg/github_signin.png",
-        createTime: 1612341189,
-        introduction:
-          "『登录鉴权』 是一个常见的业务场景，包括『账号密码登录方式』和『第三方统一登录』。其中，后者我们经常使用到，如 Google， GitHub，QQ 统一登录，它们都是基于 OAuth 规范。",
-        isCollect: true,
-        isComment: true,
-        isLike: true,
-        isReward: true,
-        like: 1,
-        publishStatus: 1,
-        sort: 0,
-        status: 1,
-        tags: ["Node.js", "Egg"],
         title: "使用Egg通过GitHub来实现用户登录",
-        updateTime: 1612341807,
-        views: 6,
         _id: "601a5fc5e268db458626523d",
       },
     }
@@ -230,7 +192,16 @@ export default {
   mounted() {
     this.commentList = this.listToTree(this.commentList)
   },
+  computed: {
+    min() {
+      if (this.content) {
+        return Math.floor(this.info.content.length / 1000);
+      }
+      return 0;
+    },
+  },
   methods: {
+    timestampToDate,
     async getArticle() {
       const res = await getArticle({ id: this.$route.params.id })
       // console.log("res", res)
@@ -278,7 +249,27 @@ export default {
         return !node.targetReplayId
       })
     },
-
+    countWords(source) {
+      const MAX_WORDS = 10000;
+      const shortUnit = '字';
+      const longUnit = 'w字';
+      const effectiveSource = source
+        .replace(/<!--[\s\S]*?-->/g, '') // 去除 HTML 注释
+        .replace(/:::.*?\n([\s\S]*?):::/g, '$1') // 去除代码块
+        .replace(/\$\$[\s\S]*?\$\$/g, '') // 去除数学公式
+        .replace(/\$\S+?\$/g, '') // 去除行内数学公式
+        .replace(/```[\s\S]*?```/g, '') // 去除代码片段
+        .replace(/`[\s\S]*?`/g, '') // 去除行内代码
+        .replace(/!\[[\s\S]*?\]\([\s\S]*?\)/g, '') // 去除图片
+        .replace(/\[[\s\S]*?\]\([\s\S]*?\)/g, ''); // 去除链接
+      const length = effectiveSource.replace(/[\r\n\s]+/g, '').length;
+      if (length <= MAX_WORDS) {
+        return `${length}${shortUnit}`;
+      } else {
+        const num = Math.floor(length / 10000) + length % 10000 / 10000;
+        return `约${num.toFixed(2)}${longUnit}`;
+      }
+    }
   }
 }
 

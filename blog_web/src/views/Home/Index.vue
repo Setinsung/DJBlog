@@ -13,7 +13,7 @@
 <script>
 import IndexAnimation from "@/components/IndexAnimation";
 import Header from "@/components/Header";
-import { getHF } from '@/api/hf.js'
+import { getHome } from '@/api/home.js'
 let i = 0;
 let timer = null;
 export default {
@@ -38,9 +38,9 @@ export default {
   },
   methods: {
     async getHInfo () {
-      const res = await getHF()
+      const res = await getHome()
       console.log(res);
-      this.info.introductionTarget = res.data.footer.extra
+      this.info.introductionTarget = res.data.introduction
     },
     typing() {
       if (i <= this.info.introductionTarget.length) {
