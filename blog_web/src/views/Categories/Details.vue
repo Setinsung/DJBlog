@@ -1,6 +1,6 @@
 <template>
   <div class="common" :style="{
-    background: `url(${categoriesDetailsBgImg}) 0px center no-repeat`,
+    background: `url(${homeConfig.categoriesDetailBgImg}) 0px center no-repeat`,
     backgroundSize: 'cover',
   }">
     <Header :light-index="3" background="transparent"></Header>
@@ -28,6 +28,7 @@
 <script>
 import Header from "@/components/Header"
 import { getList } from '@/api/articles.js'
+import { mapState } from 'vuex';
 export default {
   name: "categories",
   components: {
@@ -41,6 +42,9 @@ export default {
       pageSize: 10,
       cateInfo: {}
     }
+  },
+  computed: {
+    ...mapState('app', ['homeConfig']),
   },
   created () {
     this.getCateInfo()

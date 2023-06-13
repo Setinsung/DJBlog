@@ -8,6 +8,7 @@
 <script>
 import Footer from '@/components/Footer'
 import { fixedFooterRouters } from '@/utils'
+import { mapActions } from 'vuex';
 export default {
   name: 'App',
   components: {
@@ -19,10 +20,10 @@ export default {
   },
   computed: {
     footerFixed() {
-      console.log('routename', this.$route.name);
-      console.log(fixedFooterRouters);
+      // console.log('routename', this.$route.name);
+      // console.log(fixedFooterRouters);
       // 判断是否需要 fixed
-      console.log('fixedFooterRouters.includes(this.$route.name)',fixedFooterRouters.includes(this.$route.name));
+      // console.log('fixedFooterRouters.includes(this.$route.name)',fixedFooterRouters.includes(this.$route.name));
       return fixedFooterRouters.includes(this.$route.name);
     },
   },
@@ -32,10 +33,12 @@ export default {
     },
   },
   created() {
+    this.fetchConfigs();
   },
   mounted() {
   },
   methods: {
+    ...mapActions('app', ['fetchConfigs']),
   }
 }
 </script>

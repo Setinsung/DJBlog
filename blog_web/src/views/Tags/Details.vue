@@ -1,6 +1,6 @@
 <template>
   <div class="common" :style="{
-    background: `url(${tagsDetailsBgImg}) 0px center no-repeat`,
+    background: `url(${homeConfig.tagsDetailBgImg}) 0px center no-repeat`,
     backgroundSize: 'cover',
   }">
     <Header :light-index="4" background="transparent"></Header>
@@ -27,6 +27,7 @@
 import Header from "@/components/Header"
 import { getList } from "@/api/articles.js"
 import { timestampToDate } from "@/utils"
+import { mapState } from 'vuex';
 export default {
   name: "tagsDetails",
   components: {
@@ -40,6 +41,9 @@ export default {
       page: 1,
       pageSize: 10
     }
+  },
+  computed: {
+    ...mapState('app', ['homeConfig']),
   },
   created () {
     this.getArticleList()

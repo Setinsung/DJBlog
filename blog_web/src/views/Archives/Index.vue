@@ -1,6 +1,6 @@
 <template>
   <div class="common" :style="{
-    background: `url(${archiveBgImg}) center center no-repeat`,
+    background: `url(${homeConfig.archiveBgImg}) center center no-repeat`,
     backgroundSize: 'cover',
   }">
     <div class="content">
@@ -30,6 +30,7 @@
 <script>
 import Header from "@/components/Header";
 import { getList } from '@/api/articles'
+import { mapState } from 'vuex';
 export default {
   name: 'archives',
   components: {
@@ -43,6 +44,9 @@ export default {
       pageSize: 20,
       archiveBgImg: 'http://nevergiveupt.top/archive.jpg'
     }
+  },
+  computed: {
+    ...mapState('app', ['homeConfig']),
   },
   created() {
     this.getList();

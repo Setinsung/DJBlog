@@ -1,6 +1,6 @@
 <template>
   <div class="common" :style="{
-    background: `url(${tagsBgImg}) center center no-repeat`,
+    background: `url(${homeConfig.tagsBgImg}) center center no-repeat`,
     backgroundSize: 'cover',
   }">
     <Header :light-index="4" background="transparent"></Header>
@@ -19,6 +19,7 @@
 import Header from "@/components/Header"
 import { getTags } from "@/api/tags.js"
 import { randomColor } from '@/utils'
+import { mapState } from 'vuex';
 export default {
   name: 'tags',
   components: {
@@ -31,6 +32,9 @@ export default {
       ],
       tagsBgImg: "http://nevergiveupt.top/tags.jpg",
     };
+  },
+  computed: {
+    ...mapState('app', ['homeConfig']),
   },
   mounted() {
   },

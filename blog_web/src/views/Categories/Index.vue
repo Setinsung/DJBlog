@@ -1,6 +1,6 @@
 <template>
   <div class="common" :style="{
-    background: `url(${categoriesBgImg}) 0px center no-repeat`,
+    background: `url(${homeConfig.categoriesBgImg}) 0px center no-repeat`,
     backgroundSize: 'cover',
   }">
     <Header :light-index="3" background="transparent"></Header>
@@ -95,7 +95,7 @@
 </template>
 <script>
 import Header from "@/components/Header"
-
+import { mapState } from 'vuex';
 export default {
   name: "categories",
   components: {
@@ -103,12 +103,13 @@ export default {
   },
   data () {
     return {
-
       categories: [],
       categoriesBgImg: "http://nevergiveupt.top/category.jpg",
     }
   },
-
+  computed: {
+    ...mapState('app', ['homeConfig']),
+  },
   mounted () { },
   methods: {
 
