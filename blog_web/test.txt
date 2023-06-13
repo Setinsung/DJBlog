@@ -1,0 +1,31 @@
+Vue中现在我请求获取到了这样的数据      posts: [
+  { id: 1, title: '如何高效学习Vue', created_at: '2022-06-13' },
+  { id: 2, title: '如何高效学习React', created_at: '2022-06-01' },
+  { id: 3, title: '如何使用Webpack优化打包体积', created_at: '2021-11-11' },
+  { id: 4, title: '如何在Vue中使用自定义指令', created_at: '2021-08-01' },
+  { id: 5, title: '如何提高前端开发效率', created_at: '2020-07-01' },
+  { id: 6, title: '如何使用Git进行版本控制', created_at: '2020-06-13' }
+]。接下来我要通过算法得到以下样式的数据：
+[
+  {
+    year: '2022',
+    articles: [
+      { id: 1, title: '如何高效学习Vue', created_at: '2022-06-13' },
+      { id: 2, title: '如何高效学习React', created_at: '2022-06-01' }
+    ]
+  },
+  {
+    year: '2021',
+    articles: [
+      { id: 3, title: '如何使用Webpack优化打包体积', created_at: '2021-11-11' },
+      { id: 4, title: '如何在Vue中使用自定义指令', created_at: '2021-08-01' }
+    ]
+  },
+  {
+    year: '2020',
+    articles: [
+      { id: 5, title: '如何提高前端开发效率', created_at: '2020-07-01' },
+      { id: 6, title: '如何使用Git进行版本控制', created_at: '2020-06-13' }
+    ]
+  }
+]

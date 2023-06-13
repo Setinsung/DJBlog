@@ -29,8 +29,6 @@
                 <mu-icon left value="loyalty"></mu-icon>
                 {{ sub }}
               </mu-button>
-
-
             </mu-card-actions>
           </div>
         </mu-card>
