@@ -95,12 +95,10 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 <script>
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import RightConfig from "@/components/RightConfig.vue"
 import Comment from "@/components/Comment.vue"
 import { mavonEditor } from "mavon-editor"
@@ -114,7 +112,6 @@ export default {
   name: 'articlesDetails',
   components: {
     Header,
-    Footer,
     RightConfig,
     mavonEditor,
     Comment,

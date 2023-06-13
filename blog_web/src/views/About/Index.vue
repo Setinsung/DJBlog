@@ -1,7 +1,6 @@
 <template>
   <div class="common">
     <Header :light-index="5" background="transparent"></Header>
-    <Footer fixed></Footer>
     <mu-carousel hide-indicators hide-controls class="carousel">
       <mu-carousel-item v-for="item in info.imgs" :key="item._id">
         <img :src="item.imgUrl">
@@ -29,13 +28,11 @@
 <script>
 import { randomColor } from "@/utils"
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import { getAbout } from '@/api/about.js'
 export default {
   name: 'about',
   components: {
     Header,
-    Footer
   },
   data () {
     return {

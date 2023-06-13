@@ -4,8 +4,6 @@
     backgroundSize: 'cover',
   }">
     <Header :light-index="4" background="transparent"></Header>
-
-    <Footer fixed></Footer>
     <div class="content">
       <mu-paper class="pc-box" :z-depth="5">
         <mu-list>
@@ -27,13 +25,12 @@
 </template>
 <script>
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import { getList } from "@/api/articles.js"
+import { timestampToDate } from "@/utils"
 export default {
   name: "tagsDetails",
   components: {
     Header,
-    Footer,
   },
   data () {
     return {
@@ -47,25 +44,20 @@ export default {
   created () {
     this.getArticleList()
   },
-  mounted () { },
+  mounted () { 
+  },
   methods: {
+    timestampToDate,
     async getArticleList () {
       const res = await getList({
-        tags: this.$route.query.id,
+        tags: this.$route.query.name,
         page: this.page,
         pageSize: this.pageSize
       })
-      console.log("res", res)
+      // console.log("res", res)
       this.list = res.data.list
     },
-    timestampToDate (timestamp) {
-      // 创建一个新的Date对象，并将其设置为指定的时间戳
-      const date = new Date(timestamp)
-      // 使用toLocaleString()方法将日期对象转换为本地日期/时间字符串
-      const dateString = date.toLocaleString()
-      // 返回格式化后的日期字符串
-      return dateString
-    },
+    
     goDetails (item) {
       this.$router.push(`/articles/details/${item._id}`)
     },

@@ -285,3 +285,43 @@ export const Icon = {
   sf: "http://www.nevergiveupt.top/sf.jpeg",
   zhihu: "http://www.nevergiveupt.top/zhihu.jpg",
 } 
+
+export const isPC = (() => {
+  var userAgentInfo = navigator.userAgent;
+  var Agents = [
+    "Android",
+    "iPhone",
+    "SymbianOS",
+    "Windows Phone",
+    "iPad",
+    "iPod",
+    "XiaoMi/MiuiBrowser",
+  ];
+  var flag = true;
+  for (var v = 0; v < Agents.length; v++) {
+    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+      flag = false;
+      break;
+    }
+  }
+  return flag && window.innerWidth > 750;
+})();
+
+export const timestampToDate = (timestamp) => {
+  // 创建一个新的Date对象，并将其设置为指定的时间戳
+  const date = new Date(timestamp)
+  // 使用toLocaleString()方法将日期对象转换为本地日期/时间字符串
+  const dateString = date.toLocaleString()
+  // 返回格式化后的日期字符串
+  return dateString
+};
+
+// Footer固定路由
+export const fixedFooterRouters = [
+  'index',
+  'categories',
+  'categoriesDetails',
+  'tags',
+  'tagsDetails',
+  'about',
+]

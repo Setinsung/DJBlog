@@ -66,19 +66,16 @@
           </div>
         </li>
       </ul>
-      <Footer></Footer>
     </div>
   </div>
 </template>
 <script>
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default {
   name:'archives',
   components: {
     Header,
-    Footer,
   },
   data(){
     return{

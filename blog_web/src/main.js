@@ -1,11 +1,9 @@
 import Vue from "vue"
+import Vuex from "vuex"
+import appModule from "./store/modules/app"
 import App from "./App.vue"
 import router from "./router"
-
-
-Vue.config.productionTip = false
-Vue.prototype.avatar = "http://nevergiveupt.top/index.jpg"
-import "muse-ui/lib/styles/base.less"
+import { isPC } from "@/utils";
 import {
   Button,
   Select,
@@ -38,9 +36,15 @@ import {
   LoadMore,
   SubHeader,
 } from "muse-ui"
+import VueLazyload from 'vue-lazyload'
+import tagCloud from 'v-tag-cloud'
+import theme from 'muse-ui/lib/theme'
+
+import "muse-ui/lib/styles/base.less"
 import "muse-ui/lib/styles/theme.less"
 import "./global.less";
 import Helpers from 'muse-ui/lib/Helpers';
+Vue.use(Vuex);
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(AppBar)
@@ -71,8 +75,6 @@ Vue.use(Progress)
 Vue.use(Grid)
 Vue.use(LoadMore)
 Vue.use(SubHeader)
-import VueLazyload from 'vue-lazyload'
-import tagCloud from 'v-tag-cloud'
 Vue.use(tagCloud)
 Vue.use(VueLazyload, {
   preLoad: 1.3,
@@ -82,12 +84,11 @@ Vue.use(VueLazyload, {
 })
 Vue.use(Helpers)
 
-//过滤器
-import * as filters from "./filter"
-Object.keys(filters).forEach((k) => Vue.filter(k, filters[k])) //注册过滤器
-Vue.prototype.filterDate = filters.filterDate //时间过滤方法
 
-import theme from 'muse-ui/lib/theme'
+//过滤器
+import * as filters from "@/utils/filter.js"
+Object.keys(filters).forEach((k) => Vue.filter(k, filters[k])) //注册过滤器
+
 
 theme.add('selfDark', {
   primary: '#00e676',
@@ -143,13 +144,29 @@ if (hours > 6 && hours < 18) {
 else {
   defaultTheme = 'selfDark'
 }
-
 const selfTheme = localStorage.getItem('selfTheme') || defaultTheme
+
 theme.use(selfTheme)
 theme.use('selfDark')
+
+
+Vue.prototype.avatar = "http://nevergiveupt.top/index.jpg"
+Vue.prototype.filterDate = filters.filterDate //时间过滤方法
 Vue.prototype.theme = theme
+Vue.prototype.isPC = isPC;
+
+
+Vue.config.productionTip = false
+
+const store = new Vuex.Store({
+  modules: {
+    app: appModule, // 注册 app module
+  },
+});
+
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app") 

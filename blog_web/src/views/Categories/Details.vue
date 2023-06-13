@@ -5,7 +5,6 @@
   }">
     <Header :light-index="3" background="transparent"></Header>
 
-    <Footer fixed></Footer>
     <div class="content">
       <mu-paper class="pc-box" :z-depth="5">
         <div class="sub-title">分类-{{ this.$route.query.name }}</div>
@@ -28,13 +27,11 @@
 </template>
 <script>
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import { getList } from '@/api/articles.js'
 export default {
   name: "categories",
   components: {
     Header,
-    Footer,
   },
   data () {
     return {

@@ -90,19 +90,16 @@
           </div>
         </div>
       </div>
-      <Footer fixed></Footer>
     </div>
   </div>
 </template>
 <script>
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 
 export default {
   name: "categories",
   components: {
     Header,
-    Footer,
   },
   data () {
     return {

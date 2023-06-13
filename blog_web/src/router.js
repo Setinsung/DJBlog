@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/categories',
-    name: 'caregories',
+    name: 'categories',
     component: () => import('./views/Categories/Index.vue')
   },
   {

@@ -5,58 +5,56 @@
       <div class="right">
         <RightConfig></RightConfig>
       </div>
-      
+
       <div class="left">
-        <mu-card @click="goDetails(item)"   class="card" v-for="item in info.list" :key="item._id">
+        <mu-card @click="goDetails(item)" class="card" v-for="item in info.list" :key="item._id">
           <div class="cover">
             <img class="cover-img" v-lazy="item.cover" alt="">
           </div>
           <div class="card-box">
-            <div class="title">{{item.tile}}</div>
+            <div class="title">{{ item.tile }}</div>
             <mu-card-actions class="sub-title">
-              <mu-button class="cursor-default" flat color="info">查看{{item.views}}</mu-button>
-              <mu-button class="cursor-default" flat color="error">评论{{item.comment}}</mu-button>
-              <mu-button class="cursor-default" flat color="primary">点赞{{item.like}}</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">{{item.createTime}}</mu-button>
+              <mu-button class="cursor-default" flat color="info">查看{{ item.views }}</mu-button>
+              <mu-button class="cursor-default" flat color="error">评论{{ item.comment }}</mu-button>
+              <mu-button class="cursor-default" flat color="primary">点赞{{ item.like }}</mu-button>
+              <mu-button class="cursor-default" flat color="#9e9e9e">{{ item.createTime }}</mu-button>
             </mu-card-actions>
-            <mu-card-text class="text">{{item.introduction}}</mu-card-text>
-            <mu-card-actions >
+            <mu-card-text class="text">{{ item.introduction }}</mu-card-text>
+            <mu-card-actions>
               <mu-button class="cursor-default chip" flat color="primary">
                 <mu-icon left value="dns"></mu-icon>
-                {{item.categories}}
+                {{ item.categories }}
               </mu-button>
-              <mu-button v-for="sub in item.tags" :key="sub" class="cursor-default chip" flat >
+              <mu-button v-for="sub in item.tags" :key="sub" class="cursor-default chip" flat>
                 <mu-icon left value="loyalty"></mu-icon>
-                {{sub}}
+                {{ sub }}
               </mu-button>
-              
-              
+
+
             </mu-card-actions>
           </div>
         </mu-card>
       </div>
     </div>
-    <div v-if="info.totalCount>pageSize"  class="pagination">
-      <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize" :pageCount="5"></mu-pagination>
+    <div v-if="info.totalCount > pageSize" class="pagination">
+      <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize"
+        :pageCount="5"></mu-pagination>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import RightConfig from "@/components/RightConfig.vue";
-import {getList} from '@/api/articles'
-export default{
-  name:'articles',
-  components:{
+import { getList } from '@/api/articles'
+export default {
+  name: 'articles',
+  components: {
     Header,
-    Footer,
     RightConfig
   },
-  
-  data(){
+
+  data() {
     return {
       page: 1,
       pageSize: 20,
@@ -112,108 +110,121 @@ export default{
         //     _id: "2",
         //   },
         // ],
-      }, 
-  }
- },
- created(){
-  this.getList();
- },
-  methods:{
-    goDetails(item){
+      },
+    }
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    goDetails(item) {
       this.$router.push(`/articles/details/${item._id}`)
     },
-    async getList(){
+    async getList() {
       const res = await getList({
         page: this.page,
         pageSize: this.pageSize
       });
       this.info = res.data;
-      console.log('res',res)
-      console.log('info',this.info)
+      console.log('res', res)
+      console.log('info', this.info)
     }
- }
+  }
 }
 </script>
 <style scoped lang="less">
-.articles{
+.articles {
   padding-top: 70px;
-  .content{
-    padding-bottom:0.53333rem;
-    display:flex;
-    .left{
-      flex:9;
+
+  .content {
+    padding-bottom: 0.53333rem;
+    display: flex;
+
+    .left {
+      flex: 9;
+
       &.wap-left {
         .card {
           float: none;
           width: 90%;
         }
-      } 
-      .card{
-        width:80%;
-        float:left;
-        margin:2.82667rem auto 0;
-        display:flex;
+      }
+
+      .card {
+        width: 80%;
+        float: left;
+        margin: 2.82667rem auto 0;
+        display: flex;
         flex-wrap: wrap;
         border-radius: 5px;
-        &:hover{
-          animation:pulse 1s;
+
+        &:hover {
+          animation: pulse 1s;
         }
-        .card-box{
-          flex:2;
-          display:flex;
+
+        .card-box {
+          flex: 2;
+          display: flex;
           flex-direction: column;
           justify-content: space-around;
         }
-        .title{
-          padding:0.42667rem 0.42667rem 0 0.42667rem;
+
+        .title {
+          padding: 0.42667rem 0.42667rem 0 0.42667rem;
           font-size: 0.4rem;
-          overflow:hidden;
+          overflow: hidden;
           text-overflow: ellipsis;
-          display:-webkit-box;
-          -webkit-box-orient:vertical;
-          -webkit-line-clamp:1;
-          cursor:pointer;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          cursor: pointer;
         }
-        .sub-title{
-          display:flex;
-          flex-wrap:wrap;
+
+        .sub-title {
+          display: flex;
+          flex-wrap: wrap;
         }
-        .text{
-          padding:0 0.42667rem;
-          overflow:hidden;
+
+        .text {
+          padding: 0 0.42667rem;
+          overflow: hidden;
           text-overflow: ellipsis;
-          display:-webkit-box;
-          -webkit-box-orient:vertical;
-          -webkit-line-clamp:3;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
         }
-        .chip{
-          margin-right:0.26667rem;
+
+        .chip {
+          margin-right: 0.26667rem;
         }
-        .cover{
-          flex:1;
-          border-radius:0;
-          padding:0.42667rem;
-          .cover-img{
+
+        .cover {
+          flex: 1;
+          border-radius: 0;
+          padding: 0.42667rem;
+
+          .cover-img {
             object-fit: cover;
-            
-            width:100%;
-            height:13.26667rem;
+
+            width: 100%;
+            height: 13.26667rem;
             vertical-align: middle;
           }
         }
       }
     }
-    .right{
-      flex:3;
-      display:flex;
+
+    .right {
+      flex: 3;
+      display: flex;
       justify-content: center;
     }
   }
 }
-.pagination{
-  margin:0.53333rem 0;
-  display:flex;
+
+.pagination {
+  margin: 0.53333rem 0;
+  display: flex;
   justify-content: center;
 
-}
-</style>
+}</style>

@@ -2,7 +2,6 @@
   <div>
     <IndexAnimation></IndexAnimation>
     <Header background="transparent"></Header>
-    <Footer fixed></Footer>
 
     <div class="common">
       <div class="home">
@@ -14,7 +13,6 @@
 <script>
 import IndexAnimation from "@/components/IndexAnimation";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { getHF } from '@/api/hf.js'
 let i = 0;
 let timer = null;
@@ -23,7 +21,6 @@ export default {
   components: {
     Header,
     IndexAnimation,
-    Footer
   },
   data() {
     return {

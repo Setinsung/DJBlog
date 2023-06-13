@@ -4,7 +4,6 @@
     backgroundSize: 'cover',
   }">
     <Header :light-index="4" background="transparent"></Header>
-    <Footer fixed></Footer>
 
     <div class="content">
       <div class="tags-wap tagcloud" :style="{ width: isPC ? '70%' : '100%' }">
@@ -18,14 +17,12 @@
 </template>
 <script>
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
 import { getTags } from "@/api/tags.js"
 import { randomColor } from '@/utils'
 export default {
   name: 'tags',
   components: {
     Header,
-    Footer
   },
   data() {
     return {
@@ -36,7 +33,6 @@ export default {
     };
   },
   mounted() {
-
   },
   created() {
     this.getTagInfo()
@@ -44,16 +40,17 @@ export default {
   methods: {
     async getTagInfo() {
       const res = await getTags()
-      console.log("res", res)
       this.TagInfo = res.data.list
       this.tags = this.TagInfo.map(item => {
         return {
+          _id: item._id,
           name: item.name,
           articleNum: item.articleNum,
           color: randomColor()
         }
       })
-      console.log("res", res)
+      console.log('store',this.$store.state.count);
+      // console.log("res", res)
       this.$nextTick(() => {
         window.tagcloud({
           selector: ".tagcloud", //元素选择器
@@ -70,7 +67,7 @@ export default {
       this.$router.push({
         name: "tagsDetails",
         query: {
-          id: item._id
+          name: item.name,
         }
       });
     }
